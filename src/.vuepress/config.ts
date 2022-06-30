@@ -7,12 +7,10 @@ export default defineUserConfig({
   title: "企鹅反应堆",
   description: "mostly harmless",
 
-  base: "/",
+  base: "/harmless7/",
 
   plugins: [
-    searchPlugin({
-
-    }),
+    searchPlugin({}),
   ],
 
   theme,
