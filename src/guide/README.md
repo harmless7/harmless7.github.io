@@ -1,5 +1,6 @@
 ---
 title: 主要功能与配置演示
+notArticle: true
 index: false
 icon: creative
 category:

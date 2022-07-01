@@ -1,5 +1,6 @@
 ---
 title: 布局与功能禁用
+notArticle: true
 icon: config
 order: 3
 category:

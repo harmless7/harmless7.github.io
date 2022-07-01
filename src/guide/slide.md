@@ -1,5 +1,6 @@
 ---
 title: 幻灯片页
+notArticle: true
 icon: slides
 layout: Slide
 ---

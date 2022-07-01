@@ -1,3 +1,4 @@
+import { Page } from "vuepress";
 import { hopeTheme } from "vuepress-theme-hope";
 import navbar from "./navbar";
 import sidebar from "./sidebar";
@@ -97,6 +98,9 @@ export default hopeTheme({
   plugins: {
     blog: {
       autoExcerpt: true,
+      filter: (page: Page) => {
+        return Boolean(page.filePathRelative) && !page.frontmatter.home && !page.frontmatter.notArticle;
+      }
     },
 
     mdEnhance: {
