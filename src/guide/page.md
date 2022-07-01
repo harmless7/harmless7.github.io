@@ -34,7 +34,6 @@ article: false
 image: ""
 # banner（横幅图片）
 banner: ""
-
 ---
 
 `more` 注释之前的内容被视为文章摘要。
