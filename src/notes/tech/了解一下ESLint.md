@@ -1,4 +1,41 @@
-# learn eslint
+---
+# 标题
+title: 了解一下ESLint
+# 短标题
+# shortTitle: 
+# 描述
+# description: 
+# 不是文章
+# notArticle: true
+# 图标
+icon: article
+# 作者
+# author: 基本上无害
+# 原创
+isOriginal: true
+# 写作时间
+date: 2022-07-26
+# 分类（可多个）
+category:
+  - 学习笔记
+  - 前端
+# 标签（可多个）
+tag:
+  - 前端
+  - 工具
+# 置顶
+# sticky: true
+# 收藏
+# star: true
+# 不添加至文章列表
+# article: false
+# 不添加至时间线
+# timeline: false
+# 预览图（绝对路径）
+image: ""
+# banner（横幅图片）
+banner: ""
+---
 
 ## 作用
 
