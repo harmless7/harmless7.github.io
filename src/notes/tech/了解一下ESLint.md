@@ -259,3 +259,52 @@ rules: {
 - **各种第三方包**: google/airbnb/facebook
 
 严格程度： all > airbnb-base > standard > recommended
+
+## 如何与 Vue 一同使用
+
+不像原先的 Vue Cli 脚手架，可以在创建 Vue 项目时傻瓜封装好 ESLint。
+
+Vite 现在只能手动配置 ESLint，但好在也并不是很复杂。
+
+1. 在项目中安装 ESLint （`pnpm i eslint -D`）
+2. 初始化 ESLint 配置 （`npx eslint --init`）
+3. **安装Vite-plugin-eslint**
+
+    有了个这包，vite 才能在 dev 时去主动检查代码
+
+4. 配置 vite.config.js 文件
+
+    ```javascript
+    import { defineConfig } from 'vite';
+    import vue from '@vitejs/plugin-vue';
+    import eslint from 'vite-plugin-eslint';
+
+    export default defineConfig({
+      plugins: [
+        vue(),
+        eslint(), // 这里是关键
+      ],
+    });
+    ```
+
+欧了。
+
+## 如何使用 VSCode 扩展
+
+文档：[VSCode ESLint 使用文档（英文）](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint#settings-options)
+
+### 安装
+
+在 VSCode 应用商店中搜索 ESLint，点击安装即可。
+
+### 配置
+
+配置项详见上面的使用文档，这里贴一下最常用的**保存自动修正**
+
+```json
+// settings.json
+
+"editor.codeActionsOnSave": {
+  "source.fixAll.eslint": true,
+},
+```
