@@ -23,6 +23,7 @@ category:
 tag:
   - 前端
   - 工具
+  - javascript
 # 置顶
 # sticky: true
 # 收藏
