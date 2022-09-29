@@ -7,9 +7,9 @@ heroImage: /logo.svg
 heroText: 企鹅反应堆
 heroFullScreen: true
 heroImageStyle: {
-  "background": "#ffffff66",
-  "border-radius": "8px",
-  "padding": "20px"
+  # "background": "#ffffff66",
+  # "border-radius": "16px",
+  # "padding": "20px"
 }
 tagline: 乌云汇合 乌云高空踏步 再生泥河 就投身激流冲水坝
 # projects:

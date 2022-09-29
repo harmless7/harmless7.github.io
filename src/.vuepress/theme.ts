@@ -27,8 +27,7 @@ export default hopeTheme({
   },
   fullscreen: true, // 全屏
   // 仓库
-  repo: "mostly_harmless/mostly_harmless",
-  repoLabel: "Gitee",
+  repo: "harmless7/harmless7.github.io",
   repoDisplay: true,
   backToTop: true, // 回到顶部
   // 主题色
@@ -55,7 +54,7 @@ export default hopeTheme({
     avatar: "/avatar.jpg",
     roundAvatar: true,
     description: "",
-    intro: "/intro.html",
+    intro: "/about.html",
     medias: {
       // Baidu: "https://example.com",
       // Bitbucket: "https://example.com",
@@ -104,7 +103,8 @@ export default hopeTheme({
     },
 
     mdEnhance: {
-      enableAll: true,
+      // enableAll: false,
+      flowchart: true,
       presentation: {
         plugins: ["highlight", "math", "search", "notes", "zoom"],
       },
