@@ -55,21 +55,21 @@ banner: ""
 
 众所周知立方体有六个面，那么我们就先写出六个正方形。
 
-``` html
+``` text
 <ul>
   <li>1</li>
   <li>2</li>
   ...
   <li>6</li>
 </ul>
+```
 
-<style>
-  li {
-    width: 100px;
-    height: 100px;
-    ...
-  }
-</style>
+``` css
+li {
+  width: 100px;
+  height: 100px;
+  ...
+}
 ```
 
 ![堆砌正方形](./img/3Dbox-1.jpg)
@@ -140,7 +140,7 @@ li:nth-child(1) {
 
 理论上直接复制粘贴 ```ul``` 的代码 5 次，然后给它们之间一个间距就好：
 
-```html
+```text
 <div class=box>
   <ul>...</ul>
   <ul>...</ul>
@@ -148,13 +148,13 @@ li:nth-child(1) {
   <ul>...</ul>
   <ul>...</ul>
 </div>
+```
 
-<style>
-  .box {
-    display: flex;
-    gap: 10px;
-  }
-</style>
+``` css
+.box {
+  display: flex;
+  gap: 10px;
+}
 ```
 
 ![错误堆叠](./img/3Dbox-5.jpg)
