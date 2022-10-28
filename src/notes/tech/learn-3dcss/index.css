@@ -1,0 +1,87 @@
+/* CDN 服务仅供平台体验和调试使用，平台不承诺服务的稳定性，企业客户需下载字体包自行发布使用并做好备份。 */
+@font-face {
+  font-family: "阿里巴巴普惠体";
+  font-weight: 400;
+  src: url(./Alibaba_PuHuiTi_2.0_55_Regular_55_Regular.ttf);
+  font-display: swap;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "阿里巴巴普惠体";
+}
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  min-height: 100vh;
+  background: #3f3f3f;
+}
+
+.box {
+  display: flex;
+  gap: 10px;
+
+  /* transform-style 设置元素的子元素是位于 3D 空间中还是平面中。 */
+  /* flat
+  设置元素的子元素位于该元素的平面中。
+  preserve-3d
+  指示元素的子元素应位于 3D 空间中。 */
+  transform-style: preserve-3d;
+  transform: rotateY(30deg) rotateX(10deg);
+}
+
+.box .text {
+  width: 100px;
+  height: 100px;
+
+  position: relative;
+  transform-style: preserve-3d;
+
+  transition: all 1s ease-in-out;
+  transition-delay: calc(0.25s * var(--i));
+}
+
+.box .text::before {
+  content: "";
+  width: 100%;
+  height: 100%;
+  background: #373737;
+  position: absolute;
+  transform-origin: left;
+  transform: rotateY(90deg) translateX(-50%);
+}
+
+.box .text:first-child::before {
+  background-color: #e97089;
+}
+
+.box:hover .text {
+  transform: rotateX(-540deg);
+}
+
+.box:hover .text:first-child {
+  transform: rotateX(540deg);
+}
+
+.box .text span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(#434343, #535353);
+  font-size: 50px;
+  font-weight: 500;
+  color: #fff;
+
+  position: absolute;
+  transform-style: preserve-3d;
+  transform: rotateX(calc(90deg * var(--j))) translateZ(50px);
+}
+.box .text:first-child span {
+  background: linear-gradient(#e97089, #ed82ad);
+}
