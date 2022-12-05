@@ -17,8 +17,8 @@ isOriginal: true
 date: 2022-11-29
 # 分类（可多个）
 category:
-  - 前端
-  - 小技巧
+  - 学习笔记
+  - 技术
 # 标签（可多个）
 tag:
   - 前端
