@@ -86,7 +86,7 @@ banner: ""
 
 [CSS Box Alignment 模块](https://www.w3.org/TR/css-align-3/)，这玩意儿通用于 `flex` 和 `grid` 布局中，所以会发现两边的对齐语法一致。
 
-![对齐模式总结图](./img/modern-web-layout-2.awebp)
+![对齐模式总结图](./img/modern-web-layout-2.jpg)
 
 ### 属性分类
 
@@ -132,7 +132,7 @@ banner: ""
 
 即使你手动为每个项目设定了侧轴方向的大小，行所占大小依然不会改变，如下图：
 
-![侧轴“弹性行”示意](./img/modern-web-layout-3.awebp)
+![侧轴“弹性行”示意](./img/modern-web-layout-3.jpg)
 
 此时，图中虚线部分就产生了剩余空间。
 
