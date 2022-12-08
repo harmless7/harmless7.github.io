@@ -43,7 +43,7 @@ banner: ""
 
 ## 效果图
 
-![效果图](./img/scroll-snap.gif)
+![效果图](https://raw.githubusercontent.com/harmless7/blogImgHost/main/202212081150196.gif?token=ASN72AE5NDYZD7SYUOX4M53DSFPUI)
 
 这种页面滚动自动贴合的效果，已经广泛应用在各种网站的首页上。
 
