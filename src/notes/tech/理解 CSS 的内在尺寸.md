@@ -136,5 +136,6 @@ div {
 
 ![eg2](https://s2.loli.net/2022/12/08/Je4jxOdHcfqgbB9.jpg)
 
-### 3. 
+### 3. fit-content()
 
+这个函数只可以用在 `grad` 布局上，它可以在保留 `fit-content` 特征的同时，为其设定一个最大宽度。
