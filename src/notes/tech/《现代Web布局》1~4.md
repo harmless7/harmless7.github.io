@@ -1,6 +1,6 @@
 ---
 # 标题
-title: 《现代Web布局》
+title: 《现代Web布局》1~4
 # 短标题
 # shortTitle: 
 # 描述
@@ -24,7 +24,7 @@ tag:
   - css
   - 前端
 # 置顶
-# sticky: true
+sticky: true
 # 收藏
 # star: true
 # 不添加至文章列表
@@ -39,7 +39,12 @@ banner: ""
 
 [稀土掘金——现代 Web 布局](https://juejin.cn/book/7161370789680250917)
 
-二三十块呢，好好学。
+第 1~4 节，介绍了
+
+1. Web 布局发展史
+2. 布局术语
+3. Flex 基础
+4. Flex 对齐基础
 
 <!-- more -->
 
@@ -141,3 +146,31 @@ banner: ""
 > 再次提醒，`align-content` 属性只有在 `flex-wrap` 取值为 `wrap` 或 `wrap-reverse` 时才有效！
 
 ### 理解“对齐属性”
+
+`flex` 中的对齐属性，只在侧轴有效。
+
+> 沿侧轴对齐 Flex 项目，单行（或单例）以及单个 Flex 项目的对齐方式
+
+总的来说就是不将所有 Flex 项目视为一个整体，去分配空余空间。
+
+**Flex 容器中的每一行都有自己的主轴和侧轴方向。**
+
+对齐时，他们的参照不是整个容器，而是当前所在的行。
+
+![align-content 和 align-items 的区别图示](https://s2.loli.net/2022/12/08/umWS5dYvcPpFB9g.jpg)
+
+另外还值得一提的是 `align-seft`：
+
+> 当 `align-self` 碰上了 `align-content` 属性时，只有 `align-content` 属性值为 `stretch` 时，`align-self` 属性的值才有效。
+
+### 那么主轴上要怎么对齐呢？
+
+你已经很熟悉了，使用 `margin: auto`。
+
+### 对齐防溢出
+
+![防溢出图示](https://s2.loli.net/2022/12/08/z4cmeYl3NULq9Ks.webp)
+
+`safe` 属性可以防止数据丢失，但是目前只有火狐支持该特性。
+
+不过可以使用 `margin:auto` 来达到类似的效果。
