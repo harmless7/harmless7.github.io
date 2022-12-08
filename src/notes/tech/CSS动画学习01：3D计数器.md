@@ -43,7 +43,7 @@ banner: ""
 
 ## 效果图
 
-![效果图](https://raw.githubusercontent.com/harmless7/blogImgHost/main/202212081149197.gif?token=ASN72AEQLJPP7MF4B4NIY6DDSFPRE)
+![效果图](https://raw.githubusercontent.com/harmless7/blogImgHost/main/imgs/202212081149197.gif?token=ASN72AEQLJPP7MF4B4NIY6DDSFPRE)
 
 ## 实现思路
 
@@ -72,7 +72,7 @@ li {
 }
 ```
 
-![堆砌正方形](https://raw.githubusercontent.com/harmless7/blogImgHost/main/202212081145025.jpg?token=ASN72ADPN4TOFHM5QYURHTLDSFPBU)
+![堆砌正方形](https://raw.githubusercontent.com/harmless7/blogImgHost/main/imgs/202212081145025.jpg?token=ASN72ADPN4TOFHM5QYURHTLDSFPBU)
 
 他们需要在 3d 空间中组装出立方体，我们使用 ```position: absolute``` 将它们堆砌到同一个位置。
 
@@ -93,7 +93,7 @@ ul {
 
 为什么呢？因为画面没有旋转，你看到的是 3D 空间的正视图，所以与之前毫无变化。
 
-![构建3D空间](https://raw.githubusercontent.com/harmless7/blogImgHost/main/202212081145579.jpg?token=ASN72AFVMMCAXK3OTAGFSVDDSFPBY)
+![构建3D空间](https://raw.githubusercontent.com/harmless7/blogImgHost/main/imgs/202212081145579.jpg?token=ASN72AFVMMCAXK3OTAGFSVDDSFPBY)
 
 我们可以给画面旋转一定角度，来更好地观察 3D 视角。
 
@@ -107,11 +107,11 @@ ul {
 > 关于空间中的旋转角度，可以参考文章：
 > [《巧用左手判断CSS中transform：rotate旋转方向》](https://blog.csdn.net/Romu_lus/article/details/104579657)
 
-![旋转画布](https://raw.githubusercontent.com/harmless7/blogImgHost/main/202212081145047.gif?token=ASN72ADX54647G4ZWHTSSZLDSFPB6)
+![旋转画布](https://raw.githubusercontent.com/harmless7/blogImgHost/main/imgs/202212081145047.gif?token=ASN72ADX54647G4ZWHTSSZLDSFPB6)
 
 接下来是最麻烦的一步：将 6 个面旋转位移至指定的位置：
 
-![构建立方体](https://raw.githubusercontent.com/harmless7/blogImgHost/main/202212081145060.gif?token=ASN72AB22OE5MVVV26A67T3DSFPCE)
+![构建立方体](https://raw.githubusercontent.com/harmless7/blogImgHost/main/imgs/202212081145060.gif?token=ASN72AB22OE5MVVV26A67T3DSFPCE)
 
 方法并不唯一，但是要注意理解 3D 空间内坐标和位置的关系，多试几次就能掌握。以下是一个例子:
 
@@ -157,7 +157,7 @@ li:nth-child(1) {
 }
 ```
 
-![错误堆叠](https://raw.githubusercontent.com/harmless7/blogImgHost/main/202212081145384.jpg?token=ASN72ADCUGE4V5A2RO7FZ4TDSFPCK)
+![错误堆叠](https://raw.githubusercontent.com/harmless7/blogImgHost/main/imgs/202212081145384.jpg?token=ASN72ADCUGE4V5A2RO7FZ4TDSFPCK)
 
 额...还记得刚才的 ```transform-style: preserve-3d``` 吗？
 
@@ -180,7 +180,7 @@ li:nth-child(1) {
 }
 ```
 
-![并列立方体](https://raw.githubusercontent.com/harmless7/blogImgHost/main/202212081145260.jpg?token=ASN72AEZBL6H2SGE3CDYS33DSFPCQ)
+![并列立方体](https://raw.githubusercontent.com/harmless7/blogImgHost/main/imgs/202212081145260.jpg?token=ASN72AEZBL6H2SGE3CDYS33DSFPCQ)
 
 成功
 
@@ -197,7 +197,7 @@ li:nth-child(1) {
 
 这步就很简单了，对每个 ```ul``` 设置动画时间与延迟就可以实现不同步旋转。当然纵向旋转也是可以的：
 
-![最终效果](https://raw.githubusercontent.com/harmless7/blogImgHost/main/202212081145857.gif?token=ASN72AF5DNDOEYDSRAG7OLDDSFPCW)
+![最终效果](https://raw.githubusercontent.com/harmless7/blogImgHost/main/imgs/202212081145857.gif?token=ASN72AF5DNDOEYDSRAG7OLDDSFPCW)
 
 ## 总结
 
