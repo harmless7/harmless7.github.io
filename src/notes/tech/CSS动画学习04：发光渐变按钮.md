@@ -43,7 +43,7 @@ banner: ""
 
 ## 效果图
 
-![效果图](https://raw.githubusercontent.com/harmless7/blogImgHost/main/imgs/202212081147820.gif?token=ASN72AE6LOUSB7BQ7XPNWM3DSFPJ2)
+![效果图](https://s2.loli.net/2022/12/08/pQfVoNLmgYXC279.gif)
 
 纯 css 实现，针不戳。
 
@@ -76,7 +76,7 @@ button {
 }
 ```
 
-![朴实无华一按钮](https://raw.githubusercontent.com/harmless7/blogImgHost/main/imgs/202212081147157.jpg?token=ASN72AAQGKKHTC5HKJ2VO7DDSFPKC)
+![朴实无华一按钮](https://s2.loli.net/2022/12/08/m9gzahSyRs7MUpx.jpg)
 
 > 知识补充：```text-transform```
 >
@@ -103,7 +103,7 @@ button:hover {
 }
 ```
 
-![渐变按钮](https://raw.githubusercontent.com/harmless7/blogImgHost/main/imgs/202212081147813.jpg?token=ASN72ACOGODJCLUGPBOPVXTDSFPKI)
+![渐变按钮](https://s2.loli.net/2022/12/08/E8rKvIjgJfB1cMp.jpg)
 
 > ```border-color: transparent;```！下次要 hover 隐藏边框的时候，不要再把 ```border-width``` 设为 1px 了！现在你学会了更聪明的办法。
 
@@ -129,7 +129,7 @@ button:hover::before {
 }
 ```
 
-![渐变按钮](https://raw.githubusercontent.com/harmless7/blogImgHost/main/imgs/202212081147549.jpg?token=ASN72AF3ZXUAZGYUVFTYBB3DSFPKM)
+![渐变按钮](https://s2.loli.net/2022/12/08/JsDrauo6eFC4WN8.jpg)
 
 
 这里有几个需要注意的地方

@@ -43,7 +43,7 @@ banner: ""
 
 ## 效果图
 
-![效果图](https://raw.githubusercontent.com/harmless7/blogImgHost/main/imgs/202212081153422.gif?token=ASN72ADG435KL6TSKTIUNFLDSFP7K)
+![效果图](https://s2.loli.net/2022/12/08/kSyOHqUsgQVj1LZ.gif)
 
 主要使用 svg 进行绘制，简单但又酷炫的小动画。
 
@@ -71,7 +71,7 @@ banner: ""
 
 最简单的一个部件，只需要画一个居中空心圆即可：
 
-![宇宙中小小的蓝色一点](https://raw.githubusercontent.com/harmless7/blogImgHost/main/imgs/202212081153423.png?token=ASN72ABJSAYRIOZ4A3L4MS3DSFP7M)
+![宇宙中小小的蓝色一点](https://s2.loli.net/2022/12/08/2N3xSoKv5URBFY1.png)
 
 ```css
 .sat-loading {
@@ -95,7 +95,7 @@ banner: ""
 
 ### 绘制轨道
 
-![一条圆弧](https://raw.githubusercontent.com/harmless7/blogImgHost/main/imgs/202212081153424.png?token=ASN72AF7VKTGAQ2DQMPURTLDSFP7O)
+![一条圆弧](https://s2.loli.net/2022/12/08/dHwWEqjU51NPSB2.png)
 
 ```css
 svg {
@@ -129,7 +129,7 @@ svg {
 
 由于沿轨道的曲线运动较为复杂，这里可以让卫星沿轨道长轴往复运动，形成沿轨道运动的假象。
 
-![来回略过地球表面](https://raw.githubusercontent.com/harmless7/blogImgHost/main/imgs/202212081153425.gif?token=ASN72AETXCUVA5B7O2PNGMDDSFP7Q)
+![来回略过地球表面](https://s2.loli.net/2022/12/08/rWp9AcqbM6eBDYx.gif)
 
 ```css
 svg {
@@ -205,7 +205,7 @@ svg {
 
 我们就能得到下面的效果：
 
-![单程卫星](https://raw.githubusercontent.com/harmless7/blogImgHost/main/imgs/202212081153426.gif?token=ASN72AAGQTFZMV2WZURNUULDSFP7S)
+![单程卫星](https://s2.loli.net/2022/12/08/oEYTckBWNArC9Hq.gif)
 
 这时我们只需要补上另一颗卫星，让它一直在地球背面来回运动，即可伪装成卫星环绕地球的效果：
 
