@@ -37,10 +37,6 @@ image: ""
 banner: ""
 ---
 
-[稀土掘金——现代 Web 布局](https://juejin.cn/book/7161370789680250917)
-
-[控制 Flex 子元素在主轴上的比例](https://developer.mozilla.org/zh-CN/docs/Web/CSS/CSS_Flexible_Box_Layout/Controlling_Ratios_of_Flex_Items_Along_the_Main_Ax)
-
 第 1~4 节，介绍了
 
 1. Web 布局发展史
@@ -49,6 +45,14 @@ banner: ""
 4. Flex 对齐基础
 
 <!-- more -->
+
+## 参考内容
+
+[稀土掘金——现代 Web 布局](https://juejin.cn/book/7161370789680250917)
+
+[MDN——flex 布局的基本概念](https://developer.mozilla.org/zh-CN/docs/Web/CSS/CSS_Flexible_Box_Layout/Basic_Concepts_of_Flexbox)
+
+[MDN——Flex 容器中的对齐方式](https://developer.mozilla.org/zh-CN/docs/Web/CSS/CSS_Flexible_Box_Layout/Aligning_Items_in_a_Flex_Container)
 
 ## Web 布局演进史
 
