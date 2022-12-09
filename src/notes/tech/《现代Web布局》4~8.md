@@ -124,7 +124,7 @@ flex 子元素的伸缩，本质上是对 flex 容器正负自由空间的分配
 
 下面来整理一下它常用的几种值：
 
-### `flex:initial` (`flex: 0 1 auto`) (默认值)
+#### `flex:initial` (`flex: 0 1 auto`) (默认值)
 
 ![flex: initial](https://s2.loli.net/2022/12/09/mLeYsU48VZ9pTuk.webp)
 
