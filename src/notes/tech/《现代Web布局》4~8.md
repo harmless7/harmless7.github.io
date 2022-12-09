@@ -79,3 +79,80 @@ flex 子元素的伸缩，本质上是对 flex 容器正负自由空间的分配
 ![negative free space](https://s2.loli.net/2022/12/09/4YhbTaj38yFt7oV.jpg)
 
 以此类推，也会出现 负自由空间，计算方式也是一样的。
+
+> 注：上图漏掉了 `gap` 属性，计算自由空间时也要减去 flex 子元素之间的 `gap` 宽度。
+
+### flex-basis 属性
+
+这个属性可以**在任何空间分配之前**，初始化 flex 子元素的尺寸。
+
+> `flex-basis` 比 `height` 和 `width` 具有更高的优先级。（除了值为 `auto` 时）
+
+它有几个需要注意的值：
+
+#### `flex-basis: auto`（默认值）
+
+- 如果为子元素设置了绝对值（如 `width: 200px`），那么 `flex-basis` 的值就为绝对值；
+
+- 如果未设置绝对值，那么 `flex-basis` 的值为 `max-content`；
+
+#### `flex-basis: content`
+
+- 无论有没有设置绝对值，它都以子元素内容大小为准。
+
+    （但是支持的浏览器较少，可以把 `height` 和 `width` 设为 `auto` 来达成同样的效果。）
+
+#### `flex-basis: 0`
+
+- 意味着完全忽略 flex 子元素的尺寸，它的所有空间都可以被抢占。
+
+### flex-grow 属性
+
+指定了 flex **增长值**，决定了当 正自由空间 分配时，flex 子元素相对于它的兄弟元素的增长程度。
+
+### flex-shrink 属性
+
+指定了 flex **缩小值**，决定了当 负自由空间 分配时，flex 子元素相对于它的兄弟元素的收缩程度。
+
+看起来和 `flex-grow` 简直一模一样，那么为什么不把这两个属性合并起来呢？
+
+因为 `flex-shrink` 有个特点：在缩小时 flexbox 会阻止子元素的尺寸缩小到 0，最小只到 `min-content`。
+
+### flex 属性
+
+`flex-grow`, `flex-shrink`, `flex-basis` 三个属性的简写。
+
+下面来整理一下它常用的几种值：
+
+### `flex:initial` (`flex: 0 1 auto`) (默认值)
+
+![flex: initial](https://s2.loli.net/2022/12/09/mLeYsU48VZ9pTuk.webp)
+
+子元素不会成长，只会收缩。
+
+#### `flex: auto` (`flex: 1 1 auto`)
+
+![flex: auto](https://s2.loli.net/2022/12/09/TSxHyDf6dRmZ2iA.webp)
+
+所有子元素均为弹性的，它们将均分正负自由空间（但不意味着均分后它们等宽）
+
+#### `flex: 1` (`flex: 1 1 0`)
+
+![flex: 1](https://s2.loli.net/2022/12/09/9zcTv2BZKHJNp1g.webp)
+
+让每一个子元素变成弹性的，并且忽略自身基础尺寸，来让所有子元素等尺寸。
+
+但是实际上上图的第一个子元素 "Alonglonglongword" 还是要更长一点。
+
+需要为它设置 `min-width: 0` 才能正真均分，原因待补充。
+
+#### `flex: none` (`flex: 0 0 auto`)
+
+![flex: none](https://s2.loli.net/2022/12/09/jnJHGpS6ClhY1VX.webp)
+
+相当于消除子元素的弹性。
+
+#### `flex: <positive-number>` (`flex-basis: <positive-number>`)
+
+为它设定一个带单位的绝对值，相当于在设置 `flex-basis`。
+
