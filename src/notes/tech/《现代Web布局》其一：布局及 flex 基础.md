@@ -1,6 +1,6 @@
 ---
 # 标题
-title: 《现代Web布局》1~4
+title: 《现代Web布局》其一：布局及 flex 基础
 # 短标题
 # shortTitle: 
 # 描述
@@ -24,7 +24,7 @@ tag:
   - css
   - 前端
 # 置顶
-sticky: true
+# sticky: true
 # 收藏
 # star: true
 # 不添加至文章列表

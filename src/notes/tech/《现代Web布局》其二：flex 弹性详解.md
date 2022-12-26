@@ -1,6 +1,6 @@
 ---
 # 标题
-title: 《现代Web布局》4~8
+title: 《现代Web布局》其二：flex 弹性详解
 # 短标题
 # shortTitle: 
 # 描述
@@ -14,7 +14,7 @@ icon: article
 # 原创
 isOriginal: true
 # 写作时间
-date: 2022-12-05
+date: 2022-12-12
 # 分类（可多个）
 category:
   - 读书笔记
@@ -37,10 +37,11 @@ image: ""
 banner: ""
 ---
 
-
-[控制 Flex 子元素在主轴上的比例](https://developer.mozilla.org/zh-CN/docs/Web/CSS/CSS_Flexible_Box_Layout/Controlling_Ratios_of_Flex_Items_Along_the_Main_Ax)
-
 第 4~8 节，介绍了
+
+1. flex 子元素的伸缩原理
+2. flex 属性(flex-grow, flex-shrink, flex-basis)
+3. 元素初始尺寸的计算方式
 
 <!-- more -->
 
@@ -84,7 +85,9 @@ flex 子元素的伸缩，本质上是对 flex 容器正负自由空间的分配
 
 ### flex-basis 属性
 
-这个属性可以**在任何空间分配之前**，初始化 flex 子元素的尺寸。
+`flex-basis` 属性对 flexbox 中，对 Flex 子元素尺寸起 **决定性** 的作用。
+
+它可以**在任何空间分配之前**，初始化 flex 子元素的尺寸。
 
 > `flex-basis` 比 `height` 和 `width` 具有更高的优先级。（除了值为 `auto` 时）
 
@@ -144,7 +147,7 @@ flex 子元素的伸缩，本质上是对 flex 容器正负自由空间的分配
 
 但是实际上上图的第一个子元素 "Alonglonglongword" 还是要更长一点。
 
-需要为它设置 `min-width: 0` 才能正真均分，原因待补充。
+需要为它设置 `min-width: 0` 才能正真均分，原因在[文末](#关于-min-width-0-的意义)解释。
 
 #### `flex: none` (`flex: 0 0 auto`)
 
@@ -155,4 +158,40 @@ flex 子元素的伸缩，本质上是对 flex 容器正负自由空间的分配
 #### `flex: <positive-number>` (`flex-basis: <positive-number>`)
 
 为它设定一个带单位的绝对值，相当于在设置 `flex-basis`。
+
+### 子元素的初始尺寸，是如何计算出来的？
+
+#### 第一步：计算 `flex-basis` 的值
+
+> content → width → flex-basis
+
+含义是：
+
+1. 如果 flex 子元素未指定 `flex-basis` 的值，那么去参考 `width` 属性；
+
+2. 如果 flex 子元素连 `width` 都未指定，那么去参考 `content(内容计算宽度)`。
+
+#### 第二步：考虑 `min-*` 和 `max-*` 的影响
+
+参考以下逻辑：
+
+```js
+let size = null; // 尺寸初始值
+
+if (basis < min) size = min; // 最小值
+else if (basis > max) size = max; // 最大值
+else if (min > max) size = min; // 当大小冲突，min 的权重高于 max
+```
+
+### 关于 `min-width: 0` 的意义
+
+[上文](#flex-1-flex-1-1-0)设置 `flex-basis: 0` 后，初始化尺寸不为 0 的原因，在这里可以解释了。
+
+W3C 中规定：
+
+> 主轴上 flex 子元素设置 `overflow: visible` 时，**若 flex 子元素未设置最小尺寸 (min-size)，将会指定为一个自动的最小尺寸 (min-content)**。
+
+这就导致 `flex-basis: 0` 被 `min-content` 覆盖。
+
+因此，在需要**子元素初始尺寸为 0 时，最好同时设置 `flex-basis: 0` 和 `min-width: 0`**。
 
