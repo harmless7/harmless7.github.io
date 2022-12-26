@@ -147,6 +147,8 @@ aside:nth-of-type(2) {
 
 加点 css 媒体查询，保证小屏幕下的正常显示
 
+![1672063514.gif](https://s2.loli.net/2022/12/26/fCblE3SDuLV6jOz.gif)
+
 ```css
 @media screen and (max-width: 800px) {
   main {
@@ -166,6 +168,8 @@ aside:nth-of-type(2) {
 
 - 当内容撑不满一屏时，footer 贴住窗口底部，内容占满剩余区域
 - 当内容大于一屏时，footer 被撑出视口范围
+
+![1672063515.gif](https://s2.loli.net/2022/12/26/S7o59qZFlJAO31d.gif)
 
 ```css
 body {
