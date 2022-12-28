@@ -172,7 +172,7 @@ aside:nth-of-type(2) {
 
 ## Sticky Footer（粘性底部） 布局
 
-![1672063515.gif](https://s2.loli.net/2022/12/26/S7o59qZFlJAO31d.gif)
+<img src="https://s2.loli.net/2022/12/26/S7o59qZFlJAO31d.gif" style="height: 500px;" />
 
 - 当内容撑不满一屏时，footer 贴住窗口底部，内容占满剩余区域
 - 当内容大于一屏时，footer 被撑出视口范围
@@ -200,6 +200,8 @@ footer {
 ```
 
 ## 百分百无滚动布局
+
+![百分百布局](https://s2.loli.net/2022/12/28/h6zK23UCjydPaXQ.gif)
 
 - 多用于弹窗
 - 有一个固定尺寸部分
@@ -256,6 +258,8 @@ footer {
 
 ## 12 列网格布局
 
+![12 cols](https://s2.loli.net/2022/12/28/Q6r7Nif25uagtH4.jpg)
+
 - 起源于 960gs 网格布局系统
 - 将容器分成 12 列
 - 有列宽和列间距
@@ -263,6 +267,8 @@ footer {
 每一列等宽的布局很好写，可以参考上面的 [均分列(等分列)布局](#均分列等分列布局)。
 
 如果要每一列不等宽，可以使用 `flex-grow` 的值来调整它的增长值。
+
+但总体来说这个实用性并不强，flex 本身就是一种更灵活的布局方式。
 
 ## 九宫格布局
 
