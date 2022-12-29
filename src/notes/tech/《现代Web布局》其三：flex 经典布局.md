@@ -46,8 +46,6 @@ banner: ""
 5. 百分百无滚动布局
 6. 九宫格布局
 7. 12 列网格布局
-8. 使用不同对齐方式的导航栏
-9. 灵活的弹性框
 
 <!-- more -->
 
@@ -272,6 +270,33 @@ footer {
 
 ## 九宫格布局
 
-## 使用不同对齐方式的导航栏
+标准等宽九宫格利用 `grid` 布局更好实现，这里结合 `aspect-ratio` 实现不同长宽比宫格等高排列布局。
 
-## 灵活的弹性框
+![grid](https://s2.loli.net/2022/12/29/esQSEb9mHXwyI4J.jpg)
+
+- `aspect-ratio` 规定各个块的长宽比
+- 保证每一行的所有块等高
+
+```text
+<div class="wrapper">
+  <div class="single" style="--radit: 4/3"></div>
+  <div class="single" style="--radit: 16/9"></div>
+</div>
+```
+
+```css
+.wrapper {
+  display: flex;
+}
+.single {
+  aspect-ratio: var(--radit);
+  flex-basis: 0%;
+  flex-grow: calc(var(--radit));
+}
+```
+
+原理：
+
+传统方式，通常要将不同宽高比子元素等高放置，需要把子元素的 `height` 设置为 `100%`，并且父元素的 `aspect-radit` 要等于所有子元素之和。但这样需要预先知道所有子元素的宽高比。
+
+而 `flex` 布局下，利用 `flex-grow` 计算成长值的特性，将其设置为 `flex-grow: calc(var(--radit))` 便可自动实现等高。
