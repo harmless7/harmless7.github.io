@@ -43,11 +43,13 @@ banner: ""
 
 ## 参考内容
 
-[稀土掘金——现代 Web 布局，Grid 布局的基础知识](https://juejin.cn/book/7161370789680250917/section/7161372229123440648?suid=1908407916041614&source=pc)
+[稀土掘金——现代 Web 布局，Grid 布局的基础知识](https://juejin.cn/book/7161370789680250917/section/7161372229123440648)
 
 [稀土掘金——[译] CSS Grid 之列宽自适应：`auto-fill` vs `auto-fit`](https://juejin.cn/post/6844903565463388168)
 
 [MDN——网格布局的基本概念](https://developer.mozilla.org/zh-CN/docs/Web/CSS/CSS_Grid_Layout/Basic_Concepts_of_Grid_Layout)
+
+[CSS 网格中基于线的定位](https://developer.mozilla.org/zh-CN/docs/Web/CSS/CSS_Grid_Layout/Line-based_Placement_with_CSS_Grid)
 
 [MDN——grid-template-columns](https://developer.mozilla.org/zh-CN/docs/Web/CSS/grid-template-columns)
 
@@ -139,7 +141,15 @@ banner: ""
 
 ### 网格线命名
 
-待补充
+在使用 `grid-template-[rows|columns]` 时，在对应值前面设置`[]` 即可给网格线命名。
+
+`[]` 中可以同时设置多个名称，名称间用空格分隔。
+
+```css
+.wrapper {
+  grid-template-columns: [col1-start] 100px [col1-end col2-start] 200px [col2-end]
+}
+```
 
 ## 网格单元
 
@@ -156,7 +166,7 @@ banner: ""
 主要有两种方法：
 
 1. 命名
-2. 指定四个网格线来确定区域位置
+2. 网格线定位
 
 #### 命名
 
@@ -164,9 +174,29 @@ banner: ""
 
 ![区块命名](https://s2.loli.net/2023/01/04/jmZni8zCYrcqoOR.jpg)
 
-#### 网格线指定
+#### 网格线定位
 
 子元素可以设置 `grid-row-[start|end]` 和 `grid-column-[start|end]`，来指定区域位置。
+
+我们简化一点，`grid-row` 和 `grid-column` 可以缩四为二。
+
+```css
+.demo1 {
+  /* 等价于 grid-row-start: 1; grid-row-end: 3 */
+  grid-row: 1 / 3;
+  /* 等价于 grid-row-start: 2; grid-row-end: 4 */
+  grid-column: 2 / 4;
+}
+.demo2 {
+  /* 网格区域有默认跨度，跨度为 1（只延伸一个轨道） */
+  /* 只写一个值，即只指定 grid-row-start */
+
+  /* 等价于 grid-row: 1 / 2; */
+  grid-row: 1;
+  /* 等价于 grid-column: 2 / 3 */
+  grid-column: 2;
+}
+```
 
 或者更简单一点，使用 `grid-area`。
 
@@ -184,6 +214,27 @@ banner: ""
 > 即为 上 / 左 / 下 / 右 （逆时针）
 >
 > 与盒模型属性通常的顺时针方向不同，需要注意。
+
+### 使用 `span` 关键字
+
+除了使用网格线定位，还可以使用 网格线 + 跨越轨道数量 的方法。
+
+```css
+.demo3 {
+  /* 等价于 grid-row: 1 / 4 */
+  grid-row: 1 / span 3;
+  /* 等价于 grid-column: 3 / 5 */
+  grid-column: span 2 / 5;
+}
+.demo4 {
+  /* 等价于 grid-area: 1 / 3 / 2 / 5 */
+  grid-area: 1 / span 2 / span 1 / 5;
+}
+```
+
+`span` 属性代表区域跨越轨道的数量。
+
+能相对于 起始/结束 线，自动算出对应的 结束/起始 线。
 
 ## 网格间距（沟槽） `gap`
 
