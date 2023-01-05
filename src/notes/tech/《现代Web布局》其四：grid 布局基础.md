@@ -45,6 +45,8 @@ banner: ""
 
 [稀土掘金——现代 Web 布局，Grid 布局的基础知识](https://juejin.cn/book/7161370789680250917/section/7161372229123440648)
 
+[稀土掘金——定义一个网格布局](https://juejin.cn/book/7161370789680250917/section/7161623971073359902)
+
 [稀土掘金——[译] CSS Grid 之列宽自适应：`auto-fill` vs `auto-fit`](https://juejin.cn/post/6844903565463388168)
 
 [MDN——网格布局的基本概念](https://developer.mozilla.org/zh-CN/docs/Web/CSS/CSS_Grid_Layout/Basic_Concepts_of_Grid_Layout)
@@ -141,13 +143,68 @@ banner: ""
 
 ### 网格线命名
 
-在使用 `grid-template-[rows|columns]` 时，在对应值前面设置`[]` 即可给网格线命名。
+在使用 `grid-template-[rows|columns]` 设置轨道列表时，值代表轨道宽度，那么空格就代表网格线。
+
+在空格位置（包括最前面和最后面），设置 `[]` 即可给网格线命名。
 
 `[]` 中可以同时设置多个名称，名称间用空格分隔。
 
+![网格线命名](https://s2.loli.net/2023/01/05/yoanucevRqVrtOs.jpg)
+
 ```css
 .wrapper {
-  grid-template-columns: [col1-start] 100px [col1-end col2-start] 200px [col2-end]
+  grid-template-columns:
+    [col1-start] 100px
+    [col1-end col2-start] 200px
+    [col2-end];
+  grid-template-rows:
+    [row1-start] 60px
+    [row1-end row2-start] 60px
+    [row2-end row3-start] 60px
+    [row3-end];
+}
+.single {
+  grid-column: col1-start / col2-end;
+}
+```
+
+#### 用网格线命名，来定义隐式网格区域
+
+另外，还可以通过给 4 条网格线命名，变相[给一个区域命名](#命名)：
+
+![区域命名](https://s2.loli.net/2023/01/05/KweQaRAj5COvLg3.jpg)
+
+```css
+.wrapper {
+  display: grid;
+  grid-template-columns:
+    70px
+    [demo-start] 70px
+    [demo-end];
+  grid-template-rows:
+    70px
+    [demo-start] 70px
+    [demo-end];
+}
+.single {
+  grid-area: demo;
+}
+```
+
+#### 重名的情况
+
+与直觉不同，网格线是允许重名的：
+
+```css
+.demo1 {
+  grid-template-columns:
+    [col-start] 1fr
+    [col-start col-end] 1fr
+    [col-start col-end] 1fr
+    [col-end];
+
+  /* 或者简单点，写成这样 */
+  grid-template-columns: repeat(3, [col-start] 1fr [col-end]);
 }
 ```
 
@@ -173,6 +230,19 @@ banner: ""
 容器上使用 `grid-template-areas` 来为各区块命名，然后在子元素上使用 `grid-area` 来认领预设好名字的区块。
 
 ![区块命名](https://s2.loli.net/2023/01/04/jmZni8zCYrcqoOR.jpg)
+
+并且这种方式给区域命名后，也会自动创建相应的[网格线名称](#网格线命名)，以 `区域名称-start` 和 `区域名称-end` 的方式命名。
+
+> 如果需要空区域，请使用 `.` 来代表（1~n 个均可），例如：
+>
+> ```css
+> .wrapper {
+>   grid-template-areas:
+>     "header header header",
+>     "... content ...",
+>     "footer footer footer",
+> }
+> ```
 
 #### 网格线定位
 
