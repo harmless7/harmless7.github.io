@@ -24,7 +24,7 @@ tag:
   - css
   - 前端
 # 置顶
-sticky: true
+# sticky: true
 # 收藏
 # star: true
 # 不添加至文章列表

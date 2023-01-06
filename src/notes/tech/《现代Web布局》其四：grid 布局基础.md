@@ -14,7 +14,7 @@ icon: article
 # 原创
 isOriginal: true
 # 写作时间
-date: 2022-12-26
+date: 2022-1-6
 # 分类（可多个）
 category:
   - 读书笔记
@@ -24,7 +24,7 @@ tag:
   - css
   - 前端
 # 置顶
-sticky: true
+# sticky: true
 # 收藏
 # star: true
 # 不添加至文章列表
@@ -121,7 +121,7 @@ banner: ""
 > - `auto-fill` 如果有剩余空间，则暗中创建一些“空列”来填充剩余部分
 > - `auto-fit` 也会先创建“空列”填充，然后**坍缩**这些列，让其他列扩张（当然前提是子元素是弹性的，如果固定宽度则不会扩张）
 
-## 显式和隐式轨道（显示和隐式网格）
+### 显式和隐式轨道（显示和隐式网格）
 
 用 `grid-template-[columns/rows/area]` 声明的轨道，就叫做 **显式轨道**。
 
@@ -168,9 +168,34 @@ banner: ""
 }
 ```
 
-#### 用网格线命名，来定义隐式网格区域
+### 重名的情况
 
-另外，还可以通过给 4 条网格线命名，变相[给一个区域命名](#命名)：
+与直觉不同，网格线是允许重名的：
+
+```css
+.demo1 {
+  grid-template-columns:
+    [col-start] 1fr
+    [col-start col-end] 1fr
+    [col-start col-end] 1fr
+    [col-end];
+
+  /* 或者简单点，写成这样 */
+  grid-template-columns: repeat(3, [col-start] 1fr [col-end]);
+}
+```
+
+因此，在使用命名网格线的时候，需要标上编号，来说明它是第几条：
+
+```css
+.demo1-single {
+  grid-column: col-start 1 / col-start 2
+}
+```
+
+### 命名定义隐式网格区域
+
+另外，还可以通过给 4 条网格线命名，变相[给一个区域命名](#命名网格区域ascii-艺术方法)：
 
 ![区域命名](https://s2.loli.net/2023/01/05/KweQaRAj5COvLg3.jpg)
 
@@ -191,23 +216,6 @@ banner: ""
 }
 ```
 
-#### 重名的情况
-
-与直觉不同，网格线是允许重名的：
-
-```css
-.demo1 {
-  grid-template-columns:
-    [col-start] 1fr
-    [col-start col-end] 1fr
-    [col-start col-end] 1fr
-    [col-end];
-
-  /* 或者简单点，写成这样 */
-  grid-template-columns: repeat(3, [col-start] 1fr [col-end]);
-}
-```
-
 ## 网格单元
 
 `grid` 布局中的最小单位，即被网格线分隔而成的单个小格子。
@@ -218,33 +226,32 @@ banner: ""
 
 > 因此，网格区域必定是一个 **矩形**。不会出现一个类似 "L" 形的网格区域。
 
-### 设置网格区域
-
-主要有两种方法：
-
-1. 命名
-2. 网格线定位
-
-#### 命名
+### 命名网格区域（ASCII 艺术方法）
 
 容器上使用 `grid-template-areas` 来为各区块命名，然后在子元素上使用 `grid-area` 来认领预设好名字的区块。
 
 ![区块命名](https://s2.loli.net/2023/01/04/jmZni8zCYrcqoOR.jpg)
 
-并且这种方式给区域命名后，也会自动创建相应的[网格线名称](#网格线命名)，以 `区域名称-start` 和 `区域名称-end` 的方式命名。
+在上文已经介绍过通过[网格线命名区域](#命名定义隐式网格区域)的方法。
 
-> 如果需要空区域，请使用 `.` 来代表（1~n 个均可），例如：
->
-> ```css
-> .wrapper {
->   grid-template-areas:
->     "header header header",
->     "... content ...",
->     "footer footer footer",
-> }
-> ```
+反之亦然，当命名区域时，也会自动为相应网格线命名。块轴及内联轴上，区域开始位置和结束位置的网格线分别被命名为：
 
-#### 网格线定位
+`区域名称-start` 和 `区域名称-end`。
+
+#### 空区域
+
+如果需要空区域，请使用 `.` 来代表（1~n 个均可），例如：
+
+```css
+.wrapper {
+  grid-template-areas:
+    "header header header",
+    "... content ...",
+    "footer footer footer",
+}
+```
+
+### 网格线定位
 
 子元素可以设置 `grid-row-[start|end]` 和 `grid-column-[start|end]`，来指定区域位置。
 
