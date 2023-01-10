@@ -163,15 +163,17 @@ dd {
 
 ### `grid`
 
-## Grid 中的计算
+## Grid 轨道尺寸计算
 
 ### 百分比
 
 ![百分比的问题](https://s2.loli.net/2023/01/10/uyQMwhfezksKGI3.jpg)
 
-切勿让所有网格轨道都取百分比值
+轨道尺寸百分比的取值，是相对于 `grid` 容器的宽度（或者说 `inline-size`）。
 
-![margin不会溢出](https://s2.loli.net/2023/01/10/LW1dVnDIFlC7S9s.jpg)
+如果子元素百分比大于等于 100%，再加上 `gap` 的尺寸，就会溢出容器。
+
+因此，**切勿让所有网格轨道都取百分比值**。
 
 ### `fr`
 
@@ -197,3 +199,8 @@ dd {
 
 这可能导致子元素，没有计算得到你预想中的宽度。
 
+### 子元素 `margin`
+
+![margin不会溢出](https://s2.loli.net/2023/01/10/LW1dVnDIFlC7S9s.jpg)
+
+子元素中设置 `margin` 并不会参与容器剩余空间的计算，设置的效果类似子元素 `padding`，不会溢出容器。
