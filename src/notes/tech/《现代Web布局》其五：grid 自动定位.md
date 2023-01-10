@@ -45,6 +45,8 @@ banner: ""
 
 [稀土掘金——现代Web布局，定义一个网格布局](https://juejin.cn/book/7161370789680250917/section/7161623971073359902)
 
+[稀土掘金——现代Web布局，Grid布局的计算](https://juejin.cn/book/7161370789680250917/section/7161624007702216735)
+
 [MDN——网格模板区域](https://developer.mozilla.org/zh-CN/docs/Web/CSS/CSS_Grid_Layout/Grid_Template_Areas)
 
 [MDN——CSS网格布局中的自动定位](https://developer.mozilla.org/zh-CN/docs/Web/CSS/CSS_Grid_Layout/Auto-placement_in_CSS_Grid_Layout)
@@ -88,6 +90,46 @@ banner: ""
 > }
 > ```
 
+#### `dense` 的适用场景
+
+适用于所有对顺序无所谓，但是需要紧密排列的布局。比如：照片墙。
+
+![照片墙](https://s2.loli.net/2023/01/10/SA9DCqvxFc1GTsM.png)
+
+```css
+.wrapper {
+  grid-auto-flow: row dense;
+}
+.single:nth-child(5n+1) {
+  grid-area: span 2 / span 2;
+}
+.single:nth-child(7n+1) {
+  grid-row: span 2;
+}
+.single:nth-child(9n+1) {
+  grid-column: span 2;
+}
+```
+
+#### `sparse` 的适用场景
+
+一个妙用，可以布局有逻辑顺序的页面元素。
+
+![sparse](https://s2.loli.net/2023/01/10/N5VdsceTqHpryaY.jpg)
+
+```css
+dl {
+  display: grid;
+  grid-column: auto 1fr;
+}
+dt {
+  grid-column: 1;
+}
+dd {
+  grid-column: 2;
+}
+```
+
 ## 究极简写
 
 [上文](./%E3%80%8A%E7%8E%B0%E4%BB%A3Web%E5%B8%83%E5%B1%80%E3%80%8B%E5%85%B6%E5%9B%9B%EF%BC%9Agrid%20%E5%B8%83%E5%B1%80%E5%9F%BA%E7%A1%80.md) 介绍了 grid 布局的相关基础概念，包括：
@@ -120,3 +162,38 @@ banner: ""
 在 `grid-template-rows` 的基础上，融合了 `grid-areas` & 行网格线的命名。
 
 ### `grid`
+
+## Grid 中的计算
+
+### 百分比
+
+![百分比的问题](https://s2.loli.net/2023/01/10/uyQMwhfezksKGI3.jpg)
+
+切勿让所有网格轨道都取百分比值
+
+![margin不会溢出](https://s2.loli.net/2023/01/10/LW1dVnDIFlC7S9s.jpg)
+
+### `fr`
+
+又被称为 **弹性网格轨道**，也就是说，它 **只能用于轨道尺寸**。
+
+#### 计算方式
+
+![fr计算1](https://s2.loli.net/2023/01/10/3VSC7bMLEl5BIqm.jpg)
+
+但是并非所有情况都会如上例这般理想。
+
+#### 特殊情况：如果 `fr` 总数小于 1
+
+![fr计算2](https://s2.loli.net/2023/01/10/m3gwPSZH92rp8kh.jpg)
+
+当所有 `fr` 之和小于 1 时，表现类似于 `flex` 弹性布局。分配完后仍会有剩余空间。
+
+#### 特殊情况：计算后的尺寸，小于 `min-width`
+
+![fr计算3](https://s2.loli.net/2023/01/10/NFisMC2L3qUnT7l.jpg)
+
+**弹性宽度 会迁就 内部尺寸**。
+
+这可能导致子元素，没有计算得到你预想中的宽度。
+
