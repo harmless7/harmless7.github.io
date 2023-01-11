@@ -1,6 +1,6 @@
 ---
 # 标题
-title: 《现代Web布局》其五：grid 自动定位
+title: 《现代Web布局》其五：grid 定位、计算及对齐
 # 短标题
 # shortTitle: 
 # 描述
@@ -37,7 +37,12 @@ image: ""
 banner: ""
 ---
 
-梳理 grid 布局的使用。
+包含 `grid` 布局的：
+
+- 自动定位
+- 轨道尺寸计算
+- 属性简写
+- 对齐属性
 
 <!-- more -->
 
@@ -46,6 +51,8 @@ banner: ""
 [稀土掘金——现代Web布局，定义一个网格布局](https://juejin.cn/book/7161370789680250917/section/7161623971073359902)
 
 [稀土掘金——现代Web布局，Grid布局的计算](https://juejin.cn/book/7161370789680250917/section/7161624007702216735)
+
+[稀土掘金——现代Web布局，网格项目的放置和层叠](https://juejin.cn/book/7161370789680250917/section/7161623932439625758)
 
 [MDN——网格模板区域](https://developer.mozilla.org/zh-CN/docs/Web/CSS/CSS_Grid_Layout/Grid_Template_Areas)
 
@@ -130,38 +137,13 @@ dd {
 }
 ```
 
-## 究极简写
+### 自动定位的具体流程
 
-[上文](./%E3%80%8A%E7%8E%B0%E4%BB%A3Web%E5%B8%83%E5%B1%80%E3%80%8B%E5%85%B6%E5%9B%9B%EF%BC%9Agrid%20%E5%B8%83%E5%B1%80%E5%9F%BA%E7%A1%80.md) 介绍了 grid 布局的相关基础概念，包括：
-
-- 容器
-- 轨道
-- 线
-- 单元
-- 区域
-- 间距（沟槽）
-
-用于设置 grid 布局的属性繁多，但基本可以说，最终都是为划定 **区域** 而服务。因为 划分区域 = 规划布局空间。
-
-使用 `grid-template` 和 `grid` 属性，几乎可以将布局所需的信息，一次性定义完毕。
-
-### `grid-template`
-
-#### 第一种用法，同时设置行列轨道
-
-![grid-template-1](https://s2.loli.net/2023/01/06/VULrG4qNEMCjdfR.jpg)
-
-使用 `/` 分隔两串轨道列表，左边的代表 `grid-template-rows`，右边的代表 `grid-template-columns`。
-
-#### 第二种用法，设置轨道 + 区域命名 + 行网格线命名
-
-![grid-template-2](https://s2.loli.net/2023/01/06/GHlfnriEON1IPtY.jpg)
-
-相对用法一，`/` 右边一致，但左边更复杂了。
-
-在 `grid-template-rows` 的基础上，融合了 `grid-areas` & 行网格线的命名。
-
-### `grid`
+1. 对裸露的文本，生成匿名网格
+2. 先安置 **定好了区域的子元素**（定好四面八方的线，或使用命名区域）
+3. 插入仅定好行位置的子元素（考虑是否 dense）
+4. 确定隐式网格的列数
+5. 插入剩余的网格子元素（考虑是否 dense）
 
 ## Grid 轨道尺寸计算
 
@@ -199,8 +181,76 @@ dd {
 
 这可能导致子元素，没有计算得到你预想中的宽度。
 
+想要消除 `min-width` 对弹性尺寸的影响，主要有两种方式：
+
+1. `minmax(0, 1fr)`
+
+    > `1fr` 的底层实现逻辑其实就是 `minmax(auto, 1fr)`，意味着 `min=auto`（即 `min-width: min-content`）
+
+    使用 `minmax(0, 1fr)` 来替代 `1fr`，将把最小值从默认的 `min-width` 重置为 `0`。
+
+2. `min-width: 0`
+
+    与 `flex` 布局中类似，在子元素上设置 `min-width: 0` 来使 `min-content=0`。
+
+但是应该注意，取消 `min-content` 的影响后，可能会导致子元素内容溢出，需要额外处理。
+
 ### 子元素 `margin`
 
 ![margin不会溢出](https://s2.loli.net/2023/01/10/LW1dVnDIFlC7S9s.jpg)
 
 子元素中设置 `margin` 并不会参与容器剩余空间的计算，设置的效果类似子元素 `padding`，不会溢出容器。
+
+## 究极简写
+
+用于设置 grid 布局的属性繁多，为啥不来点简写呢？
+
+### `grid-template`
+
+> [`grid-template`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/grid-template) 属性可同时设置以下属性：
+>
+> - [`grid-template-rows`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/grid-template-rows)
+> - [`grid-template-columns`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/grid-template-columns)
+> - [`grid-template-areas`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/grid-template-areas)
+
+#### 第一种用法，同时设置行列轨道
+
+![grid-template-1](https://s2.loli.net/2023/01/06/VULrG4qNEMCjdfR.jpg)
+
+使用 `/` 分隔两串轨道列表，左边的代表 `grid-template-rows`，右边的代表 `grid-template-columns`。
+
+#### 第二种用法，行轨道用 `grid-areas` 设置
+
+![grid-template-2](https://s2.loli.net/2023/01/06/GHlfnriEON1IPtY.jpg)
+
+相对用法一，`/` 右边一致，但左边更复杂了。
+
+除了能使用 `grid-areas` 的“ASCII艺术方法”，还能设置行高（可选），以及给行首尾网格线命名（可选）。
+
+### `grid`
+
+> [`grid`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/grid) 简写方式更进一步，它包含了与隐式轨道相关的属性，所以通过它可以同时设置以下属性：
+>
+> - [`grid-template-rows`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/grid-template-rows)
+> - [`grid-template-columns`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/grid-template-columns)
+> - [`grid-template-areas`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/grid-template-areas)
+> - [`grid-auto-rows`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/grid-auto-rows)
+> - [`grid-auto-columns`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/grid-auto-columns)
+> - [`grid-auto-flow`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/grid-auto-flow)
+
+由于 `grid` 属性无法设置 `gap`，会将其设置默认值为 `0`。
+
+#### 第一种用法，当成 `grid-template` 来用
+
+`grid` 属性完全支持 `grid-template` 的用法，详见 [上面](#grid-template)。
+
+#### 第二种用法，设置行或列方向的隐式轨道
+
+![grid属性](https://s2.loli.net/2023/01/11/yseHViNh8bKPSEo.jpg)
+
+`grid: 行属性 / 列属性`
+
+其中 行属性 和 列属性，支持两种写法：
+
+- 显式：即 `grid-template-[columns|rows]` 的属性值
+- 隐式：`auto-flow dense(是否紧凑排布，可选) grid-auto-columns(隐式轨道尺寸，可选)`
