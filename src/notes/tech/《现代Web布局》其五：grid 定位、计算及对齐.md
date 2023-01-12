@@ -254,3 +254,50 @@ dd {
 
 - 显式：即 `grid-template-[columns|rows]` 的属性值
 - 隐式：`auto-flow dense(是否紧凑排布，可选) grid-auto-columns(隐式轨道尺寸，可选)`
+
+## 对齐
+
+### 内联轴和块轴
+
+![Axis](https://s2.loli.net/2023/01/12/1RymqATNgMrIcKp.jpg)
+
+`grid` 布局中内联轴和块轴，会受到 `writing-mode` 影响。
+
+- 内联轴：文字行文方向
+- 块轴：文字换行方向
+
+### 子元素对齐
+
+子元素在**所处区域内对齐**。
+
+#### 块轴对齐
+
+![block-asix](https://s2.loli.net/2023/01/12/sEv3d4AfakRoINp.jpg)
+
+#### 内联轴对齐
+
+![inline-asix](https://s2.loli.net/2023/01/12/VzaZwmsfGqr9NCY.jpg)
+
+#### 子元素对齐简写
+
+[`place-items`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/place-items) = [`align-items`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/align-items) + [`justify-items`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/justify-items)
+
+[`place-self`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/place-self) = [`align-self`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/align-self) + [`justify-self`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/justify-self)
+
+### 轨道对齐
+
+当块轴或内联轴上，容器尺寸 > 所有轨道 & 间距的尺寸，即可对轨道进行对齐。
+
+#### 轨道块轴对齐
+
+![align-content](https://s2.loli.net/2023/01/12/ZkLwav46cThxS8y.jpg)
+
+#### 轨道内联轴对齐
+
+![justify-content](https://s2.loli.net/2023/01/12/28sq3oxfFPIQtkL.jpg)
+
+#### 轨道对齐简写
+
+[`place-content`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/place-content) = [`align-content`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/align-content) + [`justify-content`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/justify-content)
+
+[`place-content`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/place-content) = [`align-content`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/align-content) + [`justify-content`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/justify-content)
