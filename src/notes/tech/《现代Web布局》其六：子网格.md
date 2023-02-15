@@ -65,7 +65,8 @@ banner: ""
 
 ![subgrid](https://s2.loli.net/2023/02/14/OkRpD3aCsTALg8d.png)
 
-> 如果你在 `grid-template-columns`、`grid-template-rows` 或者两者上都设置了 `subgrid` 的值：
+> 1. 在 `grid-template-columns`、`grid-template-rows` 或者两者上都设置了 `subgrid` 的值
+> 2. 容器本身是 `grid` 或者 `inline-grid`
 >
 > 嵌套网格就会**使用在父网格上定义的轨道**，而不是创建一个新的轨道列表。
 
@@ -95,3 +96,20 @@ banner: ""
 
 ASCII 艺术方法依然很有用。
 
+### 品牌页（区）布局
+
+![品牌区](https://s2.loli.net/2023/02/15/UGcFd5EJA38xmrp.png)
+
+没啥好说的，属于网格布局的拿手好戏。
+
+### 照片墙
+
+![照片墙](https://s2.loli.net/2023/02/15/AKVhi36EScXBHsq.png)
+
+照片墙的搭建主要还是利用了前一节课的 `dense` 属性，忘记了记得去复习。
+
+使用子网格有效地避免了，需要考虑外层情况带来的干扰。
+
+### 略
+
+后面感觉罗里吧嗦一大堆全在翻来覆去的讲，这章鸽了。
