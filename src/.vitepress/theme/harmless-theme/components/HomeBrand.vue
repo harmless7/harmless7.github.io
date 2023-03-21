@@ -1,7 +1,11 @@
 <script setup>
 import { ref } from 'vue';
 import { withBase } from 'vitepress';
+import { usePost } from '../composables/post';
+import { data } from '../../../utils/posts.data';
 import IconRight from "./icon/iconRight.vue";
+
+const posts = usePost();
 
 const rows = ref(2);
 const list = ref([
@@ -49,7 +53,7 @@ const list = ref([
         </template>
       </div>
     </div>
-    <a class="brand-hover">
+    <a class="brand-hover" @click="posts.goDetail(data[Math.ceil(Math.random()*data.length)]?.file)">
       <p class="text">随便逛逛</p>
       <IconRight class="icon text" />
     </a>
