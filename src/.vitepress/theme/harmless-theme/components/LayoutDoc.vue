@@ -38,9 +38,10 @@ const { getRandomCover, goDetail } = usePost();
           <img v-else :src="getRandomCover(info.title)" alt="cover-bg" class="bg" />
         </div>
         <div class="icon">
-          <svg aria-hidden="true">
+          <!-- <svg aria-hidden="true">
             <use :xlink:href="`#icon-${info?.icon}`"></use>
-          </svg>
+          </svg> -->
+          <div class="iconfont" :class="info?.icon"></div>
         </div>
         <div class="title">{{ info?.title }}</div>
         <div class="time">{{ dayjs(info?.date).format("YYYY-MM-DD") }}</div>
