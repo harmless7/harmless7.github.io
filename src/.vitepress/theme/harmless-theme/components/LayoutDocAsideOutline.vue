@@ -1,29 +1,37 @@
 <script setup>
-import { useData } from "vitepress";
-import { ref, computed } from "vue";
-import { resolveHeaders, useActiveAnchor } from "../composables/outline";
+import { useData, onContentUpdated } from "vitepress";
+import { ref, computed, shallowRef } from "vue";
+import { 
+  getHeaders,
+  resolveTitle,
+  useActiveAnchor,
+} from "../composables/outline";
 import LayoutDocAsideOutlineItem from "./LayoutDocAsideOutlineItem.vue";
 
 const { frontmatter, page, theme } = useData();
 
-const headers = computed(() => {
-  return resolveHeaders(
-    page.value?.headers,
+const headers = shallowRef([]);
+
+const hasOutline = computed(() => headers.value.length > 0)
+
+
+
+function handleClick({ target: el }) {
+  // const id = '#' + el.href?.split('#')[1];
+  // const heading = document.querySelector(decodeURIComponent(id));
+  // heading?.focus();
+}
+
+onContentUpdated(() => {
+  headers.value = getHeaders(
     frontmatter.value.outline ?? theme.value.outline
   );
 });
-const hasOutline = computed(() => headers.value.length > 0)
 
 const container = ref();
 const marker = ref();
 
 useActiveAnchor(container, marker);
-
-function handleClick({ target: el }) {
-  const id = '#' + el.href?.split('#')[1];
-  const heading = document.querySelector(decodeURIComponent(id));
-  heading?.focus();
-}
 </script>
 
 <template>
