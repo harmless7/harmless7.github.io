@@ -6,6 +6,7 @@ import LayoutDocAside from "./LayoutDocAside.vue";
 import { usePost } from "../composables/post";
 import CateItem from "./CateItem.vue";
 import TagItem from "./TagItem.vue";
+import dayjs from "dayjs";
 
 const { page } = useData();
 const { frontmatter: info } = page.value;
@@ -42,7 +43,7 @@ const { getRandomCover, goDetail } = usePost();
           </svg>
         </div>
         <div class="title">{{ info?.title }}</div>
-        <div class="time">{{ new Intl.DateTimeFormat("zh-CN").format(new Date(info?.date)) }}</div>
+        <div class="time">{{ dayjs(info?.date).format("YYYY-MM-DD") }}</div>
         <div class="tag">
           <TagItem v-for="tag in info?.tag" :key="tag" :name="tag" />
         </div>

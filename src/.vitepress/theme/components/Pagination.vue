@@ -1,6 +1,8 @@
 <script setup>
 import { ref, computed, watch } from "vue";
-import { useOffsetPagination } from "@vueuse/core";
+import { useOffsetPagination, useUrlSearchParams } from "@vueuse/core";
+
+const searchData = useUrlSearchParams("history");
 
 const props = defineProps({
   modelValue: {

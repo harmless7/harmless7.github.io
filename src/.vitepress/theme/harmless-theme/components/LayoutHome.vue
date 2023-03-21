@@ -8,8 +8,12 @@ import PostList from "./PostList.vue";
 import Pagination from "../../components/Pagination.vue";
 import { data } from "../../../utils/posts.data";
 import { ref, computed } from 'vue';
+import { useUrlSearchParams } from '@vueuse/core';
 
-const page = ref(Number(new URL(window.location.href).searchParams.get("page") || 1));
+const searchData = useUrlSearchParams("history");
+
+
+const page = ref(Number(searchData.page) || 1);
 const limit = ref(10);
 const list = computed(() => {
   return data.slice((page.value - 1) * limit.value, page.value * limit.value);

@@ -1,6 +1,7 @@
 import { globby } from "globby";
 import matter from "gray-matter";
 import fs from "fs/promises";
+import dayjs from "dayjs";
 
 export async function getPosts() {
   const paths = await globby(["src/posts/**/**.md"]);
@@ -11,7 +12,7 @@ export async function getPosts() {
       // 获取 .md 的 mrontMatter
       const { data } = matter(mdContent);
       // 修改日期
-      data.date = new Intl.DateTimeFormat('zh-CN').format(new Date(data.date));
+      data.date = dayjs(data.date).format("YYYY-MM-DD");
       // 去除路径中的目录地址
       item = item.replace("src/", "");
       return {

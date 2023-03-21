@@ -1,4 +1,4 @@
-import "./style/iconfont/iconfont.js";
+// import "./style/iconfont/iconfont.js";
 import "./style/iconfont/iconfont.css";
 import "modern-normalize";
 import "./style/vars.css";

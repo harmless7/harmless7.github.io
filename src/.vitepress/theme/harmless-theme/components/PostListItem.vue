@@ -2,6 +2,7 @@
 import { useRouter, withBase } from "vitepress";
 import seedrandom from "seedrandom";
 import { usePost } from "../composables/post";
+import dayjs from "dayjs";
 
 const props = defineProps({
   item: {
@@ -46,7 +47,7 @@ const { getRandomCover, goDetail } = usePost();
       </span>
     </div>
     <div class="title">{{ item?.data.title }}</div>
-    <div class="time">{{ new Intl.DateTimeFormat("zh-CN").format(new Date(item?.data.date)) }}</div>
+    <div class="time">{{ dayjs(item?.data.date).format("YYYY-MM-DD") }}</div>
     <div class="tags">
       <span v-for="tag in item?.data?.tag">
         {{ tag }}
