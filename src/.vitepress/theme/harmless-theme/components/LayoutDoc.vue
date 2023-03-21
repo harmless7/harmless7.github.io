@@ -38,9 +38,6 @@ const { getRandomCover, goDetail } = usePost();
           <img v-else :src="getRandomCover(info.title)" alt="cover-bg" class="bg" />
         </div>
         <div class="icon">
-          <!-- <svg aria-hidden="true">
-            <use :xlink:href="`#icon-${info?.icon}`"></use>
-          </svg> -->
           <i class="iconfont" :class="`icon-${info?.icon}`"></i>
         </div>
         <div class="title">{{ info?.title }}</div>
@@ -141,10 +138,8 @@ const { getRandomCover, goDetail } = usePost();
 .icon {
   grid-area: icon;
 }
-.icon svg {
-  fill: var(--brand-color);
-  width: 2rem;
-  height: 2rem;
+.icon .iconfont {
+  font-size: 30px;
 }
 .title {
   grid-area: title;
