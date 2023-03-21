@@ -1,12 +1,12 @@
 <script setup>
-import groupTag from './groupTag.vue';
+import GroupTag from './GroupTag.vue';
 </script>
 
 <template>
   <div class="home-tag">
     <h5>标签</h5>
     <div class="tags-wrap">
-      <groupTag />
+      <GroupTag />
     </div>
   </div>
 </template>
