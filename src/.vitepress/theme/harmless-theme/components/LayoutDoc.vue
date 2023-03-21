@@ -41,7 +41,7 @@ const { getRandomCover, goDetail } = usePost();
           <!-- <svg aria-hidden="true">
             <use :xlink:href="`#icon-${info?.icon}`"></use>
           </svg> -->
-          <div class="iconfont" :class="info?.icon"></div>
+          <i class="iconfont" :class="`icon-${info?.icon}`"></i>
         </div>
         <div class="title">{{ info?.title }}</div>
         <div class="time">{{ dayjs(info?.date).format("YYYY-MM-DD") }}</div>
