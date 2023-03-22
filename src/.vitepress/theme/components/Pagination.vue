@@ -56,6 +56,10 @@ watch(page, () => {
   params.set("page", page.value);
   window.location.href = `${origin}${pathname}?${params}`;
 });
+
+function activeClass(val) {
+  return val === page.value ? "active" : "";
+}
 </script>
 
 <template>
@@ -75,13 +79,13 @@ watch(page, () => {
       <li v-if="rangeStart > 3"><i class="iconfont icon-gengduo"></i></li>
       <template v-for="num in pageCount" :key="num">
         <li
-          class="num"
-          :class="{ active: num === page }"
-          @click="jumpPage(num)"
           v-if="Math.abs(page - num) < 3"
+          class="num"
+          @click="jumpPage(num)"
+          :class="activeClass(num)"
         >
+          <!-- :class="{ active: num === page }" -->
           {{ num }}
-          {{ num === page }}
         </li>
       </template>
       <li v-if="rangeEnd > 3"><i class="iconfont icon-gengduo"></i></li>
