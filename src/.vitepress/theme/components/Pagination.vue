@@ -47,7 +47,7 @@ const rangeStart = computed(() => page.value - 1);
 const rangeEnd = computed(() => pageCount.value - page.value);
 
 function jumpPage(num) {
-  this.page = num;
+  page.value = num;
 }
 
 watch(page, () => {
