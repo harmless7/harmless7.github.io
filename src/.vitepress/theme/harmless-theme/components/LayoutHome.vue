@@ -86,7 +86,6 @@ const list = computed(() => {
 }
 .list {
   grid-area: list;
-  cursor: pointer;
   .pagination {
     padding: 30px 0;
   }

@@ -67,7 +67,7 @@ watch(page, () => {
       <li
         v-if="rangeStart >= 3"
         class="num"
-        :class="{ active: num === page }"
+        :class="{ active: 1 === page }"
         @click="jumpPage(1)"
       >
         1
@@ -87,7 +87,7 @@ watch(page, () => {
       <li
         v-if="rangeEnd >= 3"
         class="num"
-        :class="{ active: num === page }"
+        :class="{ active: pageCount === page }"
         @click="jumpPage(pageCount)"
       >
         {{ pageCount }}
