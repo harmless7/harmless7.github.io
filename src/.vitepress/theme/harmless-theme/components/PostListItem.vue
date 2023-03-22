@@ -68,7 +68,7 @@ const { getRandomCover, goDetail } = usePost();
     "cover title title ..." 1fr
     "cover tags time ..." auto
     "cover ... ... ..." 0px
-    / 300px 1fr auto var(--gutter);
+    / 230px 1fr auto var(--gutter);
   gap: var(--gutter);
   border-radius: var(--radius-large);
   border: 1px solid var(--component-border);

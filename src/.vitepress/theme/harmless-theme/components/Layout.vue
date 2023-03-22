@@ -12,6 +12,14 @@
 <script setup>
 import NavBar from "./NavBar.vue";
 import LayoutContent from "./LayoutContent.vue";
+import { onMounted } from "vue";
+
+onMounted(() => {
+  let el = document.createElement("div");
+  el.style.zIndex = 2023;
+  el.id = "popup-wrapper"
+  document.body.append(el);
+});
 </script>
 
 <style scoped lang="less">
