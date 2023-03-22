@@ -30,7 +30,9 @@ const list = computed(() => {
     </div>
     <div class="list">
       <PostList :list="list" />
-      <Pagination v-model="page" :limit="limit" :total="data.length" />
+      <ClientOnly>
+        <Pagination v-model="page" :limit="limit" :total="data.length" />
+      </ClientOnly>
     </div>
     <div class="master">
       <HomeMaster />

@@ -46,7 +46,9 @@ const total = computed(() => list.value.length);
       </div>
     </div>
     <PostList :list="list?.slice((page - 1) * limit, page * limit)" />
-    <Pagination v-model="page" :limit="limit" :total="total" />
+    <ClientOnly>
+      <Pagination v-model="page" :limit="limit" :total="total" />
+    </ClientOnly>
   </div>
 </template>
 
