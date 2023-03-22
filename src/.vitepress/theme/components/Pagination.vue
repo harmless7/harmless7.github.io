@@ -59,7 +59,6 @@ watch(page, () => {
 </script>
 
 <template>
-  {{ page }} {{ typeof page }}
   <div class="pagination">
     <div class="prev-btn" v-if="!isFirstPage" @click="prev">
       <i class="iconfont icon-xiangzuo1" />
@@ -82,7 +81,7 @@ watch(page, () => {
           v-if="Math.abs(page - num) < 3"
         >
           {{ num }}
-          {{ typeof num }}
+          {{ num === page }}
         </li>
       </template>
       <li v-if="rangeEnd > 3"><i class="iconfont icon-gengduo"></i></li>
