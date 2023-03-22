@@ -58,7 +58,8 @@ watch(page, () => {
 });
 
 function activeClass(val) {
-  return val === page.value ? "active" : "";
+  console.log(val, searchData.page, val === searchData.page)
+  return val === Number(searchData.page) ? "active" : "";
 }
 </script>
 
