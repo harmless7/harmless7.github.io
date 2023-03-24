@@ -187,7 +187,7 @@ ul {
 
 略过，专业对口了属于是。
 
-### 灵活弹性矿
+### 灵活弹性框
 
 略，只要知道 `min-content` 可以使用 `minmax(0, 1fr)` 替代就行。
 
@@ -207,3 +207,46 @@ li {
   display: inline-block;
 }
 ```
+
+### 高度动画
+
+`transition` 无法完成 `height: auto` 的动画，这里可以使用 `grid-template-rows` 来解决。
+
+::: code-group
+
+```css{2-4,7-8,16}
+.box {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows;
+}
+.box-inner {
+  /* 超出隐藏必须整在内层上 */
+  overflow: hidden;
+}
+.content {
+  /* border padding 啥的，最好弄在更里面一层 */
+  border: 1px solid #666;
+  padding: 20px;
+}
+button:hover ~ .box {
+  grid-template-rows: 1fr;
+}
+```
+
+```html
+<button>展开</button>
+<div class="box">
+  <div class="box-inner">
+    <div class="content">
+      some words...
+    </div>
+  </div>
+</div>
+```
+
+:::
+
+::: info
+但是只支持 `fr` 值之间的动画。（不支持从绝对值到 `fr`）
+:::
