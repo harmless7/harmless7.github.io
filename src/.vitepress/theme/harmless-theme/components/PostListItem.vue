@@ -97,6 +97,15 @@ const { getRandomCover, goDetail } = usePost();
 }
 .post-list-item .tags {
   grid-area: tags;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+}
+.post-list-item .tags span {
+  display: inline-block;
+  flex: none;
 }
 .post-list-item .time {
   grid-area: time;
