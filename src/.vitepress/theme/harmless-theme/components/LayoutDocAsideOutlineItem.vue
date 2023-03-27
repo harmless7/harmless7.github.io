@@ -30,6 +30,10 @@ const props = defineProps({
   z-index: 1;
 }
 
+ul {
+  list-style: none;
+}
+
 .nested {
   padding-left: 13px;
 }

@@ -84,6 +84,10 @@ const { getRandomCover, goDetail } = usePost();
   border: 1px solid var(--component-border);
 }
 
+.content {
+  flex: auto;
+}
+
 .aside {
   order: 2;
   flex-grow: 1;

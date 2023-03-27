@@ -10,7 +10,7 @@ export function resolveTitle(theme) {
       'On this page');
 }
 export function getHeaders(range) {
-  const headers = [...document.querySelectorAll('.VPDoc h2,h3,h4,h5,h6')]
+  const headers = [...document.querySelectorAll('.layout-doc h2,h3,h4,h5,h6')]
       .filter((el) => el.id && el.hasChildNodes())
       .map((el) => {
       const level = Number(el.tagName[1]);
