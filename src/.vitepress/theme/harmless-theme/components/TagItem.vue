@@ -58,6 +58,18 @@ const icons = {
   "icon-article": [ "文章", "编辑", "改写" ],
   "icon-tool": [ "工具" ],
   "icon-computer": [ "计算机", "计算机基础" ],
+  "icon-famous": [ "名著" ],
+  "icon-FR": [ "法国" ],
+  "icon-EG": [ "诶及" ],
+  "icon-JP": [ "日本" ],
+  "icon-AU": [ "澳大利亚" ],
+  "icon-RU": [ "俄罗斯" ],
+  "icon-IN": [ "印度" ],
+  "icon-IT": [ "意大利" ],
+  "icon-BR": [ "巴西" ],
+  "icon-US": [ "美国" ],
+  "icon-UK": [ "英国" ],
+  "icon-CN": [ "中国" ],
 };
 
 const icon = computed(() => {
@@ -73,7 +85,7 @@ const { goPage } = useTag();
 
 <template>
   <div class="tag-item" @click="goPage(name);emits('click-item')">
-    <i class="iconfont icon" :class="icon"></i>
+    <i v-if="icon" class="iconfont icon" :class="icon"></i>
     <div class="name">{{ name }}</div>
     <div class="num">{{ num }}</div>
   </div>

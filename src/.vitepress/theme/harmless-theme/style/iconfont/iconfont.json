@@ -6,6 +6,90 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "1174",
+      "name": "用研",
+      "font_class": "famous",
+      "unicode": "e600",
+      "unicode_decimal": 58880
+    },
+    {
+      "icon_id": "5280268",
+      "name": "埃菲尔铁塔",
+      "font_class": "FR",
+      "unicode": "e603",
+      "unicode_decimal": 58883
+    },
+    {
+      "icon_id": "5280272",
+      "name": "埃及金字塔",
+      "font_class": "EG",
+      "unicode": "e604",
+      "unicode_decimal": 58884
+    },
+    {
+      "icon_id": "5280273",
+      "name": "富士山",
+      "font_class": "JP",
+      "unicode": "e605",
+      "unicode_decimal": 58885
+    },
+    {
+      "icon_id": "5280276",
+      "name": "悉尼歌剧院",
+      "font_class": "AU",
+      "unicode": "e606",
+      "unicode_decimal": 58886
+    },
+    {
+      "icon_id": "5280277",
+      "name": "俄罗斯红场",
+      "font_class": "RU",
+      "unicode": "e607",
+      "unicode_decimal": 58887
+    },
+    {
+      "icon_id": "5280279",
+      "name": "泰姬陵",
+      "font_class": "IN",
+      "unicode": "e608",
+      "unicode_decimal": 58888
+    },
+    {
+      "icon_id": "5280280",
+      "name": "罗马角斗场",
+      "font_class": "IT",
+      "unicode": "e60a",
+      "unicode_decimal": 58890
+    },
+    {
+      "icon_id": "5280285",
+      "name": "里约热内卢基督像",
+      "font_class": "BR",
+      "unicode": "e60b",
+      "unicode_decimal": 58891
+    },
+    {
+      "icon_id": "5280287",
+      "name": "自由女神像",
+      "font_class": "US",
+      "unicode": "e60c",
+      "unicode_decimal": 58892
+    },
+    {
+      "icon_id": "5280288",
+      "name": "大本钟",
+      "font_class": "UK",
+      "unicode": "e60f",
+      "unicode_decimal": 58895
+    },
+    {
+      "icon_id": "5280290",
+      "name": "天坛",
+      "font_class": "CN",
+      "unicode": "e610",
+      "unicode_decimal": 58896
+    },
+    {
       "icon_id": "577338",
       "name": "更多",
       "font_class": "gengduo",
