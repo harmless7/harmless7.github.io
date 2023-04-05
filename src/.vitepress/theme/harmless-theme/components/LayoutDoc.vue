@@ -58,7 +58,7 @@ const { getRandomCover, goDetail } = usePost();
   </div>
 </template>
 
-<style scoped>
+<style scoped lang="less">
 .layout-doc {
   --content-gutter: 40px;
   --doc-top-padding: 40px;
@@ -76,6 +76,10 @@ const { getRandomCover, goDetail } = usePost();
     var(--doc-x-padding)
     var(--doc-bottom-padding)
     var(--doc-x-padding);
+  @media screen and (max-width: 768px) {
+    padding-right: 0;
+    padding-left: 0;
+  }
 }
 
 .content, .aside {
@@ -122,6 +126,13 @@ const { getRandomCover, goDetail } = usePost();
   padding: var(--content-gutter);
   gap: 20px 10px;
   align-items: center;
+  @media screen and (max-width: 768px) {
+    grid-template:
+      "icon title" auto
+      "desc desc" auto
+      "time time" auto
+      / auto 1fr;
+  }
 }
 .bg-wrap {
   position: absolute;
@@ -161,6 +172,9 @@ const { getRandomCover, goDetail } = usePost();
 }
 .cate {
   grid-area: cate;
+  @media screen and (max-width: 768px) {
+    display: none;
+  }
 }
 .cate .cate-item {
   height: 3rem;
@@ -173,9 +187,18 @@ const { getRandomCover, goDetail } = usePost();
   flex-flow: row wrap;
   align-items: center;
   gap: 5px;
+  @media screen and (max-width: 768px) {
+    display: none;
+  }
 }
 
 .content-wrap {
   padding: 20px var(--content-gutter);
+  :deep(h2) {
+    @media screen and (max-width: 768px) {
+      margin-top: 0;
+    }
+  }
 }
+
 </style>
