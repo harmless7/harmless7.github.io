@@ -3,6 +3,7 @@ import { useRouter, withBase } from "vitepress";
 import seedrandom from "seedrandom";
 import { usePost } from "../composables/post";
 import dayjs from "dayjs";
+import { computed } from "vue";
 
 const props = defineProps({
   item: {
@@ -15,6 +16,7 @@ const props = defineProps({
         date: "",
         tag: [],
         icon: "",
+        iconColor: "",
       }
     }),
   },
@@ -32,6 +34,8 @@ const router = useRouter();
 // }
 
 const { getRandomCover, goDetail } = usePost();
+
+const iconC = computed(() => props.item.data.iconColor || "var(--text-color-primary)");
 </script>
 
 <template>
@@ -141,7 +145,7 @@ const { getRandomCover, goDetail } = usePost();
 .post-list-item .cover .icon {
   position: absolute;
   font-size: 5rem;
-  color: var(--text-color-primary);
+  color: v-bind(iconC);
   transition: all 200ms ease-in-out;
 }
 .post-list-item:hover > .cover .icon {

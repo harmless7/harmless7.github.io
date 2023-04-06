@@ -126,6 +126,15 @@ const { getRandomCover, goDetail } = usePost();
   padding: var(--content-gutter);
   gap: 20px 10px;
   align-items: center;
+  & > *:not(.bg-wrap) {
+    z-index: 1;
+  }
+  .bg-wrap {
+    z-index: 0;
+  }
+  .icon, .title, .time {
+    color: v-bind("info['iconColor']");
+  }
   @media screen and (max-width: 768px) {
     grid-template:
       "icon title" auto
@@ -149,6 +158,7 @@ const { getRandomCover, goDetail } = usePost();
   max-height: 100%;
   object-fit: cover;
   filter: blur(2px);
+  pointer-events: none;
 }
 .icon {
   grid-area: icon;
@@ -163,7 +173,7 @@ const { getRandomCover, goDetail } = usePost();
 }
 .time {
   grid-area: time;
-  color: var(--text-color-secondary);
+  // color: var(--text-color-secondary);
   justify-self: end;
 }
 .desc {

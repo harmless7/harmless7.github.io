@@ -87,7 +87,7 @@ const { goPage } = useTag();
   <div class="tag-item" @click="goPage(name);emits('click-item')">
     <i v-if="icon" class="iconfont icon" :class="icon"></i>
     <div class="name">{{ name }}</div>
-    <div class="num">{{ num }}</div>
+    <div class="num" v-if="num">{{ num }}</div>
   </div>
 </template>
 
