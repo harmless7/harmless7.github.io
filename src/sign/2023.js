@@ -13,6 +13,6 @@ export default {
   "2023-04-06": { sport: "第48天" },
   "2023-04-09": { sport: "第49天" },
   "2023-04-10": { sport: "第50天+波比开合*4", read: "哲学·科学·常识 p42" },
-  "2023-04-13": { another: "翻译 typescript handbook" },
+  "2023-04-12": { another: "翻译 typescript handbook" },
   "2023-04-13": { sport: "第51天+小米hiit", another: "翻译 typescript handbook 至 functions" },
 }
