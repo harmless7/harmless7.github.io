@@ -46,6 +46,9 @@ const singleClass = computed(() => ({
           <p v-if="info.read">
             阅读<span v-if="typeof info.read === 'string'">：{{ info.read }}</span>
           </p>
+          <p v-if="info.another">
+            <span v-if="typeof info.another === 'string'">{{ info.another }}</span>
+          </p>
         </div>
       </div>
     </Teleport>
