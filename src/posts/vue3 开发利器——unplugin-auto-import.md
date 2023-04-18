@@ -157,6 +157,7 @@ dirs: [
 
 ```js
 dts:'./auto-imports.d.ts'
+// dts:'src/auto-imports.d.ts' // 2023-04-18 生成到 src 下才起效
 ```
 
 ### vueTemplate
