@@ -16,4 +16,9 @@ export default {
   "2023-04-12": { another: "翻译 typescript handbook" },
   "2023-04-13": { sport: "第51天+小米hiit", another: "翻译 typescript handbook 至 functions" },
   "2023-04-16": { sport: "第52天", another: "整理 unplugin-vue-components 文章" },
+  "2023-04-18": { sport: "第53天" },
+  "2023-04-19": { sport: "第54天" },
+  "2023-04-21": { sport: "12公里" },
+  "2023-04-22": { sport: "第55天" },
+  "2023-04-23": { sport: "第56天 + 12公里" }
 }
