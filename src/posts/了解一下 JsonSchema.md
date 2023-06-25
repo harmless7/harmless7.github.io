@@ -20,6 +20,14 @@ tag:
 # star: true
 ---
 
+## 参考
+
+[自己翻译的 json 入门手册](https://gitee.com/mostly_harmless/learn-json-schema)
+
+[官方文档](https://json-schema.org/)
+
+[稀土掘金——JSON Schema入门和应用](https://juejin.cn/post/7071174879778242568#heading-8)
+
 ## What's this?
 
 约束 json 格式的信息（该信息本身也用 json 写成）。
