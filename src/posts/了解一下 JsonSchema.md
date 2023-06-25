@@ -5,6 +5,8 @@ title: 了解一下 JsonSchema
 description: 复习一下 json schema 的基本语法
 # 图标
 icon: json
+# 封面
+cover: https://s2.loli.net/2023/06/25/NJc5pHvAIQKxR8b.jpg
 # 写作时间
 date: 2023-06-25
 # 分类（可多个）
@@ -29,6 +31,8 @@ tag:
 [稀土掘金——JSON Schema入门和应用](https://juejin.cn/post/7071174879778242568#heading-8)
 
 ## What's this?
+
+![json schema](https://s2.loli.net/2023/06/25/NJc5pHvAIQKxR8b.jpg)
 
 约束 json 格式的信息（该信息本身也用 json 写成）。
 
