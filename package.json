@@ -4,8 +4,8 @@
     "dayjs": "^1.11.7",
     "modern-normalize": "^1.1.0",
     "seedrandom": "^3.0.5",
-    "vitepress": "^1.0.0-alpha.60",
-    "vue": "^3.2.47"
+    "vitepress": "^1.0.0-rc.40",
+    "vue": "^3.4.15"
   },
   "name": "harmless-blog",
   "type": "module",
