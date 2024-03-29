@@ -22,9 +22,7 @@ tag:
 
 学习自 [最酷的 SVG 动画滤镜效果 | 源码下载_哔哩哔哩_bilibili](https://www.bilibili.com/video/BV1gN411e7jG/?spm_id_from=333.1007.top_right_bar_window_default_collection.content.click)
 
-
-
-## 参考学习资料：
+## 参考学习资料
 
 关于 feTurbulence：
 
@@ -56,8 +54,6 @@ tag:
 
 背景我们使用 svg 绘制一个 “墨滴” 作为图片蒙版，再给图片添加半径变大的动画；前景我们使用 gsap 的 timeline 来完成动画。
 
-
-
 效果看似简洁，但还是有很多细节要扣的，大致步骤如下：
 
 1. 在 svg 中通过 `feTurbulence` 和 `fedisplacementMap` 创建一个不规则圆形（墨滴形状）；
@@ -67,8 +63,6 @@ tag:
 3. 添加列表 html 结构；
 
 4. 将 “墨滴” 和列表调整至不可见状态，通过 `gsap` 及其 `ScrollTrigger` 工具包来添加它们随滚动而显示的动画。
-
-
 
 ### 绘制 “墨滴”
 
@@ -90,11 +84,7 @@ tag:
 
 很容易联想到 “墨滴” 是由圆形变形而来，因此我们需要一个 `circle`。通过 `filter` 添加滤镜（`filter: url(#displacementFilter)`）来为其添加不规则边缘。
 
-
-
 现在来解释这是如何做到的。
-
-
 
 #### feTurbulence
 
@@ -120,11 +110,7 @@ feturbulence (n. 湍流;紊流;动荡;(空气和水的)涡流;混乱;动乱;骚�
 
 - seed：随机种子。
   
-  
-
 然而一些随机噪音纹理，是一些色彩信息，要怎么去让圆形边缘变得不规则呢？
-
-
 
 #### feDisplacementMap
 
@@ -158,13 +144,11 @@ displacement (n. 移位;取代;替代;排水量;免职;)。字面意思，这个
 
 这里再贴一个公式，可以窥见像素移动的具体规则，详情请看上方参考：
 
-```
+```text
 P'(x,y) ← P( x + scale * (XC(x,y) - 0.5), y + scale * (YC(x,y) - 0.5))
 ```
 
 至此就可以理解为什么一个随机的彩色图像，可以形成不规则圆形了。
-
-
 
 ### 使用“墨滴”作为蒙版
 
@@ -185,8 +169,6 @@ P'(x,y) ← P( x + scale * (XC(x,y) - 0.5), y + scale * (YC(x,y) - 0.5))
 
 ![beautiful-mask-4.jpg](https://s2.loli.net/2024/01/31/mdcVKJoLaqtjTs5.jpg)
 
-
-
 ### 添加列表 html 及样式
 
 ![beautiful-mask-5.gif](https://s2.loli.net/2024/01/31/O3lujYtC1qBGmSe.gif)
@@ -204,7 +186,7 @@ P'(x,y) ← P( x + scale * (XC(x,y) - 0.5), y + scale * (YC(x,y) - 0.5))
 </ul>
 ```
 
-```css
+```scss
 ul {
   position: absolute;
   margin: 0;
@@ -215,30 +197,118 @@ ul {
   transform: translate(-50%, -50%);
   list-style-type: none;
   font-size: clamp(1rem, 2vw, 2rem);
-}
-
-ul li a {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  color: white;
-  text-decoration: none;
-  overflow: hidden;
-  transition: padding-left 0.3s ease-in-out;
-  position: relative;
-}
-
-ul li a .border {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  border-bottom: 1px solid white;
-}
-
-ul li a:hover {
-  padding-left: 1.5em;
-  font-weight: bold;
+  li a {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+    text-decoration: none;
+    transition: padding-left 0.3s ease-in-out;
+    position: relative;
+    .border {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      border-bottom: 1px solid white;
+    }
+    &:hover {
+      padding-left: 1.5em;
+      font-weight: bold;
+    }
+  }
 }
 ```
+
+### 补充动画
+
+#### 初始样式
+
+页面上各个元素一开始都是不可见的，通过动画显示。因此我们需要调整各元素初始样式。
+
+从列表开始。列表的线条，是一个从左往右拉长的效果：
+
+![GIF 2024-1-31 21-16-17.gif](https://s2.loli.net/2024/01/31/sYU5bVCfIgTGKvF.gif)
+
+可以通过 [`scaleX`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/transform-function/scaleX) 属性来完成，因此我们先给线条初始值设为 0 来隐藏它：
+
+```scss
+.border {
+  ...
+  transform: scaleX(0);
+  transform-origin: left; /* 确保从左边伸展 */
+}
+```
+
+同理来处理文字，是一个从上刷下来的效果，这个用 `translateY` 即可。
+
+![GIF 2024-1-31 21-21-46.gif](https://s2.loli.net/2024/01/31/2D4x7LvUz5syu8W.gif)
+
+```scss
+li a {
+  ...
+  overflow: hidden; /* 超出范围隐藏文字 */
+  span,
+  .date {
+    transform: translateY(-100%);
+  }
+}
+```
+
+最后，墨迹形状很简单，半径给到 0 就可以藏起来了：
+
+```html
+<circle ... r="0" ... />
+```
+
+#### 引入 gsap 及其 ScrollTrigger
+
+首先使用 ScrollTrigger，它是一个用于处理滚动条触发动画的插件，代码如下：
+
+首先创建一个时间线，定义随滚动条播放动画的配置：
+
+```js
+gsap.registerPlugin(ScrollTrigger);
+
+let tl = gsap.timeline({
+  scrollTrigger: {
+    trigger: ".content", /* 当 .content 进入视口时开始动画 */
+    start: "top top",
+    end: "bottom top",
+    scrub: false, /* 平滑刷新，或者 "赶上" 滚动条所需的时间 */
+    pin: true,
+    toggleActions: "play none none reverse", /* 四个值分别代表 onEnter、onLeave、onEnterBack 和 onLeaveBack */
+  },
+});
+```
+
+然后给各个元素添加动画即可：
+
+```js
+tl
+  // "墨迹" 展开，延时 2s
+  .to(
+    ".displacement",
+    { attr: { r: 700 },
+    duration: 2,
+  })
+  // 文字展现，每个动画间隔 0.1s，在上一个动画结束前 2s 播放（即墨迹完全展开前两秒展示文字）
+  .to(
+    "span, p",
+    { y: 0, stagger: 0.1 },
+    "-=2",
+  )
+  // 线条展开，买个动画间隔 0.1s，在上一个动画结束前 2s 播放（即文字全部出现前两秒伸长线段）
+  .to(
+    ".border",
+    { scaleX: 1, stagger: .1 },
+    "-=2",
+  );
+```
+
+大功告成。
+
+## 总结
+
+从这个效果，可以简单地学习到 `feTurbulence`, `feDisplacementMap` 及 `gsap` 滚动条动画。然而这只是一个基础，通过这几个工具可以实现更多更复杂精妙的效果，值得钻研学习。
