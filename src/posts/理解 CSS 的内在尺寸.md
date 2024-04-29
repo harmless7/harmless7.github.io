@@ -68,9 +68,9 @@ div {
 重头戏，这个属性是 `min-content` 和 `max-content` 的结合。
 
 > `fit-content` 默许使用 `max-content`；
->
+> 
 > 如果 可用空间 < `max-content`，那就使用 可用空间；
->
+> 
 > 如果 可用空间 < `min-content`，那就使用 `min-content`。
 
 ![fit-content](https://s2.loli.net/2022/12/08/gewxOvzMuaXkV9c.gif)
@@ -105,13 +105,13 @@ div {
 ![eg1:fit-content](https://s2.loli.net/2022/12/08/vrR9Wuc7COBeDzs.jpg)
 
 > **注意！**
->
+> 
 > 这里需要把图片的宽度设置为 `width: 100%` 或 `max-width: 100%` ！
->
+> 
 > 若不设置图片宽度为比例值，则图片是一个没有弹性的刚体（宽度定死），那么 `min-content` 的值也一直会等于图片宽度。
->
+> 
 > 根据 `fit-content` 的原则，若 可用空间 小于 `min-content`，就使用后者。
->
+> 
 > 那么图片和 wrapper 就始终不会缩小，依然会出现滚动条。
 
 ### 2. 完美下划线

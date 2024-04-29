@@ -27,7 +27,7 @@ tag:
 按照官网的介绍：
 
 > BEM — is a methodology that helps you to create reusable components and code sharing in front‑end development
->
+> 
 > （BEM - 是一种方法论，可以帮助你在前端开发中创建可重用的组件和代码共享。）
 
 ### B?E?M?
@@ -35,19 +35,21 @@ tag:
 - B: Block（块）
   
   独立的实体，其本身就有意义。
+  
   > 例如：
   > `header`, `container`, `menu`, `checkbox`, `input`
 
 - E: Element（元素）
-
+  
   一个区块的一部分，没有独立的意义，在语义上与它的区块相联系。
+  
   > 例如：
   > `menu item`, `list item`, `checkbox caption`, `header title`
 
 - M：Modifier（修改器）
-
+  
   一个块或元素上的标志。使用它们来改变外观或行为。
-
+  
   > 例如：
   > `disabled`, `highlighted`, `checked`, `fixed`, `size big`, `color yellow`
 

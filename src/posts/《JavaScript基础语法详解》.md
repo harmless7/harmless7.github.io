@@ -35,7 +35,7 @@ tag:
 
 如果要表示的数字位数过长，或者需要按特定位数进行分组，可以用下划线分隔：
 
-``` javascript
+```javascript
 1000_0000_0000 // 整数
 22.4211_3677_7478 // 小数
 0b1100_0010_1101 // 二进制
@@ -49,7 +49,7 @@ tag:
 
 如果想让一个变量代表的是空值，就应该使用 null，这表示变量是已定义的，只不过它的值是空白。
 
-``` javascript
+```javascript
 const inputValue = null;
 console.log(nullValue); // null
 typeof nullValue; // "object" (null 本质上还是一种对象)
@@ -57,14 +57,14 @@ typeof nullValue; // "object" (null 本质上还是一种对象)
 
 当定义一个变量但没有赋值时，这个变量的值就是 undefined。
 
-``` javascript
+```javascript
 let num;
 console.log(num); // undefined
 typeof num; // "undefined"
 ```
 
 > 常见的产生 undefined 的情况
->
+> 
 > 1. 未赋值的变量
 > 2. 没有返回值的函数
 > 3. 访问对象中没有的属性和访问数组中没有的元素
@@ -73,7 +73,7 @@ typeof num; // "undefined"
 
 本质是一种**值不会重复**的数据类型。
 
-``` javascript
+```javascript
 Symbol("a symbol") === Symbol("a symbol"); // false
 
 // 可用作对象的属性，防止对象被篡改
@@ -86,7 +86,7 @@ console.log(obj[Symbol("prop")]); // undefined
 使用全局符号注册表，可以用相同字符串，获取同一条 Symbol.
 使用方法是 ```Symbol.for()```，如果没有会创建，有了会返回。
 
-``` javascript
+```javascript
 let obj = {};
 let prop = Symbol.for("prop");
 obj[prop] = "value";
@@ -104,7 +104,7 @@ console.log(obj[Symbol.for("prop")]); // "value"
 
 可以使用**与逻辑**与来避免因为使用未定义的值而报错：
 
-``` javascript
+```javascript
 let obj;
 obj.a; // 类型错误：不能访问 undefined 中的 a 属性
 obj && obj.a; // 无报错，返回 undefined
@@ -112,7 +112,7 @@ obj && obj.a; // 无报错，返回 undefined
 
 可以使用**或逻辑**来给空值设置默认值：
 
-``` javascript
+```javascript
 let desc = '';
 desc || '暂无简介'; // 暂无简介
 ```
@@ -123,7 +123,7 @@ ES2020 规范中定义，使用 ```??``` 表示。
 
 只有当左侧操作数为 ```null``` 或 ```undefined``` 时，才会使用右侧操作数的值，否则返回左侧操作数的值：
 
-``` javascript
+```javascript
 "" ?? 10 // ""
 false ?? "no" // false
 null ?? 10 // 10
@@ -136,7 +136,7 @@ undefined ?? "empty" // "empty"
 
 用于给循环或代码块添加一个标签，后便可以使用 ```break label``` 直接退出指定标签处的循环或代码块，或者使用 ```continue label``` 继续。
 
-``` javascript
+```javascript
 label :for() {};
 // 或
 label: {
@@ -146,7 +146,7 @@ label: {
 
 例如：
 
-``` javascript
+```javascript
 outer: for(let i = 0; i < 10; i++) {
   for(let j = 0; j < 8; j++) {
     if (j === 3) {
