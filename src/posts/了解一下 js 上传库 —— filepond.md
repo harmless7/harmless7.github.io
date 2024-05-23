@@ -1,4 +1,26 @@
-# 了解一下 js 上传库 —— filepond
+---
+# 标题
+title: 了解一下 js 上传库 —— filepond
+# 描述
+# description:
+# 图标
+icon: json
+# 封面
+# cover: https://s2.loli.net/2023/06/25/NJc5pHvAIQKxR8b.jpg
+# 写作时间
+date: 2024-05-23
+# 分类（可多个）
+category:
+  - 技术学习
+# 标签（可多个）
+tag:
+  - 工具
+  - javascript
+# 置顶
+# sticky: true
+# 收藏
+# star: true
+---
 
 ## 参考
 

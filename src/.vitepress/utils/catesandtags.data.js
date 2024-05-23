@@ -12,7 +12,7 @@ export default {
       .forEach(file => {
         const content = fs.readFileSync(file, "utf-8");
         const { data: { tag: tags, category: cates } } = parseFrontmatter(content);
-        for (let tag of tags) {
+        for (let tag of tags || []) {
           let index = res.tag.findIndex(item => item.name === tag);
           if (index === -1) {
             res.tag.push({ name: tag, num: 1 });
