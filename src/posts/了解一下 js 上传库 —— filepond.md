@@ -66,7 +66,7 @@ setOptions(zh_CN);
 | required           | boolean                                 | `false`                                     | 是否必填                                                                                                                                                       |
 | disabled           | boolean                                 | `false`                                     | 是否禁用                                                                                                                                                       |
 | captureMethod      | "camera" \| "microphone" \| "camcorder" | `null`                                      | 设置 [capture](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Attributes/capture) 属性，如果设置了acceptedFileTypes，则必须使其与媒体通配符 “image/*”、“audio/*”或“video/*”匹配   |
-| files              | array<file>                             | `[]`                                        | 用于回显的文件列表                                                                                                                                                  |
+| files              | `array<file>`                           | `[]`                                        | 用于回显的文件列表                                                                                                                                                  |
 | allowDrop          | boolean                                 | `true`                                      | 是否支持拖放                                                                                                                                                     |
 | allowBrowse        | boolean                                 | `true`                                      | 是否支持文件浏览器                                                                                                                                                  |
 | allowPaste         | boolean                                 | `true`                                      | 是否支持粘贴文件。并非所有浏览器都支持粘贴文件。                                                                                                                                   |
@@ -84,7 +84,7 @@ setOptions(zh_CN);
 | itemInsertLocation | "after" \| "before"                     | `"before"`                                  | 将文件添加在列表队首（before）或队尾（after）。                                                                                                                              |
 | itemInsertInterval | integer                                 | `75`                                        | 文件显示到列表的延迟时间                                                                                                                                               |
 | fileSizeBase       | integer                                 | `1000`                                      | 用于计算文件大小的基数，仅用于显示文件大小。                                                                                                                                     |
-| credits            | array<string>                           | `['https://pqina.nl/', 'Powered by PQINA']` | 在页脚显示 Powered by PQINA                                                                                                                                     |
+| credits            | `array<string>`                         | `['https://pqina.nl/', 'Powered by PQINA']` | 在页脚显示 Powered by PQINA                                                                                                                                     |
 
 ### 拖放
 
@@ -93,7 +93,7 @@ setOptions(zh_CN);
 | dropOnPage     | boolean       | `false`                                     | 是否允许将文件拖放到页面上的任何位置（设置为 `false` 可防止浏览器打开被拖动文件）                        |
 | dropOnElement  | boolean       | `true`                                      | 是否必须将文件拖放到组件上（如果设置为 `false` 且 `dropOnPage: false`，则拖动到页面上任何位置都会触发上传） |
 | dropValidation | boolean       | `false`                                     | 是否在拖放前校验文件，校验不通过则不上传                                                 |
-| ignoredFiles   | array<string> | `['.ds_store', 'thumbs.db', 'desktop.ini']` | 拖拽时忽略的文件名（拖进去也不触发上传）                                                 |
+| ignoredFiles   | `array<string>` | `['.ds_store', 'thumbs.db', 'desktop.ini']` | 拖拽时忽略的文件名（拖进去也不触发上传）                                                 |
 
 ### 服务端
 
@@ -104,7 +104,7 @@ setOptions(zh_CN);
 | chunkUploads     | boolean                      | `false`           | 是否启用分块上传，启用后将自动按 `chunkSize` 分割文件 |
 | chunkForce       | boolean                      | `false`           | 是否在文件即使小于 `chunkSize`时，也会强制分块     |
 | chunkSize        | integer                      | `5000000`         | 分块大小（以字节为单位                       |
-| chunkRetryDelays | array<integer>               | [500, 1000, 3000] | 重试上传数据块的次数和延迟时间                   |
+| chunkRetryDelays | `array<integer>`             | [500, 1000, 3000] | 重试上传数据块的次数和延迟时间                   |
 
 #### 关于服务端的配置
 
@@ -138,10 +138,10 @@ filepond 会默认该 url 下，能够调用这些方法：
 | ------- | ----------- | -------------- |
 | process | POST        |                |
 | revert  | DELETE      |                |
-| load    | GET         | ?load=<source> |
-| restore | GET         | ?restore=<id>  |
-| fetch   | GET \| HEAD | ?fetch=<url>   |
-| patch   | PATCH       | ?patch=<id>    |
+| load    | GET         | `?load=<source>` |
+| restore | GET         | `?restore=<id>`  |
+| fetch   | GET \| HEAD | `?fetch=<url>`   |
+| patch   | PATCH       | `?patch=<id>`    |
 
 ##### 对象配置
 
