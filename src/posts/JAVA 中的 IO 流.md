@@ -524,3 +524,50 @@ System.out.println(97);
 在对单个 entry 进行处理后，再使用 `closeEntry()` 关闭 entry，告诉压缩流移动指针到下一个文件。
 
 完整解压压缩示例不写了，日常感觉很难用到。
+
+## Properties
+
+准确来说这个属于集合 Collection 的知识，不过这个类与 io 关系密切。
+
+[Properties](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Properties.html) 是 Java 中用于处理配置文件的工具类，它继承自 `Hashtable` 类，实现了 `Map` 接口。
+
+可以用这个类生成 `.properties` 为拓展名的配置文件，其中每一行代表一个属性或配置项。
+
+例一：获取配置文件的属性
+
+使用 `load()` 方法来读取输入流，可以是 `InputStream` 也可以是 `Reader`。
+
+```java
+Properties properties = new Properties();
+try (InputStream input = new FileInputStream("config.properties")) {
+    // 从输入流中读取属性列表
+    properties.load(input);
+
+    // 获取属性值
+    String value = properties.getProperty("key");
+    System.out.println(value);
+
+    // 获取属性值，若不存在则使用默认值
+    String value2 = properties.getProperty("nonexistentKey", "default");
+    System.out.println(value2);
+} catch (IOException e) {
+    e.printStackTrace();
+}
+```
+
+例二：写出配置
+
+使用 `store()` 来写出输出流，可以是 `OutputStream` 也可以是 `Writer`。
+
+```java
+Properties properties = new Properties();
+properties.setProperty("foo", "bar");
+properties.setProperty("foo2", "bar2");
+
+try (Writer writer = new FileWriter("output.properties")) {
+    // 将属性写出到字符输出流
+    properties.store(write, "Comments for the output file");
+} catch(Exception e) {
+    e.printStackTrace();
+}
+```
