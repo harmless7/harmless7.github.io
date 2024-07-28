@@ -168,3 +168,55 @@ Integer sum = ft.get();
     让线程休眠指定*毫秒数*
 
     时间到了线程就自动继续执行
+
+### 优先级 Priority
+
+Priority 优先事项
+
+JAVA 使用*抢占式调度*，线程的优先级本质上是：线程抢占到 CPU 的**概率**。
+
+优先级的范围是 `1 ~ 10`，默认值为 `5`。
+
+`Thread` 中有两个方法，用于设置和获取优先级：
+
+- [`public final void setPriority(int newPriority)`](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Thread.html#setPriority(int))
+- [`public final int getPriority()`](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Thread.html#getPriority())
+
+### 守护线程 Daemon
+
+守护线程是指在系统运行时，提供一种通用服务的线程。
+
+它的意义就是为其他非守护线程提供服务。当所有非守护线程停止时，它也会停止。
+
+设置守护线程的方法：
+
+[`public final void setDaemon(boolean on)`](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Thread.html#setDaemon(boolean))
+
+它有几个注意事项：
+
+1. `setDaemon()` 必须在 `start()` 之后执行，不能将一个运行中的线程设置为守护线程；
+
+2. 在 `Daemon` 线程中创建的线程，同样是 `Daemon` 的；
+
+3. 守护线程*永远不要*去访问固有资源，如文件、数据库，因为你永远不知道它会在什么时候中断；
+
+### 出让 / 礼让线程 yield
+
+[`public static void yield()`](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Thread.html#yield())
+
+它是一个静态方法，无需创建线程实例调用。
+
+它的作用是：立即停止*当前*线程，并让出 CPU 时间片供所有线程抢占。（不排除当前线程再次抢占到 CPU）
+
+理论上出让线程可以增加并发性，但是结果无法保证。
+
+### 插入线程 join
+
+[`public final void join()`](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Thread.html#join())
+
+在主线程中调用子线程，有可能主线程先结束。
+
+但有时需要子线程先结束（比如主线程依赖子线程运算结果），就可以使用插入线程。
+
+即 `join()` 的作用是：“等待子线程终止”。在 `join()` 方法后面的代码，等到子线程结束了才执行。
+
