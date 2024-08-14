@@ -1,6 +1,6 @@
 ---
 title: JAVA 中的多线程
-description: 换欠债~
+description: 还欠债~
 icon: java
 category:
     - 技术学习
@@ -224,15 +224,20 @@ JAVA 使用*抢占式调度*，线程的优先级本质上是：线程抢占到 
 
 ![20200126212037524.png](https://s2.loli.net/2024/07/30/s1IrQK5LxjNYGmM.png)
 
-## 同步 synchronized
+## 多线程安全问题
 
 由于线程运行的随机性，当多个线程操作同一个资源时，会使操作的结果无法预料。即多线程的安全问题。
 
-要解决安全问题，可以使用 `synchronized` 同步访问资源。
+要解决安全问题，可以使用：
+
+1. `synchronized` 同步
+2. `lock` 锁
+
+### 同步 synchronized
 
 它能让内部的代码，同一时间只由一个线程执行。
 
-### `synchronized` 代码块
+#### `synchronized` 代码块
 
 ```java
 synchronized (Object o) {
@@ -258,7 +263,7 @@ synchronized (Object o) {
 >
 >     - 它们只需要一次实例化就能生成多个线程，使用 `this`（`runnable` 或 `callable` 对象本身） 就满足锁的唯一性了
 
-### `synchronized` 方法
+#### `synchronized` 方法
 
 ```java
 // 修饰符 synchronized 返回值 方法名(参数) {}
@@ -274,3 +279,115 @@ private synchronized boolean method() {}
 - 如果当前方法是*静态*方法：使用当前类的字节码文件对象
 
 - 如果当前方法是*非静态*方法：使用 `this`
+
+## `lock` 锁
+
+`synchronized` 本质上也是锁，但是它是自动操作的，我们没法直观地看到哪里加上了锁，哪里释放了锁。
+
+我们可以使用 `Lock` 对象，来手动设置锁。
+
+主要使用两种方法：
+
+- `void lock()`: 获得锁
+- `void unlock()`：释放锁
+
+> `Lock` 是一个接口，不能直接实例化。我们可以使用 `ReentrantLocak` 来实例化
+
+```java
+private static Lock lock = new ReentrantLocak(); // 需要确保各个线程使用的是同一把锁
+
+lock.lock(); // 加锁
+// ... do some things
+lock.unlock(); // 释放
+```
+
+### 死锁
+
+老生常谈，要避免锁的嵌套。
+
+## 生产者和消费者
+
+通过一个信号量来表示资源占用情况，然后线程间通过 `wait()` 及 `notify() / notifyAll()` 进行协作。
+
+例：厨师、食客和桌子。
+
+```java
+public class Desk {
+    public static int hasFood = 0; // 标识桌子上有几分食物
+    public static int count = 10; // 食客能吃掉的总食物量
+    public static Object lock = new Object();
+
+    public static void main(String[] args) {
+        new Foodie().start();
+        new Cook().start();
+    }
+}
+
+public class Foodie extends Thread {
+    @Override
+    public void run() {
+        while (true) {
+            synchronized (Desk.lock) {
+                if (Desk.count == 0) {
+                    system.out.println("已经吃饱了");
+                    break;
+                } else {
+                    // 判断桌子是否有食物
+                    if (Desk.hasFood == 0) {
+                        // 没有食物，等待
+                        Desk.lock.wait();
+                    } else {
+                        // 有食物，吃
+                        Desk.count--;
+                        system.out.println("吃掉一个食物，还有" + Dese.count + "个");
+                        Desk.hasFood--;
+                        Desk.lock.notifyAll(); // 唤醒所有等待的线程（叫厨师做饭）
+                    }
+                }
+            }
+        }
+    }
+}
+
+public class Cook extends Thread {
+    @Override
+    public void run() {
+        while (true) {
+            synchronized (Desk.lock) {
+                if (Desk.count == 0) {
+                    break;
+                } else {
+                    if (Desk.hasFood > 0) {
+                        // 有食物，休息
+                        Desk.lock.wait();
+                    } else {
+                        // 无食物，做
+                        Desk.hasFood++;
+                        system.out.println("做了一个食物");
+                        Desk.lock.notifyAll(); // 唤醒所有等待的线程（叫食客吃）
+                    }
+                }
+            }
+        }
+    }
+}
+```
+
+## 阻塞队列
+
+阻塞队列是线程安全的，可以解决生产者和消费者的问题。
+
+队列实现了四个接口：`Iterable`、`Collection`、`Queue`、`BlockingQueue`。
+
+我们学习两个实现类：
+
+- `ArrayBlockingQueue`：基于数组的阻塞队列（有界）
+- `LinkedBlockingQueue`：基于链表的阻塞队列（伪无界，界为 int 的最大值）
+
+队列主要使用两个方法：
+
+- `put()` 向队列中放入数据，如果满了就等着
+- `take()` 从队列中取出数据，如果空了就等着
+
+这两个方法中已经添加了锁，无需我们自己加锁。
+
