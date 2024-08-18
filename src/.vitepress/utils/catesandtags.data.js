@@ -20,12 +20,14 @@ export default {
             res.tag[index].num++;
           }
         }
-        for (let cate of cates) {
-          let index = res.cate.findIndex(item => item.name === cate);
-          if (index === -1) {
-            res.cate.push({ name: cate, num: 1 });
-          } else {
-            res.cate[index].num++;
+        if (Array.isArray(cates)) {
+          for (let cate of cates) {
+            let index = res.cate.findIndex(item => item.name === cate);
+            if (index === -1) {
+              res.cate.push({ name: cate, num: 1 });
+            } else {
+              res.cate[index].num++;
+            }
           }
         }
       });
