@@ -133,13 +133,13 @@ swapy.onSwap((event) => {
 
 它会以 `map`、`array`、`object` 三种形式来返回插槽与拖动项之间的对应关系。
 
-此时就可以将位置信息持久化到本地存储中：
+此时就可以将位置信息持久化到存储中：
 
 ```js
 swapy.onSwap(({ data }) => {
+  // 存储到本地缓存，当然你也可以存到别的什么地方
   localStorage.setItem("slotItem", JSON.stringify(data.object));
 });
 ```
 
-此后对应地需要写活最初的 html 代码，让它根据 storage 中的数据，按顺序渲染拖动项，此处便不赘述了。
-
+此后对应地需要写活最初的 html 代码，让它根据存储顺序渲染拖动项，此处便不赘述了。
