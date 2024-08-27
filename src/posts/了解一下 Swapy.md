@@ -20,6 +20,8 @@ tag:
 # star: true
 ```
 
+![效果](https://s2.loli.net/2024/08/27/VvurfhXC6RJIgmG.gif)
+
 ## 参考
 
 - [Swapy 主页](https://swapy.xyz/)
