@@ -1,4 +1,4 @@
-```yaml
+---
 # 标题
 title: 了解一下 AST
 # 描述
@@ -18,7 +18,7 @@ tag:
 # sticky: true
 # 收藏
 # star: true
-```
+---
 
 ## 参考
 

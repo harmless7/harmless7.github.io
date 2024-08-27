@@ -1,4 +1,4 @@
-```yaml
+---
 # 标题
 title: 了解一下 Swapy
 # 描述
@@ -18,7 +18,7 @@ tag:
 # sticky: true
 # 收藏
 # star: true
-```
+---
 
 ![效果](https://s2.loli.net/2024/08/27/VvurfhXC6RJIgmG.gif)
 
