@@ -1,6 +1,7 @@
 {
 	"name": "erjigou",
 	"version": "4.11.0",
+	"packageManager": "pnpm@9.12.1",
 	"scripts": {
 		"dev": "astro dev",
 		"start": "astro dev",
