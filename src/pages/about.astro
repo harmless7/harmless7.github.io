@@ -1,47 +1,56 @@
 ---
-import { Image } from "astro:assets";
-import aboutImg from "@/assets/about-astro.png";
-import PageLayout from "@/layouts/Base.astro";
+import BaseLayout from '../layouts/BaseLayout.astro';
 
-const meta = {
-	description: "I'm a starter theme for Astro.build",
-	title: "About",
-};
+const title = 'About';
+const description = 'About your blog.';
+const permalink = `${Astro.site.href}about`;
 ---
 
-<PageLayout meta={meta}>
-	<div class="space-y-6">
-		<h1 class="title">About</h1>
-		<p>
-			Hi, I’m a starter Astro. I’m particularly great for getting you started with your own blogging
-			website.
-		</p>
-		<div class="flex justify-center">
-			<Image
-				alt="A cartoon cactus looking at the 'Astro.build' logo"
-				fetchpriority="high"
-				loading="eager"
-				src={aboutImg}
-			/>
-		</div>
-		<p>Here are my some of my awesome built in features:</p>
-		<ul class="list-inside list-disc">
-			<li>I'm ultra fast as I'm a static site</li>
-			<li>I'm fully responsive</li>
-			<li>I come with a light and dark mode</li>
-			<li>I'm easy to customise and add additional content</li>
-			<li>I have Tailwind CSS styling</li>
-			<li>Shiki code syntax highlighting</li>
-			<li>Satori for auto generating OG images for blog posts</li>
-		</ul>
-		<p>
-			Clone or fork my <a
-				aria-label="github repository"
-				class="cactus-link inline-block"
-				href="https://github.com/chrismwilliams/astro-cactus"
-				rel="noreferrer"
-				target="_blank">repo</a
-			> if you like me!
-		</p>
-	</div>
-</PageLayout>
+<BaseLayout title={title} description={description} permalink={permalink} current="about">
+  <div class="container">
+    <h1>About</h1>
+    <figure class="about-image">
+      <img src="/assets/about-illustration.webp" alt="Illustration of a notebook" width="330">
+      <!-- <figcaption>
+        Illustration by
+        <a href="https://icons8.com/illustrations/author/5c07e68d82bcbc0092519bb6" target="_blank" rel="noopener">Icons 8</a>
+        from
+        <a href="https://icons8.com/illustrations" target="_blank" rel="noopener">Ouch!</a>
+      </figcaption> -->
+    </figure>
+    <!-- <p>Text placeholder via <a href="https://jeffsum.com/" target="_blank">Jeffsum</a>.</p>
+    <p>So you two dig up, dig up dinosaurs? What do they got in there? King Kong? My dad once told me, laugh and the world laughs with you, Cry, and I'll give you something to cry about you little bastard! Life finds a way. God creates dinosaurs. God destroys dinosaurs. God creates Man. Man destroys God. Man creates Dinosaurs.</p>
+    <p>You really think you can fly that thing? You know what? It is beets. I've crashed into a beet truck. Forget the fat lady! You're obsessed with the fat lady! Drive us out of here! Is this my espresso machine? Wh-what is-h-how did you get my espresso machine?</p>
+    <p>Hey, you know how I'm, like, always trying to save the planet? Here's my chance. Hey, take a look at the earthlings. Goodbye! I was part of something special. Just my luck, no ice. You're a very talented young man, with your own clever thoughts and ideas. Do you need a manager?</p>
+    <p>Jaguar shark! So tell me - does it really exist? This thing comes fully loaded. AM/FM radio, reclining bucket seats, and... power windows. Yes, Yes, without the oops! You're a very talented young man, with your own clever thoughts and ideas. Do you need a manager?</p>
+    <p>Yes, Yes, without the oops! Do you have any idea how long it takes those cups to decompose. They're using our own satellites against us. And the clock is ticking. Do you have any idea how long it takes those cups to decompose. My dad once told me, laugh and the world laughs with you, Cry, and I'll give you something to cry about you little bastard!</p> -->
+    <p>任何花里胡哨的训练方案，科学完备的训练方案，一日千里的训练方案，都赶不上一种允许你天天到场的训练方案。</p>
+    <p>没有任何一种困难，架得住你天天到场的。人家说我重量大，你说我天天到。人家说我基因好，你说我天天到。人家说我量化科学，你说我天天到，人家说我教练是世界冠军。你说我天天到。</p>
+    <p>只要你瞄准那些阻止你天天到场的因素，去制定你的计划，而不是瞄准一个你尚未达到的目标。那么无论你给自己设定的课表再松再松。它也是持续带你往上走的，总有一天，你回家的路上会捡到武功秘籍。到了那个时候，所有人就都不是你的对手了。</p>
+    <p>健身也好，学别的东西也好，你根本不用去管别的任何事，只要保证每天都到，很快你就会发现，唯一的障碍只在于你愿不愿意进场刷个存在感，唯一一种可以把你的训练计划搞砸的事情，只有你不出现而已。只要你出现，把你的负载减到什么离谱的程度，都是可以接受的，今天少了，明天你稍微加一点，你照样进步。几年下来，伤病的落在你后面，没兴趣的落在你后面，成家立业的落在你后面，只有你，每天轻轻松松，自得其乐。还走在他们前面。</p>
+    <p>当然，为了这个每天到场的目标实现，你往往需要把一些看上去微不足道的小问题，看得特别重。很多人一下雨就迟到或者缺席，你不行，宁愿花天价打车你也得到。有人不慎患了伤病，觉得可以多歇几天，你不行，宁愿到场了就给队友递递水，你也得到。有人今天谈恋爱，明天有饭局，后天领导有事找，你不行，到场这件事情比天大，在这件事情上，你是他们所有人的顶头上司，把人得罪光了你也得到。</p>
+    <p>只有你将到场的地位提到这个高度，除非这个世界没了，什么都阻止不了你，你才算拥有了一个允许你天天到场的训练方案。而这个方案是无敌的。</p>
+    <p>唯一的忌讳，只有你对能阻止你明天接着干的方案say yes。</p>
+    <a href="https://www.zhihu.com/question/508900071/answer/3153465364" target="_blank">——Moonlight</a>
+  </div>
+</BaseLayout>
+
+<style>
+  .about-image {
+    float: right;
+    margin: -3em -7em 2em 2em;
+    max-width: 300px;
+  }
+
+  .about-image img {
+    border-radius: 8px;
+    margin-bottom: 1.5em;
+  }
+
+  @media (max-width: 1020px) {
+    .about-image {
+      float: none;
+      margin: 0 auto 2em;
+    }
+  }
+</style>
