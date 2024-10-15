@@ -1,5 +1,5 @@
 ---
-title: "了解一些 iconify"
+title: "了解一些 Iconify"
 description: "最现代的图标解决方案，替代 iconfont 的新方案"
 publishDate: "2024-10-14 15:15:02"
 ---
@@ -45,13 +45,13 @@ iconify 有官方的 api 和 compoent，但不强制使用，可以本体化部�
 🔣 原理：
 
 - 将 svg 设置为 `background-image`：
+
   - ⭕️ 推荐使用！
   - 用 `width` 和 `height` 控制大小
   - 用 `color` （`background: currentColor`） 来设置单色图标的颜色
 
   ```css
-  <!-- 多色图标 -- >
-  .background-demo {
+  <!-- 多色图标 -- > .background-demo {
     display: inline-block;
     width: 32px;
     height: 32px;
@@ -60,8 +60,7 @@ iconify 有官方的 api 和 compoent，但不强制使用，可以本体化部�
     background-size: 100% 100%;
   }
 
-  <!-- 单色图标 -- >
-  .background-demo-2 {
+  <!-- 单色图标 -- > .background-demo-2 {
     display: inline-block;
     width: 10em;
     height: 10em;
@@ -75,6 +74,7 @@ iconify 有官方的 api 和 compoent，但不强制使用，可以本体化部�
   ```
 
 - 将 svg 设置为伪元素的 `content`：
+
   - ❌️ 不推荐使用
   - 不能用 CSS 改宽高和颜色
   - 使用[公共 API](https://api.iconify.design)，后接参数进行设置（本质上是修改了 svg）
@@ -106,7 +106,7 @@ iconify 有官方的 api 和 compoent，但不强制使用，可以本体化部�
 
 🔣 原理：
 
-原理？html 中本来就支持 `<svg>`  标签。
+原理？html 中本来就支持 `<svg>` 标签。
 
 当然，你也可以使用 `<img>` 或者 `<picture>` 标签，但没法改颜色。
 
@@ -128,7 +128,54 @@ iconify 有官方的 api 和 compoent，但不强制使用，可以本体化部�
   - 即使用 [Iconify Utils 获取图标的 SVG 数据](https://iconify.design/docs/usage/svg/utils/)
 - 不想写代码，那就在 [官方图标集](https://icon-sets.iconify.design/) 或 [Anthony Fu](https://icones.js.org/) 的网站里直接找 SVG 复制来用吧
 
-### 按需图标
+🚚 使用例：
+
+以 [Unplugin Icons](https://github.com/unplugin/unplugin-icons/tree/main) 为例。
+
+1. 安装图标数据（~120MB）。
+
+   ```bash
+   npm i -D unplugin-icons @iconify/json
+   ```
+
+   ![json](https://s2.loli.net/2024/10/15/nZWjoY1IyKz2lNC.jpg)
+
+   上图即 [`@iconify/json`](https://www.npmjs.com/package/@iconify/json) 包 ant-design 图标数据，代表可在本地环境获取图标。
+
+   > 打包时只会打使用到的图标，无需担心体积问题
+
+2. 安装并引入插件
+
+   然后各个框架中有不同的引入方式，这里贴个 Vite 的：
+
+   ```js
+   // vite.config.ts
+   import Icons from "unplugin-icons/vite";
+
+   export default defineConfig({
+     plugins: [
+       Icons({
+         /* options */
+       }),
+     ],
+   });
+   ```
+
+3. 在页面中引入并使用
+
+   ```vue
+   <script setup>
+   import IconAccessibility from "~icons/carbon/accessibility";
+   import IconAccountBox from "~icons/mdi/account-box";
+   </script>
+
+   <template>
+     <IconAccessibility />
+     <IconAccountBox style="font-size: 2em; color: red" />
+   </template>
+   ```
+
+### 远程按需加载图标
 
 Iconify 生态中有一组接口：[Iconify API](https://iconify.design/docs/api/)，可以用来按需加载图标数据。
 
@@ -147,14 +194,33 @@ Iconify 生态中有一组接口：[Iconify API](https://iconify.design/docs/api
   - 无法离线使用
   - 图标不会立即渲染。虽然有缓存，但还是有几毫秒延迟
 
-📦️ 组件（`Web Component`）：
+📦️ iconify-icon（`Web Component`）：
 
-官方主推 `Web Component`。虽然也有热门框架的专用组件，但后续将停止维护。
+官方组件 [iconify-icon](https://www.npmjs.com/package/iconify-icon) 是一个 `Web Component`。
+
+虽然也有热门框架的专用组件，但后续将停止维护。
+
+安装：
+
+```bash
+import "iconify-icon";
+```
+
+或者：
+
+```html
+<script src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js"></script>
+```
 
 Usage is simple:
 
 ```html
 <iconify-icon icon="mdi:home"></iconify-icon>
+
+<!-- 解决文本与图标的垂直对齐问题 -->
+<iconify-icon icon="mdi:home" style="vertical-align: -0.125em"></iconify-icon>
+
+<!-- 或者使用预设的 inline 属性 -->
+<iconify-icon icon="mdi:home" inline></iconify-icon>
 ```
 
-https://iconify.design/docs/icon-components/#ui-frameworks
