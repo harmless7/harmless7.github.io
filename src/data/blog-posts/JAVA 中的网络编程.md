@@ -1,8 +1,8 @@
 ---
-title: 'JAVA 中的网络编程'
-publishDate: '2024-10-12 17:23:37'
-description: '关于一些计算机网络中的基础知识，'
-tags: ['JAVA', '网络']
+title: "JAVA 中的网络编程"
+publishDate: "2024-10-12 17:23:37"
+description: "关于一些计算机网络中的基础知识，"
+tags: ["JAVA", "网络"]
 ---
 
 ## 计算机网络基础
@@ -66,6 +66,69 @@ InetAddress in = InetAddress.getByName("192.168.1.100");
 // 也可以使用主机名：getByName("my-computer-name");
 ```
 
-## 使用 UDP 发送数据
+## 使用 UDP
 
+需要两个类：
 
+- 发送 / 接受器：[`DatagramSocket`](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/net/DatagramSocket.html)
+
+- 数据包：[`DatagramPacket`](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/net/DatagramPacket.html)
+
+### UDP 发送数据
+
+🔴 重要方法：
+
+- [`public void send(DatagramPacket p)`](<https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/net/DatagramSocket.html#send(java.net.DatagramPacket)>)
+
+```java
+// 创建发送器
+DatagramSocket ds = new DatagramSocket();
+
+// 创建数据包
+// 发送数据：只支持字节数组
+String str = "mostly harmless";
+byte[] bytes = str.getBytes();
+// 发送目标：使用 InetAddress 类
+InetAddress address = InetAddress.getByName("127.0.0.1");
+int port = 4396;
+DatagramPacket dp = new DatagramPacket(bytes, bytes.length, address, port);
+
+// 发送
+ds.send(dp);
+
+// 释放资源
+ds.close();
+```
+
+### UDP 接受数据
+
+🔴 重要方法：
+
+- [`public void receive(DatagramPacket p)`](<https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/net/DatagramSocket.html#receive(java.net.DatagramPacket)>)
+- [`public byte[] getData()`](<https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/net/DatagramPacket.html#getData()>)
+- [`public byte[] getLength()`](<https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/net/DatagramPacket.html#getLength()>)
+- [`public byte[] getAddress()`](<https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/net/DatagramPacket.html#getAddress()>)
+- [`public byte[] getPort()`](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/net/DatagramPacket.html#getLengthgetPort))
+
+```java
+// 创建接收器（注意要填端口）
+DatagramSocket ds = new DatagramSocket(4396);
+
+// 创建数据包
+// 创建一个容器来放数据
+byte[] bytes = new byte[1024];
+DatagramPacket dp = new DatagramPacket(bytes, bytes.length);
+ds.receive(dp);
+
+// 解析数据包
+byte[] data = dp.getData();
+int len = dp.getLength();
+InetAddress address = dp.getAddress();
+int port = dp.getPort();
+
+System.out.println("receive data:" + new String(data, 0, length));
+System.out.println("receive data from:" + address + ":" + port);
+
+// 释放资源
+ds.close();
+```
