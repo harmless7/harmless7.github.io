@@ -80,10 +80,10 @@ shadow.appendChild(span);
 
 ## 为影子 DOM 添加样式
 
-影子 DOM 添加样式有两种方法：
+影子 DOM 添加样式有几种方法：
 
 - 编程式：使用 `CSSStyleSheet` 创建，可复用
-- 声明式：使用 `<template>` 声明，不可复用
+- 声明式：使用 `<template>` 声明，或者直接在内容中写 `<style>`，不可复用
 
 ### 编程式
 
@@ -127,6 +127,21 @@ const shadow = host.attachShadow({ mode: "open" });
 
 const template = document.getElementById("my-element");
 shadow.appendChild(template.content);
+```
+
+或者更直接一点：
+
+```js
+const host = document.querySelector("#host");
+const shadow = host.attachShadow({ mode: "open" });
+
+const style = document.createElement("style");
+style.innerHTML = `
+  .test {
+    color: red;
+  }
+`;
+shadow.appendChild(style);
 ```
 
 ## Refer
