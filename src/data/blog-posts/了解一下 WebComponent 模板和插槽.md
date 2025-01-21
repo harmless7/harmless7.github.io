@@ -64,3 +64,17 @@ customElement.define(
 ```
 
 注意，插槽不能以类似 Vue 中的 `<template slot="description"></template>` 方式使用。
+
+## 在影子 DOM 中，定义插槽样式
+
+需要使用 `::slotted` 伪元素。
+
+```css
+::slotted(.demo) {
+  color: gray;
+}
+```
+
+## refer
+
+[MDN - ::slotted()](https://developer.mozilla.org/zh-CN/docs/Web/CSS/::slotted)

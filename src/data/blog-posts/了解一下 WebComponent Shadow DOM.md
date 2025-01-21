@@ -71,6 +71,7 @@ A：与外部的隔离性，意味它很适合用来封装组件。它是 `Web C
 // 创建影子 DOM
 const host = document.querySelector("#host");
 const shadow = host.attachShadow({ mode: "open" });
+// 也可以不用变量存 shadow root，使用 this.shadowRoot
 
 // 向影子 DOM 中添加元素，与普通 DOM 处理方式一致
 const span = document.createElement("span");
@@ -78,11 +79,14 @@ span.textContent = "我在影子 DOM 中";
 shadow.appendChild(span);
 ```
 
-## 为影子 DOM 添加样式
+## 为影子 DOM 定义样式
 
-影子 DOM 添加样式有几种方法：
+影子 DOM 定义样式有几种方法：
 
 - 编程式：使用 `CSSStyleSheet` 创建，可复用
+
+  - CSS Module Scripts
+
 - 声明式：使用 `<template>` 声明，或者直接在内容中写 `<style>`，不可复用
 
 ### 编程式
@@ -104,6 +108,18 @@ sheet.replaceSync("span { color: red; border: 2px dotted black;}");
 
 // 3. 添加给影子根
 shadow.adoptedStyleSheets = [sheet];
+```
+
+### CSS Module Scripts
+
+> 试验性
+
+```js
+import styles from "./custom-element.css" assert { type: "css" };
+// styles 是一个 styleSheet
+
+// ...
+this.shadowRoot.adoptedStyleSheets = [styles];
 ```
 
 ### 声明式
@@ -132,20 +148,45 @@ shadow.appendChild(template.content);
 或者更直接一点：
 
 ```js
-const host = document.querySelector("#host");
-const shadow = host.attachShadow({ mode: "open" });
-
 const style = document.createElement("style");
 style.innerHTML = `
   .test {
     color: red;
   }
 `;
-shadow.appendChild(style);
+this.shadowRoot.appendChild(style);
 ```
+
+### 调整宿主 DOM 样式
+
+> 宿主 dom 的默认 `display` 为 `inline`
+
+- 从内部控制：使用 [`:host`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/:host) 伪类
+
+  ```css
+  :host {
+    display: block;
+  }
+  :host([orange]) {
+    background: orange;
+  } /* 当宿主有 orange 属性时生效 */
+  :host(:not(.hidden)) {
+    opacity: 1;
+  } /* 当宿主没有 .hidden 类时 */
+  ```
+
+- 从外部控制：（优先级更高）
+
+  ```css
+  custom-element {
+    display: flex;
+  }
+  ```
 
 ## Refer
 
 [MDN - 使用影子 DOM](https://developer.mozilla.org/zh-CN/docs/Web/API/Web_components/Using_shadow_DOM)
 
 [MDN - Element.attachShadow()](https://developer.mozilla.org/zh-CN/docs/Web/API/Element/attachShadow)
+
+[BILIBILI - Web Components #3 shadowDOM 样式和属性继承](https://www.bilibili.com/video/BV1Fr4y1B7zF?spm_id_from=333.788.videopod.sections&vd_source=cbb9bae25f5ac9e51f8ff965eb794230)
