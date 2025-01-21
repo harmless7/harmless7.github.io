@@ -1,5 +1,5 @@
 ---
-title: "了解 WebComponent 自定义元素"
+title: "了解一下 WebComponent 自定义元素"
 description: "论要如何在原生 JS 中自定义标签"
 publishDate: "2025-01-20"
 ---

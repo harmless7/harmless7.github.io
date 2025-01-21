@@ -1,5 +1,5 @@
 ---
-title: "了解一下 Shadow DOM"
+title: "了解一下 WebComponent Shadow DOM"
 description: "影子 DOM（Shadow DOM）允许你将一个 DOM 树附加到一个元素上，并且使该树的内部对于在页面中运行的 JavaScript 和 CSS 是隐藏的。"
 publishDate: "2025-01-17"
 ---
