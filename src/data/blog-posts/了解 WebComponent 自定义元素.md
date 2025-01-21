@@ -1,6 +1,6 @@
 ---
 title: "了解 WebComponent 自定义元素"
-description: ""
+description: "论要如何在原生 JS 中自定义标签"
 publishDate: "2025-01-20"
 ---
 
@@ -43,6 +43,9 @@ publishDate: "2025-01-20"
 class customElement extends HTMLElement {
   contructor() {
     super();
+
+    // super() 的返回值是对当前元素的引用
+    // self = super();
   }
 }
 ```
@@ -59,7 +62,7 @@ class customElement extends HTMLElement {
 
 - 一般而言，构造函数应该用于设置初始状态和默认值，并设置事件监听器以及可能的阴影根（shadow root）。
 
-### 生命周期
+### 生命周期回调
 
 - `connectedCallback`：当自定义元素第一次被连接到文档 DOM 时被调用。
 
@@ -68,6 +71,32 @@ class customElement extends HTMLElement {
 - `adoptedCallback`：当自定义元素被移动到新文档时被调用。
 
 - `attributeChangedCallback`：当自定义元素的一个属性被增加、移除或更改时被调用。
+
+### 响应属性变化
+
+类中可以定义一个名为 `observedAttributes` 的静态属性，里面存放*需要变更通知的属性名*。
+
+然后使用生命周期中的 `attributeChangedCallback` 来监听属性变化，该回调接受三个参数：
+
+- 发生变化的属性名（需在 `observedAttributes` 中定义）
+- 旧的值
+- 新的值
+
+```js
+class customElement extends HTMLElement {
+  static observedAttributes = ["size"];
+  // or
+  // get static observedAttributes() {
+  //   return ["size"];
+  // }
+
+  attributeChangedCallback(name, old, val) {
+    console.log(`属性 ${name} 已由 ${old} 变更为 ${val}。`);
+  }
+}
+```
+
+> 要注意：**属性被首次解析时也会触发** `attributeChangedCallback`！类似于 Vue 的 `Watch` 中的 `immediate` 配置。
 
 ## 注册
 
