@@ -121,3 +121,8 @@ Methods con = class.getDeclaredMethods("age", String.class);
 - `Method.getExceptionTypes()`：获取方法异常，返回 `Class[]`
 
 - `Method.invoke()`：运行方法，参数一是所属类的对象，后续参数作为方法的形参
+
+## 作用
+
+- 获取任意一个类中的所有信息
+- 结合配置文件动态创建对象
