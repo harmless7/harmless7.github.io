@@ -142,3 +142,5 @@ customElements.define(
 [MDN - CustomElementRegistry.define()](https://developer.mozilla.org/zh-CN/docs/Web/API/CustomElementRegistry/define)
 
 [HTML 标准：custom-elements](https://html.spec.whatwg.org/multipage/custom-elements.html#custom-elements)
+
+[web.dev - 自定义元素最佳实践](https://web.dev/articles/custom-elements-best-practices?hl=zh-cn)

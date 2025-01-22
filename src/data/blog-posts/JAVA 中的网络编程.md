@@ -25,18 +25,40 @@ tags: ["JAVA", "网络"]
 
 ##### IPv4
 
-127.0.0.1：回环地址（本机地址）
+回环地址（本机地址）：127.0.0.1
 
 ```md
 127.0.0.1
 01111111 00000000 00000000 00000001
 ```
 
-192.168.x.x：私网 IP，
+私网 IP：192.168.x.x
 
 ```md
 192.168.x.x
 11000000 10101000 xxxxxxxx xxxxxxxx
+```
+
+组播地址：224.0.0.0 ~ 239.255.255.255
+
+> 其中 224.0.0.0 ~ 224.0.0.255 为预留的组播地址
+
+```md
+224.0.0.0
+11100000 00000000 00000000 00000000
+
+224.255.255.255
+11100000 11111111 11111111 11111111
+
+224.0.0.255
+11100000 00000000 00000000 11111111
+```
+
+广播地址：255.255.255.255
+
+```md
+255.255.255.255
+11111111 11111111 11111111 11111111
 ```
 
 #### 端口
@@ -68,9 +90,12 @@ InetAddress in = InetAddress.getByName("192.168.1.100");
 
 ## 使用 UDP
 
-需要两个类：
+需要使用到的类：
 
-- 发送 / 接受器：[`DatagramSocket`](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/net/DatagramSocket.html)
+- 发送 / 接受器：
+
+  - 单播：[`DatagramSocket`](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/net/DatagramSocket.html)
+  - 组播 / 广播：[`MulticastSocket`](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/net/MulticastSocket.html)
 
 - 数据包：[`DatagramPacket`](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/net/DatagramPacket.html)
 
@@ -80,11 +105,13 @@ InetAddress in = InetAddress.getByName("192.168.1.100");
 
 - [`public void send(DatagramPacket p)`](<https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/net/DatagramSocket.html#send(java.net.DatagramPacket)>)
 
+单播例子：
+
 ```java
-// 创建发送器
+// 1. 创建发送器
 DatagramSocket ds = new DatagramSocket();
 
-// 创建数据包
+// 2. 创建数据包
 // 发送数据：只支持字节数组
 String str = "mostly harmless";
 byte[] bytes = str.getBytes();
@@ -93,11 +120,31 @@ InetAddress address = InetAddress.getByName("127.0.0.1");
 int port = 4396;
 DatagramPacket dp = new DatagramPacket(bytes, bytes.length, address, port);
 
-// 发送
+// 3. 发送
 ds.send(dp);
 
-// 释放资源
+// 4. 释放资源
 ds.close();
+```
+
+组播 / 广播例子：
+
+```java
+// 1. 创建发射器
+MulticaseSocket ms = new MulticaseSocket();
+
+// 2. 创建数据包
+String str = "mostly harmless";
+byte[] bytes = str.getBytes();
+InetAddress address = InetAddress.getByName("224.0.0.1"); // 这里得用组播地址，广播则 255.255.255.255
+int port = 4396;
+DatagramPacket dp = new DatagramPacket(bytes, bytes.length, address, part);
+
+// 3. 发送
+ms.send(dp);
+
+// 4. 释放
+ms.close();
 ```
 
 ### UDP 接受数据
@@ -110,17 +157,19 @@ ds.close();
 - [`public byte[] getAddress()`](<https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/net/DatagramPacket.html#getAddress()>)
 - [`public byte[] getPort()`](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/net/DatagramPacket.html#getLengthgetPort))
 
+单播例子：
+
 ```java
-// 创建接收器（注意要填端口）
+// 1. 创建接收器（注意要填端口）
 DatagramSocket ds = new DatagramSocket(4396);
 
-// 创建数据包
+// 2. 创建数据包
 // 创建一个容器来放数据
 byte[] bytes = new byte[1024];
 DatagramPacket dp = new DatagramPacket(bytes, bytes.length);
 ds.receive(dp);
 
-// 解析数据包
+// 3. 解析数据包
 byte[] data = dp.getData();
 int len = dp.getLength();
 InetAddress address = dp.getAddress();
@@ -129,6 +178,118 @@ int port = dp.getPort();
 System.out.println("receive data:" + new String(data, 0, length));
 System.out.println("receive data from:" + address + ":" + port);
 
-// 释放资源
+// 4. 释放资源
 ds.close();
 ```
+
+组播 / 广播例子：
+
+```java
+// 1. 创建接收器（注意要填端口）
+MulticaseSocket ms = new MulticaseSocket(4396);
+
+// 2. 将当前本机添加到 224.0.0.1 这一组分组当中
+InetAddress address = InetAddresss.getByName("224.0.0.1"); // 这里得用组播地址，广播则 255.255.255.255
+ms.joinGroup(address);
+
+// 2. 创建数据包
+// 创建一个容器来放数据
+byte[] bytes = new byte[1024];
+DatagramPacket dp = new DatagramPacket(bytes, bytes.length);
+ms.receive(dp);
+
+// 3. 解析数据包
+byte[] data = dp.getData();
+int len = dp.getLength();
+InetAddress address = dp.getAddress();
+int port = dp.getPort();
+
+System.out.println("receive data:" + new String(data, 0, length));
+System.out.println("receive data from:" + address + ":" + port);
+
+// 4. 释放资源
+ms.close();
+```
+
+## 使用 TCP
+
+需要使用到的类：
+
+- 服务端：[`Socket`](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/net/Socket.html)
+- 接收端：[`ServerSocket`](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/net/ServerSocket.html)
+
+### 客户端
+
+1. 创建客户端 Socket 对象与指定服务端连接
+
+   `Socket(String host, int port)`
+
+2. 获取*输出流*，写数据
+
+   `OutputStream getOutputStream()`
+
+3. 释放资源
+
+   `void close()`
+
+例：
+
+```java
+// 1. 创建 Socket
+Socket socket = new Socket("127.0.0.1", 10000);
+
+// 2. 从通道中获取输出流
+OutputStream os = socket.getOutputStream();
+os.write("你好".getBytes());
+
+// 3. 释放
+socket.close(); // 会自动关闭内部的流
+```
+
+> 需要先运行服务端，否则 socket 会报错
+
+### 服务端
+
+1. 创建服务端 ServerSocket 对象
+
+   `ServerSocket(int port)`
+
+2. 监听客户端连接，返回一个 Socket 对象
+
+   `Scoket accept()`
+
+3. 获取*输入流*，读数据，并把数据显示在控制台
+
+   `InputStream getInputStream()`
+
+4. 释放资源
+
+   `void close()`
+
+```java
+// 1. 创建 Server Socket
+ServerSocket ss = new ServerSocket(10000);
+
+// 2. 监听客户端连接
+Socket socket = ss.accept();
+
+// 3. 从通道获取输入流
+InputStream is = socket.getInputStream();
+InputStreamReader isr = new InputStreamReader(is); // 转换流，防止中文乱码
+BufferedReader br = new BufferedReader(isr); // 缓冲流，提高读取效率
+int b;
+while ((b = br.read()) != -1) {
+  System.out.print((char) b);
+}
+
+// 4. 释放资源
+socket.close(); // 会自动关闭内部的流
+ss.close();
+```
+
+### 一些其他细节
+
+客户端写出结束标记：
+[shutdownOutput()](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/net/Socket.html#shutdownOutput())
+
+<!-- [shutdownInput()](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/net/Socket.html#shutdownInput()) -->
