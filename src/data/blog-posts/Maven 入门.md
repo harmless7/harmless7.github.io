@@ -1,6 +1,6 @@
 ---
 title: "Maven 入门"
-descrition: "Apache Maven 学习笔记"
+description: "Apache Maven 学习笔记"
 publishDate: "2025-02-05"
 ---
 
@@ -64,14 +64,7 @@ mvn archetype:generate -DgroupId="net.harmless" -DartifactId="harmless-app" -Dar
 
 ## 标准 Maven 目录
 
-- src
-  - main
-    - jave
-    - resources
-  - test
-    - jave
-    - resources
-- `pom.xml`
+![maven_basic_dir](https://s2.loli.net/2025/02/06/CfdlytSq2pXGK9x.jpg)
 
 `pom.xml` 意为项目对象模型（project object model），内含项目信息及依赖信息，即 maven 项目的配置（可以理解为 Node.js 中的 `package.json`）。
 
