@@ -46,6 +46,8 @@ class customElement extends HTMLElement {
 
     // super() 的返回值是对当前元素的引用
     // self = super();
+
+    // 在这里 this 指向本自定义元素的 Dom
   }
 }
 ```
@@ -62,6 +64,70 @@ class customElement extends HTMLElement {
 
 - 一般而言，构造函数应该用于设置初始状态和默认值，并设置事件监听器以及可能的阴影根（shadow root）。
 
+    以官方实例中的 [`editable-list`](https://github.com/mdn/web-components-examples/blob/main/editable-list/main.js) 构造函数为例：
+
+    ```js
+    constructor() {
+      // 建立原型链
+      super();
+
+      // 附加影子树，并且返回影子根的引用
+      // https://developer.mozilla.org/en-US/docs/Web/API/Element/attachShadow
+      const shadow = this.attachShadow({ mode: 'open' });
+
+      // 创建一个 editable-list 组件的容器
+      const editableListContainer = document.createElement('div');
+
+      // 通过 getters 获取属性
+      const title = this.title;
+      const addItemText = this.addItemText;
+      const listItems = this.items;
+
+      // 为了更易读，给我们的容器添加类名
+      editableListContainer.classList.add('editable-list');
+
+      // 为组件编写 html
+      editableListContainer.innerHTML = `
+        <style>
+          li, div > div {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+          }
+
+          .icon {
+            background-color: #fff;
+            border: none;
+            cursor: pointer;
+            float: right;
+            font-size: 1.8rem;
+          }
+        </style>
+        <h3>${title}</h3>
+        <ul class="item-list">
+          ${listItems.map(item => `
+            <li>${item}
+              <button class="editable-list-remove-item icon">&ominus;</button>
+            </li>
+          `).join('')}
+        </ul>
+        <div>
+          <label>${addItemText}</label>
+          <input class="add-new-list-item-input" type="text">
+          <button class="editable-list-add-item icon">&oplus;</button>
+        </div>
+      `;
+
+      // 绑定事件
+      this.addListItem = this.addListItem.bind(this);
+      this.handleRemoveItemListeners = this.handleRemoveItemListeners.bind(this);
+      this.removeListItem = this.removeListItem.bind(this);
+
+      // 将容器添加到影子 DOM 中
+      shadow.appendChild(editableListContainer);
+    }
+    ```
+
 ### 生命周期回调
 
 - `connectedCallback`：当自定义元素第一次被连接到文档 DOM 时被调用。
@@ -71,6 +137,52 @@ class customElement extends HTMLElement {
 - `adoptedCallback`：当自定义元素被移动到新文档时被调用。
 
 - `attributeChangedCallback`：当自定义元素的一个属性被增加、移除或更改时被调用。
+
+### 属性
+
+不同于类似 Vue 的组件属性，可以使用各种类型。
+
+**自定义元素属性在 HTML 中，只能使用字符串类型。**
+
+因此在使用非字符串类型的属性时，需要通过自定义组件内的 getter 和 setter 来解析和设置。
+
+```html
+<my-customer-element
+  total="4396"
+  list="[{ id: 1, name: '张三' }, { id: 2, name: '李四' }]"
+></my-customer-element>
+```
+
+```js
+class MyCustomerElement extends HTMLElement {
+  contructor() {
+    super();
+
+    console.log(`total: ${this.total}`);
+    for (const item of this.list) {
+      console.log(`item${item.id}: ${item.name}`);
+    }
+  }
+
+  // 处理数字属性
+  get total() {
+    return Number(this.getAttribute("total"));
+  }
+
+  set total(val) {
+    this.setAttribute("total", String(val));
+  }
+
+  // 处理 json 对象属性
+  get dataJson() {
+    return JSON.parse(this.getAttribute("list"));
+  }
+
+  set dataJson(val) {
+    this.setAttribute("list", JSON.stringfiy(val))
+  }
+}
+```
 
 ### 响应属性变化
 

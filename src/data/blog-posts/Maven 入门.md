@@ -324,3 +324,5 @@ idea 欢迎界面 → 自定义 → 所有设置
 [黑马程序员 - JAVA Web：Maven-课程介绍](https://www.bilibili.com/video/BV1yGydYEE3H?vd_source=cbb9bae25f5ac9e51f8ff965eb794230&spm_id_from=333.788.videopod.episodes&p=31)
 
 [GeekHour - 一小时 Maven 教程](https://www.bilibili.com/video/BV1uApMeWErY/?spm_id_from=333.337.search-card.all.click&vd_source=cbb9bae25f5ac9e51f8ff965eb794230)
+
+依赖 lombok 导致的问题： `java: java.lang.NoSuchFieldError: Class com.sun.tools.javac.tree.JCTree$JCImport does not have`，可见[这里](https://blog.csdn.net/weixin_36829761/article/details/136287081)
