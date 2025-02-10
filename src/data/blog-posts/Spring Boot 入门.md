@@ -153,7 +153,7 @@ project-root/
 
 代码示例如下：
 
-**表现层：**
+**控制器层 / 表现层：**
 
 ```java
 package net.harmless.controller;
@@ -205,7 +205,7 @@ public interface UserService {
 
 ```
 
-**数据访问层：**
+**持久层 / 数据访问层：**
 
 ```java
 package net.harmless.dao;
@@ -246,7 +246,7 @@ public interface UserDao {
 
 ![csd-2](https://s2.loli.net/2025/02/10/MzDXNwFuLQhW3sy.jpg)
 
-IoC（Inversion of Control） 控制翻转 能够解决这个问题：
+IoC（Inversion of Control） 控制反转 能够解决这个问题：
 
 ![csd-3](https://s2.loli.net/2025/02/10/4CIp13KluLxtW5Y.jpg)
 
@@ -256,53 +256,131 @@ IoC（Inversion of Control） 控制翻转 能够解决这个问题：
 
 ### 在 Spring 中的实现
 
+#### @Component
+
 沿用上面 User 的例子。要将各实现类控制翻转，只需使用 `@Component` 注解：
 
 ```java
-@Component
+@Component // 或 @Service
 class UserServiceImpl implements UserService {
     // ...
 }
 ```
 
 ```java
-@Component
+@Component // 或 @Repository
 class UserDaoImpl implements UserDao {
     // ...
 }
 ```
 
-然后需要依赖注入时，只需要对使用处的对象添加 `@Autowired` 注解：
+除了 `@Compoent` 注解，还有几个衍生注解能更好地表述标注类属于哪个层级：
 
-```java
-class UserController {
-    // 不要直接实例化
-    // private final UserService userService = new UserServiceImpl();
+|Ioc 注解|说明|位置|
+|---|---|---|
+|`@Component`|声明 bean 对象的基础注解|类不属于三层模型中时使用|
+|`@Controller`|`@Component` 的衍生注解|标注在表现层（控制类层）上，已被 `@RestController` 包含|
+|`@Service`|`@Component` 的衍生注解|标注在服务层（业务逻辑层）上|
+|`@Repository`|`@Component` 的衍生注解|标注在数据访问层上（由于和 mabatis 整合，用得少）|
 
-    @Autowired
-    private final UserService userService;
+被标注的类在 SpringBoot 中就会自动实例化 *bean 对象*，放入容器中管理。
 
-    public void getAllUsers() {
-        List<User> users = userService.getAllUsers();
+bean 对象的命名，默认为类名的小驼峰写法。如果要自定义可以使用 `@Component("beanObjName")` 来定义。
+
+> 需注意。并非使用了上述注解就一定会自动实例化。
+>
+> 自动实例化 bean 对象，依赖于 `@ScanComponent` 注解对类注解进行扫描。
+>
+> SpringBoot 中不用手动扫描，是因为启动类中的 `@SpringBootApplication` 已经默认包含，会去**扫描启动类所在包及其子包**。
+
+#### @Autowired
+
+可以使用 `@Autowired` 注解完成对 bean 对象的依赖注入。
+
+常见方式有三：
+
+1. 属性注入：
+
+    ```java
+    class UserController {
+        @Autowired
+        private final UserService userService;
     }
-}
-```
+    ```
 
-```java
-@Component
-public class UserServiceImpl implements UserService {
-    // 不要直接实例化
-    // private final UserDao userDao = new UserDaoImpl();
+    - 隐藏了类之间的依赖关系
+    - 可能会破坏类的封装性
 
-    @Autowired
-    private final UserDao userDao;
+2. 构造函数注入（推荐）：
 
-    @Override
-    public List<User> getAllUsers() {
-        return userDao.getAllUsers();
+    ```java
+    class UserController {
+        private final UserService userService;
+
+        @Autowired // 只有这个构造函数时，注解可省略
+        public UserController(UserService userService) {
+            this.userService = userService;
+        }
     }
-}
-```
+    ```
+
+    - 较繁琐
+
+3. setter 注入：
+
+    ```java
+    class UserController {
+        private final UserService userService;
+
+        @Autowired
+        public void setUserService(UserService userService) {
+            this.userService = userService;
+        }
+    }
+    ```
+
+#### bean 对象类型重复问题
+
+`@Autowired` 会根据 bean **对象的类型**，自动识别该注入哪个对象。但是当有重复类型的 bean 对象时就会报错。
+
+一般有三种解决方法：
+
+1. 设置控制反转类的优先级 `@Primary`
+
+    ```java
+    @Primary // 该类会优先生成 bean 对象
+    @Service
+    public class UserServiceImpl implements UserService {
+        // ...
+    }
+    ```
+
+2. 使用 `@Autowired` + `@Qualifier` 注明要注入的 bean 对象名
+
+    ```java
+    @RestController
+    public class UserController {
+        @Autowired
+        @Qualifier("userControllerImpl");
+        private final UserService userService;
+    }
+    ```
+
+3. 使用 `@Resource` 注明要注入的 bean 对象名
+
+    ```java
+    @RestController
+    public class UserController {
+        @Resource(name = "userControllerImpl");
+        private final UserService userService;
+    }
+    ```
+
+> @Resource 和 @Autowired 都可以依赖注入，但有区别：
+>
+> @Resource：JavaEE 标准，按名称注入
+>
+> @Autowired：Spring 标准，按类型注入
 
 ## refer
 
