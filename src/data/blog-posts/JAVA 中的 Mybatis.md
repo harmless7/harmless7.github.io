@@ -45,6 +45,27 @@ publishDate: "2025-02-11"
 
     为接口添加 `@Mapper` 注解，为方法添加 `@Select(sql)` 查询注解。
 
+4. 在测试类中测试查询方法
+
+    ```java
+    @SpringBootTest // 该注释会在调用测试方法时拉起 Spring Boot，从而建立 Ioc 容器
+    class LearnBatisApplicationTests {
+        private final UserMapper userMapper;
+
+        @Autowired // 通过依赖注入获取 Mapper 对象
+        public LearnBatisApplicationTests(UserMapper userMapper) {
+            this.userMapper = userMapper;
+        }
+
+        @Test
+        public void testFindAll() {
+            List<User> userList = this.userMapper.findAll();
+
+            userList.forEach(System.out::println);
+        }
+    }
+    ```
+
 ## 数据库连接池
 
 ## XML 映射配置
