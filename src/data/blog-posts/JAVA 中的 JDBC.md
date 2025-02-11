@@ -113,7 +113,7 @@ public void testQuery() {
 
 ## refer
 
-[黑马程序员 - JDBC](https://www.bilibili.com/video/BV1yGydYEE3H?spm_id_from=333.788.player.switch&vd_source=cbb9bae25f5ac9e51f8ff965eb794230&p=62)
+[黑马程序员 JavaWeb - JDBC](https://www.bilibili.com/video/BV1yGydYEE3H?spm_id_from=333.788.player.switch&vd_source=cbb9bae25f5ac9e51f8ff965eb794230&p=62)
 
 [mvn - mysql-connector-j](https://mvnrepository.com/artifact/com.mysql/mysql-connector-j)
 
