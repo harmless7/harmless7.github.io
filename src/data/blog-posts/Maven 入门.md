@@ -326,3 +326,33 @@ idea 欢迎界面 → 自定义 → 所有设置
 [GeekHour - 一小时 Maven 教程](https://www.bilibili.com/video/BV1uApMeWErY/?spm_id_from=333.337.search-card.all.click&vd_source=cbb9bae25f5ac9e51f8ff965eb794230)
 
 依赖 lombok 导致的问题： `java: java.lang.NoSuchFieldError: Class com.sun.tools.javac.tree.JCTree$JCImport does not have`，可见[这里](https://blog.csdn.net/weixin_36829761/article/details/136287081)
+
+```xml
+<dependency>
+    <groupId>org.projectlombok</groupId>
+    <artifactId>lombok</artifactId>
+    <version>1.18.32</version>
+    <scope>provided</scope>
+</dependency>
+```
+
+```xml
+<plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-compiler-plugin</artifactId>
+    <version>3.8.1</version>
+    <configuration>
+        <source>17</source>
+        <target>17</target>
+        <encoding>UTF-8</encoding>
+        <!-- 这里是新加的 -->
+        <annotationProcessorPaths>
+            <path>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>1.18.32</version>
+            </path>
+        </annotationProcessorPaths>
+    </configuration>
+</plugin>
+```
