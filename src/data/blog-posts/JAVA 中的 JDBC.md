@@ -111,6 +111,26 @@ public void testQuery() {
 
 `ResultSet` 用户封装查询结果的结果集。
 
+## 数据库连接池
+
+管理、分配、复用数据库连接（Connection）。并且释放空闲时间超过最大时间的连接。
+
+标准接口：`DataSource`
+
+由官方定义，第三方实现。
+
+```java
+Connection getConnection() throw SQLException;
+```
+
+最常用的有 Druid（阿里巴巴开源） 和 Hikari（Spring Boot 默认） 连接池。
+
+> 在 Spring Boot 使用 Druid 的方法：[druid-spring-boot-starter](https://github.com/alibaba/druid/tree/master/druid-spring-boot-starter)
+>
+> 1. 引入依赖：[https://mvnrepository.com/artifact/com.alibaba/druid-spring-boot-starter](https://mvnrepository.com/artifact/com.alibaba/druid-spring-boot-starter)
+>
+> 2. 配置添加：`spring.datasource.type=com.alibaba.druid.pool.DruidDataSource`
+
 ## refer
 
 [黑马程序员 JavaWeb - JDBC](https://www.bilibili.com/video/BV1yGydYEE3H?spm_id_from=333.788.player.switch&vd_source=cbb9bae25f5ac9e51f8ff965eb794230&p=62)
