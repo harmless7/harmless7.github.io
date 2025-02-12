@@ -327,6 +327,18 @@ idea 欢迎界面 → 自定义 → 所有设置
 
 依赖 lombok 导致的问题： `java: java.lang.NoSuchFieldError: Class com.sun.tools.javac.tree.JCTree$JCImport does not have`，可见[这里](https://blog.csdn.net/weixin_36829761/article/details/136287081)
 
+1. 删除插件
+
+```xml
+<plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-compiler-plugin</artifactId>
+    <!-- ... -->
+</plugin>
+```
+
+2. 加版本号
+
 ```xml
 <dependency>
     <groupId>org.projectlombok</groupId>
