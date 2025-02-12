@@ -204,6 +204,42 @@ mybatis.mapper-locations=classpath:mapper/*.xml
 
 插件搜索 MyBatisX，安装。能够快捷跳转 XML 配置文件与接口位置。
 
+## 驼峰字段返回问题
+
+关于 java bean 对象驼峰字段返回为 `null` 的原因：
+
+实体类属性名 和 数据库字段名 一致时，mybatis 才会自动封装。
+
+解决方法有三：
+
+1. 手动结果映射
+
+    ```java
+    @Result({
+        @Result(column = "create_time", property = "createTime"),
+        @Result(column = "update_time", property = "updateTime")
+    })
+    @Select("SELECT create_time, update_time FROM user")
+    public List<User> findAll();
+    ```
+
+2. 起别名
+
+    ```java
+    @Select("SELECT create_time createTime, update_time updateTime FROM user")
+    public List<User> findAll();
+    ```
+
+3. **开启驼峰命名（推荐）**
+
+    配置文件 application.yml 中：
+
+    ```yml
+    mybatis:
+        configuration:
+            map-underscore-to-camel-case: true
+    ```
+
 ## refer
 
 [Mybatis Home](https://mybatis.org/mybatis-3/zh_CN/index.html)
