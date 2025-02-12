@@ -382,6 +382,60 @@ bean 对象的命名，默认为类名的小驼峰写法。如果要自定义可
 >
 > @Autowired：Spring 标准，按类型注入
 
+## 配置文件
+
+可以用的配置方式：
+
+- properties
+
+    `src/main/resources/application.properties`
+
+    ```bash
+    spring.datasource.driver-class-name=com.mysql.jdbc.Driver
+    spring.datasource.url=jdbc:mysql://localhost:3306/web01
+    spring.datasource.username=root
+    spring.datasource.password=123456
+    ```
+
+- yaml / yml（更简洁，推荐）
+
+    `src/main/resources/application.yml`
+
+    ```yml
+    spring:
+        datasource:
+            driver-class-name: com.mysql.jdbc.Driver
+            url: jdbc:mysql://localhost:3306/web01
+            username: root
+            password: 123456
+    ```
+
+  - 数值前必须有空格
+  - 不能用 tab，缩进必须空格（数量不规定）
+  - 注释使用 `#`
+
+关于 yml 的一些语法：
+
+```yml
+# 对象 / Map
+user:
+  name: Tom
+  age: 18
+  gender: 男
+
+# 数组 / List / Set
+colors:
+  - red
+  - green
+  - blue
+
+# 0123
+number: '0123'
+
+# 八进制的 123
+number: 0123
+```
+
 ## refer
 
 [Spring 官网](https://spring.io/)
