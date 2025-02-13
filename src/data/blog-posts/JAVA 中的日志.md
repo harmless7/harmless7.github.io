@@ -93,16 +93,15 @@ publichDate: "2025-02-13"
 <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
   <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
     <!-- 日志文件名，%i 表示序号 -->
-    <FileNamePattern>D:/harmless-%d{yyyy-MM-dd}-$i.log</FileNamePattern>
+    <FileNamePattern>D:/harmless-%d{yyyy-MM-dd}-%i.log</FileNamePattern>
     <!-- 最多保留历史日志文件数量 -->
     <MaxHistory>30</MaxHistory>
     <!-- 最大文件大小，超过这个大小会触发滚动到新文件，默认为 10MB -->
     <maxFileSize>10MB</maxFileSize>
-
-    <encoder>
-      <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg %n</pattern>
-    </encoder>
   </rollingPolicy>
+  <encoder>
+    <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg %n</pattern>
+  </encoder>
 </appender>
 
 <!-- 日志输出级别 -->
@@ -134,11 +133,13 @@ xml 中的配置项 `level` 表示：**严重程度 >= level 的日志才会输�
 </root>
 ```
 
-## 关于文件输出的配置
+## spring-logback.xml
 
-询问 deepseek 的结果。
+这是 Spring Boot 推荐的 Logback 配置文件，专为 Spring Boot 环境设计。
 
-建议生产环境与开发环境分开配置日志目录，通过 spring 配置文件设置 `logging.file.path` ：
+spring-logback.xml 使得你可以使用 Spring 的 application.properties 或 application.yml 文件中的配置。
+
+可以做到生产环境与开发环境分开配置日志目录，通过 spring 配置文件设置 `logging.file.path` ：
 
 ```yml
 # log
@@ -154,13 +155,16 @@ logging:
 <configuration>
     <!-- 动态获取日志目录 -->
     <springProperty scope="context" name="LOG_DIR" source="logging.file.path" defaultValue="./logs" />
-    
+
     <!-- 文件输出 -->
     <appender name="ROLLING_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${LOG_DIR}/app.log</file>
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${LOG_DIR}/app.%d{yyyy-MM-dd}.log</fileNamePattern>
-            <maxHistory>7</maxHistory>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!-- 日志文件名，%i 表示序号 -->
+            <FileNamePattern>${LOG_DIR}/%d{yyyy-MM-dd}-%i.log</FileNamePattern>
+            <!-- 最多保留历史日志文件数量 -->
+            <MaxHistory>30</MaxHistory>
+            <!-- 最大文件大小，超过这个大小会触发滚动到新文件，默认为 10MB -->
+            <maxFileSize>10MB</maxFileSize>
         </rollingPolicy>
         <encoder>
             <pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n</pattern>
