@@ -76,22 +76,88 @@ Spring Boot 是 Spring 家族中的一个子项目。（[所有 Spring 项目](h
 
 首先在方法上使用 `@RequestMapping` 可以将请求映射到控制器方法。
 
-方法传参可以获取 [`HttpServletRequest`](https://docs.oracle.com/javaee/7/api/javax/servlet/http/HttpServletResponse.html) 对象，内含所有请求报文信息：
+##### 查询参数获取
+
+1. 使用 `HttpServletRequest` 获取请求对象
+
+    方法传参可以获取 [`HttpServletRequest`](https://docs.oracle.com/javaee/7/api/javax/servlet/http/HttpServletResponse.html) 对象，内含所有请求报文信息：
+
+    ```java
+    // DELETE /depts?id=1
+    @DeleteMapping("/depts")
+    public void delete(HttpServletRequest req) {
+        // 获取请求方法
+        String method = req.getMethod();
+
+        // 获取请求头
+        String contentType = req.getHeader("Content-type");
+
+        // 获取请求路径
+        String url = req.getRequestURL();
+
+        // 获取请求传参
+        String idStr = req.getParameter("id");
+        Integer id = Integer.valueOf(idStr);
+    }
+    ```
+
+2. 使用 `@RequestParam` 注解（推荐）
+
+    ```java
+    // DELETE /depts?id=1
+    @DeleteMapping("/depts")
+    public void delete(@RequestParam("id") Integer id) {
+        System.out.println(id);
+    }
+    ```
+
+    > 添加了 @RequestParam 注解，该参数在请求时必填。若不传会 400 报错
+    >
+    > 如果要非必填，可以使用 @RequestParam(value = 'id', required = false)。此时不传参，id == null
+
+3. 如果请求参数名和形参名相同，则可省略 `@RequestParam` （推荐，2 的特殊情况）
+
+    ```java
+    // DELETE /depts?id=1
+    @DeleteMapping("/depts")
+    public void delete(Integer id) {
+        System.out.println(id);
+    }
+    ```
+
+##### 路径参数获取
+
+使用 `@PathVariable` 注释来获取路径参数
 
 ```java
-@RequestMapping("/demo")
-public void demo(HttpServletRequest req) {
-    // 获取请求方法
-    String method = req.getMethod();
+// 形参名与路径参数不同名的情况
+@GetMapping("/users/{id}")
+public Result getUserById(@PathVariable("id") Integer deptId) {
+    User user = userService.findById(deptId);
+    return user != null ? Result.success(user) : Result.error("未找到对应记录");
+}
 
-    // 获取请求头
-    String contentType = req.getHeader("Content-type");
+// 当形参名与路径参数同名，可以不写注解括号内容
+@GetMapping("/users/{id}")
+public Result getUserById(@PathVariable Integer id) {
+    User user = userService.findById(id);
+    return user != null ? Result.success(user) : Result.error("未找到对应记录");
+}
+```
 
-    // 获取请求路径
-    String url = req.getRequestURL();
+##### application/json 传参
 
-    // 获取请求传参
-    String name = req.getParameter("name");
+使用一个对象直接获取参数，前提条件：
+
+- 请求头包含 Content-Type: application/json。
+- 对象类有与 JSON 字段对应的 getter/setter。
+
+```java
+// 假设请求传参：{ name: '张三' }
+@PostMapping("/create")
+public Result createUser(@RequestBody User user) {
+    // 将 JSON 自动反序列化为 User 对象
+    return Result.success(user.getUsername());
 }
 ```
 
@@ -100,14 +166,16 @@ public void demo(HttpServletRequest req) {
 1. 使用 [`HttpServletResponse`](https://docs.oracle.com/javaee/7/api/javax/servlet/http/HttpServletResponse.html) 构建响应报文
 
     ```java
+    @RequestMapping("/demo")
     public void demo(HttpServletRequest req, HttpServletResponse resp) {
         resp.getWriter().write("Hello World!"); // 需要用流输出
     }
     ```
 
-2. 方法直接返回（依赖于 `@RequestMapping`，只能在 Spring 中使用）
+2. 方法直接返回
 
     ```java
+    @RequestMapping("/demo")
     public ArrayList<User> demo() {
         return new ArrayList<>(
             Arrays.asList(
