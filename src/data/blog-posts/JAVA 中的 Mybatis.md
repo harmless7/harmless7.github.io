@@ -176,7 +176,7 @@ Mapper XML 文件的基本结构：
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="net.harmless.learnmybatis.mapper.UserMapper">
-    <select id="findAll" type="net.harmless.learnmybatis.pojo.User">
+    <select id="findAll" resultType="net.harmless.learnmybatis.pojo.User">
     </select>
 </mapper>
 ```
@@ -238,6 +238,34 @@ mybatis.mapper-locations=classpath:mapper/*.xml
     mybatis:
         configuration:
             map-underscore-to-camel-case: true
+    ```
+
+## 动态 SQL
+
+随着用户的输入或外部条件变化而变化的 SQL 语句。
+
+- `<if>`：判断条件是否成立，如果 `test` 结果为 `true`，则拼接 SQL
+
+    ```xml
+    <if test="name != null and name != ''">
+        emp.name LIKE CONCAT('%', #{name}, '%')
+    </if>
+    ```
+
+- `<where>`：根据查询条件，来生成 WHERE 关键字，并且会自动去除条件前多余的 AND 或 OR
+
+    ```xml
+    <where>
+        <if test="name != null and name != ''">
+            emp.name LIKE CONCAT('%', #{name}, '%')
+        </if>
+        <if test="gender != null">
+            AND emp.gender = #{gender}
+        </if>
+        <if test="startEntryDate != null and endEntryDate != null">
+            AND (emp.entry_date BETWEEN #{startEntryDate} AND #{endEntryDate})
+        </if>
+    </where>
     ```
 
 ## refer

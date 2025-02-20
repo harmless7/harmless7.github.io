@@ -112,8 +112,17 @@ Spring Boot 是 Spring 家族中的一个子项目。（[所有 Spring 项目](h
     ```
 
     > 添加了 @RequestParam 注解，该参数在请求时必填。若不传会 400 报错
-    >
-    > 如果要非必填，可以使用 @RequestParam(value = 'id', required = false)。此时不传参，id == null
+
+    `@RequestParam` 的一些配置：
+
+    - `@RequestParam(required = false)` 使得参数非必填
+    - `@RequestParam(defaultValue = '1')` 未传入时的默认值
+
+    `@DateTimeFormat` 注解可以用来指定日期时间格式：
+
+    ```java
+    public void demo(@DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endEntryDate) {}
+    ```
 
 3. 如果请求参数名和形参名相同，则可省略 `@RequestParam` （推荐，2 的特殊情况）
 
@@ -504,6 +513,50 @@ number: '0123'
 number: 0123
 ```
 
+## 分页查询插件 PageHelper
+
+[mvn - pagehelper-spring-boot-starter](https://mvnrepository.com/artifact/com.github.pagehelper/pagehelper-spring-boot-starter)
+
+1. 引入依赖
+
+    ```xml
+    <!-- https://mvnrepository.com/artifact/com.github.pagehelper/pagehelper-spring-boot-starter -->
+    <dependency>
+        <groupId>com.github.pagehelper</groupId>
+        <artifactId>pagehelper-spring-boot-starter</artifactId>
+        <version>2.1.0</version>
+    </dependency>
+    ```
+
+2. 定义 Mapper 接口的查询方法（无需考虑分页）
+
+3. 在 Service 方法中实现分页查询
+
+    ```java
+    @Override
+    public PageResult<Emp> page(Integer page, Integer pageSize) {
+        // 设置分页参数
+        PageHelper.startPage(page, pageSize);
+        // 查询（必须紧接着设置分页参数）
+        List<Emp> rows = this.empMapper.list();
+        // 解析查询结果
+        Page<Emp> p = (Page<Emp>) rows;
+        return new PageResult<Emp>(p.getTotal(), p.getResult());
+    }
+    ```
+
+很神奇，问了下 gpt 它的相关原理：
+
+1. PageHelper 的分页原理
+会通过 MyBatis 的拦截器机制修改 SQL 查询，在 SQL 中动态添加 LIMIT 或类似的分页条件。
+
+2. 为什么能转换为 `Page<Emp>`
+实际上，在 Mapper 返回的已经是一个 Page 对象了，只是你往往定义为 List。所以需要在逻辑层再强转一下。
+
+Page 对象实现了 List 接口，但扩展了更多分页相关的方法，因此可以直接转换为 `Page<Emp>` 对象。
+
+> 使用 PageHelper，SQL 语句结尾不能加分号
+
 ## refer
 
 [Spring 官网](https://spring.io/)
@@ -517,3 +570,5 @@ number: 0123
 [百度百科 - 控制反转](https://baike.baidu.com/item/%E6%8E%A7%E5%88%B6%E5%8F%8D%E8%BD%AC/1158025)
 
 [百度百科 - 依赖注入](https://baike.baidu.com/item/%E4%BE%9D%E8%B5%96%E6%B3%A8%E5%85%A5?fromModule=lemma_search-box)
+
+[PageHelper - HowToUse](https://github.com/pagehelper/Mybatis-PageHelper/blob/master/wikis/zh/HowToUse.md)

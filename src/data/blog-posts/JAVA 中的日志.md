@@ -1,7 +1,7 @@
 ---
 title: "JAVA 中的日志"
 description: "正经 JAVA 谁写日记啊？你写吗？"
-publichDate: "2025-02-13"
+publishDate: "2025-02-13"
 ---
 
 ## intro
