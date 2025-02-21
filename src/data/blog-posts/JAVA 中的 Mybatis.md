@@ -12,59 +12,59 @@ publishDate: "2025-02-11"
 
 1. 引入依赖：
 
-    在 idea 中创建项目时选择的依赖：
+   在 idea 中创建项目时选择的依赖：
 
-    ![mybatis-idea-create](https://s2.loli.net/2025/02/11/aDxGpMriIFv3zTg.jpg)
+   ![mybatis-idea-create](https://s2.loli.net/2025/02/11/aDxGpMriIFv3zTg.jpg)
 
 2. 配置 Mybatis
 
-    在 `src/resources/application.properties` （spring boot 核心配置文件）中配置数据库的连接信息：
+   在 `src/resources/application.properties` （spring boot 核心配置文件）中配置数据库的连接信息：
 
-    ```bash
-    # 配置数据库的连接信息
-    spring.datasource.url=jdbc:mysql://localhost:3306/harmless-jdbc
-    spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
-    spring.datasource.username=root
-    spring.datasource.password=harmless
-    ```
+   ```bash
+   # 配置数据库的连接信息
+   spring.datasource.url=jdbc:mysql://localhost:3306/harmless-jdbc
+   spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+   spring.datasource.username=root
+   spring.datasource.password=harmless
+   ```
 
 3. 创建 mybatis 的持久层接口
 
-    创建以 `XxxMapper` 命名的接口，放置于与入口类同级的 `/mapper/` （或 `/dao`）目录下：
+   创建以 `XxxMapper` 命名的接口，放置于与入口类同级的 `/mapper/` （或 `/dao`）目录下：
 
-    ```java
-    @Mapper // 运行时将自动创建一个实现类对象（代理对象），并放入 Ioc 容器
-    public interface UserMapper {
-    /**
-     * 查询所有用户
-     */
-    @Select("SELECT * FROM user")
-        public List<User> findAll();
-    }
-    ```
+   ```java
+   @Mapper // 运行时将自动创建一个实现类对象（代理对象），并放入 Ioc 容器
+   public interface UserMapper {
+   /**
+    * 查询所有用户
+    */
+   @Select("SELECT * FROM user")
+       public List<User> findAll();
+   }
+   ```
 
-    为接口添加 `@Mapper` 注解，为方法添加 `@Select(sql)` 查询注解。
+   为接口添加 `@Mapper` 注解，为方法添加 `@Select(sql)` 查询注解。
 
 4. 在测试类中测试查询方法
 
-    ```java
-    @SpringBootTest // 该注释会在调用测试方法时拉起 Spring Boot，从而建立 Ioc 容器
-    class LearnBatisApplicationTests {
-        private final UserMapper userMapper;
+   ```java
+   @SpringBootTest // 该注释会在调用测试方法时拉起 Spring Boot，从而建立 Ioc 容器
+   class LearnBatisApplicationTests {
+       private final UserMapper userMapper;
 
-        @Autowired // 通过依赖注入获取 Mapper 对象
-        public LearnBatisApplicationTests(UserMapper userMapper) {
-            this.userMapper = userMapper;
-        }
+       @Autowired // 通过依赖注入获取 Mapper 对象
+       public LearnBatisApplicationTests(UserMapper userMapper) {
+           this.userMapper = userMapper;
+       }
 
-        @Test
-        public void testFindAll() {
-            List<User> userList = this.userMapper.findAll();
+       @Test
+       public void testFindAll() {
+           List<User> userList = this.userMapper.findAll();
 
-            userList.forEach(System.out::println);
-        }
-    }
-    ```
+           userList.forEach(System.out::println);
+       }
+   }
+   ```
 
 ### mybatis 辅助配置
 
@@ -80,10 +80,10 @@ mybatis.configuration.log-impl=org.apache.ibatis.logging.stdout.StdOutImpl
 
 编写 SQL 时的标识符：
 
-|符号|说明|场景|优缺点|例子|
-|---|---|---|---|---|
-|`#{...}`|占位符。执行时会替换为 `?`，生成预编译 SQL|参数值传递|安全、性能高|`"DELETE FROM user WHERE id = #{id}"`|
-|`${...}`|拼接符。直接拼入 SQL，可能会被注入|表名、字段名动态设置|不安全、性能低|`"SELECT * FROM ${table}"`|
+| 符号     | 说明                                       | 场景                 | 优缺点         | 例子                                  |
+| -------- | ------------------------------------------ | -------------------- | -------------- | ------------------------------------- |
+| `#{...}` | 占位符。执行时会替换为 `?`，生成预编译 SQL | 参数值传递           | 安全、性能高   | `"DELETE FROM user WHERE id = #{id}"` |
+| `${...}` | 拼接符。直接拼入 SQL，可能会被注入         | 表名、字段名动态设置 | 不安全、性能低 | `"SELECT * FROM ${table}"`            |
 
 ### 增
 
@@ -96,6 +96,22 @@ public Interface UserMapper {
     @Insert("INSERT INTO user(username, password, name, age) VALUES(#{username}, #{password}, #{name}, #{age})")
     public void insert(User user);
 }
+```
+
+需要获取新增记录的主键：
+
+注解式：
+
+```java
+@Options(useGeneratedKeys = true, keyProperty = "")
+```
+
+XML 式：
+
+```xml
+<insert id="add" useGeneratedKey="true" keyProperty="id">
+    <!-- ... -->
+</insert>
 ```
 
 ### 删
@@ -155,15 +171,15 @@ public Interface UserMapper {
 
 1. 同名同包：XML 文件名与 Mapper 接口名一致，并且在相同包下。
 
-    > 例：
-    >
-    > `src/main/java` 下 `net.harmless.mapper.UserMapper.java` 
-    >
-    > 对应
-    >
-    > `src/main/resources` 下 `net/harmless/mapper/UserMapper.xml`
+   > 例：
+   >
+   > `src/main/java` 下 `net.harmless.mapper.UserMapper.java`
+   >
+   > 对应
+   >
+   > `src/main/resources` 下 `net/harmless/mapper/UserMapper.xml`
 
-    这是默认规范，但是是可配置的。详见下。
+   这是默认规范，但是是可配置的。详见下。
 
 2. namespace：XML 文件的 namespace 与 Mapper 接口全限定名一致。
 3. id：XML 文件中 sql 语句的 id 和 Mapper 接口中的方法名一致，并且返回类型一致。
@@ -214,31 +230,31 @@ mybatis.mapper-locations=classpath:mapper/*.xml
 
 1. 手动结果映射
 
-    ```java
-    @Result({
-        @Result(column = "create_time", property = "createTime"),
-        @Result(column = "update_time", property = "updateTime")
-    })
-    @Select("SELECT create_time, update_time FROM user")
-    public List<User> findAll();
-    ```
+   ```java
+   @Result({
+       @Result(column = "create_time", property = "createTime"),
+       @Result(column = "update_time", property = "updateTime")
+   })
+   @Select("SELECT create_time, update_time FROM user")
+   public List<User> findAll();
+   ```
 
 2. 起别名
 
-    ```java
-    @Select("SELECT create_time createTime, update_time updateTime FROM user")
-    public List<User> findAll();
-    ```
+   ```java
+   @Select("SELECT create_time createTime, update_time updateTime FROM user")
+   public List<User> findAll();
+   ```
 
 3. **开启驼峰命名（推荐）**
 
-    配置文件 application.yml 中：
+   配置文件 application.yml 中：
 
-    ```yml
-    mybatis:
-        configuration:
-            map-underscore-to-camel-case: true
-    ```
+   ```yml
+   mybatis:
+     configuration:
+       map-underscore-to-camel-case: true
+   ```
 
 ## 动态 SQL
 
@@ -246,27 +262,46 @@ mybatis.mapper-locations=classpath:mapper/*.xml
 
 - `<if>`：判断条件是否成立，如果 `test` 结果为 `true`，则拼接 SQL
 
-    ```xml
-    <if test="name != null and name != ''">
-        emp.name LIKE CONCAT('%', #{name}, '%')
-    </if>
-    ```
+  ```xml
+  <if test="name != null and name != ''">
+      emp.name LIKE CONCAT('%', #{name}, '%')
+  </if>
+  ```
 
 - `<where>`：根据查询条件，来生成 WHERE 关键字，并且会自动去除条件前多余的 AND 或 OR
 
-    ```xml
-    <where>
-        <if test="name != null and name != ''">
-            emp.name LIKE CONCAT('%', #{name}, '%')
-        </if>
-        <if test="gender != null">
-            AND emp.gender = #{gender}
-        </if>
-        <if test="startEntryDate != null and endEntryDate != null">
-            AND (emp.entry_date BETWEEN #{startEntryDate} AND #{endEntryDate})
-        </if>
-    </where>
-    ```
+  ```xml
+  <where>
+      <if test="name != null and name != ''">
+          emp.name LIKE CONCAT('%', #{name}, '%')
+      </if>
+      <if test="gender != null">
+          AND emp.gender = #{gender}
+      </if>
+      <if test="startEntryDate != null and endEntryDate != null">
+          AND (emp.entry_date BETWEEN #{startEntryDate} AND #{endEntryDate})
+      </if>
+  </where>
+  ```
+
+- 当需要循环生成 sql 语句，可使用 `<foreach>` 标签来生成：
+
+  ```xml
+  <insert id="insertBatch">
+      INSERT INTO emp_expr (emp_id, begin, end, company, job) VALUES
+      <foreach collection="exprList" item="expr" separator=",">
+          (#{expr.empId}, #{expr.begin}, #{expr.end}, #{expr.company}, #{expr.job})
+      </foreach>
+  </insert>
+  ```
+
+  `foreach` 的属性：
+
+  1. collection: 集合名称
+  2. item：集合项
+  3. separator：分隔符
+  4. open：遍历开始前拼接的字段
+  5. close：遍历结束后拼接的字段
 
 ## refer
 
