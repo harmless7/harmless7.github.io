@@ -133,6 +133,15 @@ xml 中的配置项 `level` 表示：**严重程度 >= level 的日志才会输�
 </root>
 ```
 
+> 单独定义某个模块的日志输出级别，可在 `application.yml` 中设置：
+>
+> ```yml
+> logging:
+>   level:
+>     # 事务管理日志级别定义为：debug
+>     org.springframework.jdbc.support.JdbcTransactionManager: debug
+> ```
+
 ## spring-logback.xml
 
 这是 Spring Boot 推荐的 Logback 配置文件，专为 Spring Boot 环境设计。

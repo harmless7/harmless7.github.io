@@ -80,59 +80,59 @@ Spring Boot 是 Spring 家族中的一个子项目。（[所有 Spring 项目](h
 
 1. 使用 `HttpServletRequest` 获取请求对象
 
-    方法传参可以获取 [`HttpServletRequest`](https://docs.oracle.com/javaee/7/api/javax/servlet/http/HttpServletResponse.html) 对象，内含所有请求报文信息：
+   方法传参可以获取 [`HttpServletRequest`](https://docs.oracle.com/javaee/7/api/javax/servlet/http/HttpServletResponse.html) 对象，内含所有请求报文信息：
 
-    ```java
-    // DELETE /depts?id=1
-    @DeleteMapping("/depts")
-    public void delete(HttpServletRequest req) {
-        // 获取请求方法
-        String method = req.getMethod();
+   ```java
+   // DELETE /depts?id=1
+   @DeleteMapping("/depts")
+   public void delete(HttpServletRequest req) {
+       // 获取请求方法
+       String method = req.getMethod();
 
-        // 获取请求头
-        String contentType = req.getHeader("Content-type");
+       // 获取请求头
+       String contentType = req.getHeader("Content-type");
 
-        // 获取请求路径
-        String url = req.getRequestURL();
+       // 获取请求路径
+       String url = req.getRequestURL();
 
-        // 获取请求传参
-        String idStr = req.getParameter("id");
-        Integer id = Integer.valueOf(idStr);
-    }
-    ```
+       // 获取请求传参
+       String idStr = req.getParameter("id");
+       Integer id = Integer.valueOf(idStr);
+   }
+   ```
 
 2. 使用 `@RequestParam` 注解（推荐）
 
-    ```java
-    // DELETE /depts?id=1
-    @DeleteMapping("/depts")
-    public void delete(@RequestParam("id") Integer id) {
-        System.out.println(id);
-    }
-    ```
+   ```java
+   // DELETE /depts?id=1
+   @DeleteMapping("/depts")
+   public void delete(@RequestParam("id") Integer id) {
+       System.out.println(id);
+   }
+   ```
 
-    > 添加了 @RequestParam 注解，该参数在请求时必填。若不传会 400 报错
+   > 添加了 @RequestParam 注解，该参数在请求时必填。若不传会 400 报错
 
-    `@RequestParam` 的一些配置：
+   `@RequestParam` 的一些配置：
 
-    - `@RequestParam(required = false)` 使得参数非必填
-    - `@RequestParam(defaultValue = '1')` 未传入时的默认值
+   - `@RequestParam(required = false)` 使得参数非必填
+   - `@RequestParam(defaultValue = '1')` 未传入时的默认值
 
-    `@DateTimeFormat` 注解可以用来指定日期时间格式：
+   `@DateTimeFormat` 注解可以用来指定日期时间格式：
 
-    ```java
-    public void demo(@DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endEntryDate) {}
-    ```
+   ```java
+   public void demo(@DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endEntryDate) {}
+   ```
 
 3. 如果请求参数名和形参名相同，则可省略 `@RequestParam` （推荐，2 的特殊情况）
 
-    ```java
-    // DELETE /depts?id=1
-    @DeleteMapping("/depts")
-    public void delete(Integer id) {
-        System.out.println(id);
-    }
-    ```
+   ```java
+   // DELETE /depts?id=1
+   @DeleteMapping("/depts")
+   public void delete(Integer id) {
+       System.out.println(id);
+   }
+   ```
 
 ##### 路径参数获取
 
@@ -174,28 +174,28 @@ public Result createUser(@RequestBody User user) {
 
 1. 使用 [`HttpServletResponse`](https://docs.oracle.com/javaee/7/api/javax/servlet/http/HttpServletResponse.html) 构建响应报文
 
-    ```java
-    @RequestMapping("/demo")
-    public void demo(HttpServletRequest req, HttpServletResponse resp) {
-        resp.getWriter().write("Hello World!"); // 需要用流输出
-    }
-    ```
+   ```java
+   @RequestMapping("/demo")
+   public void demo(HttpServletRequest req, HttpServletResponse resp) {
+       resp.getWriter().write("Hello World!"); // 需要用流输出
+   }
+   ```
 
 2. 方法直接返回
 
-    ```java
-    @RequestMapping("/demo")
-    public ArrayList<User> demo() {
-        return new ArrayList<>(
-            Arrays.asList(
-                new User(1, "张三"),
-                new User(2, "李四")
-            )
-        );
-    }
-    ```
+   ```java
+   @RequestMapping("/demo")
+   public ArrayList<User> demo() {
+       return new ArrayList<>(
+           Arrays.asList(
+               new User(1, "张三"),
+               new User(2, "李四")
+           )
+       );
+   }
+   ```
 
-    返回对象或集合会自动转换为 JSON 数据。
+   返回对象或集合会自动转换为 JSON 数据。
 
 ## 三层架构
 
@@ -353,14 +353,14 @@ class UserDaoImpl implements UserDao {
 
 除了 `@Compoent` 注解，还有几个衍生注解能更好地表述标注类属于哪个层级：
 
-|Ioc 注解|说明|位置|
-|---|---|---|
-|`@Component`|声明 bean 对象的基础注解|类不属于三层模型中时使用|
-|`@Controller`|`@Component` 的衍生注解|标注在表现层（控制类层）上，已被 `@RestController` 包含|
-|`@Service`|`@Component` 的衍生注解|标注在服务层（业务逻辑层）上|
-|`@Repository`|`@Component` 的衍生注解|标注在数据访问层上（由于和 mabatis 整合，用得少）|
+| Ioc 注解      | 说明                     | 位置                                                    |
+| ------------- | ------------------------ | ------------------------------------------------------- |
+| `@Component`  | 声明 bean 对象的基础注解 | 类不属于三层模型中时使用                                |
+| `@Controller` | `@Component` 的衍生注解  | 标注在表现层（控制类层）上，已被 `@RestController` 包含 |
+| `@Service`    | `@Component` 的衍生注解  | 标注在服务层（业务逻辑层）上                            |
+| `@Repository` | `@Component` 的衍生注解  | 标注在数据访问层上（由于和 mabatis 整合，用得少）       |
 
-被标注的类在 SpringBoot 中就会自动实例化 *bean 对象*，放入容器中管理。
+被标注的类在 SpringBoot 中就会自动实例化 _bean 对象_，放入容器中管理。
 
 bean 对象的命名，默认为类名的小驼峰写法。如果要自定义可以使用 `@Component("beanObjName")` 来定义。
 
@@ -378,43 +378,43 @@ bean 对象的命名，默认为类名的小驼峰写法。如果要自定义可
 
 1. 属性注入：
 
-    ```java
-    class UserController {
-        @Autowired
-        private final UserService userService;
-    }
-    ```
+   ```java
+   class UserController {
+       @Autowired
+       private final UserService userService;
+   }
+   ```
 
-    - 隐藏了类之间的依赖关系
-    - 可能会破坏类的封装性
+   - 隐藏了类之间的依赖关系
+   - 可能会破坏类的封装性
 
 2. 构造函数注入（推荐）：
 
-    ```java
-    class UserController {
-        private final UserService userService;
+   ```java
+   class UserController {
+       private final UserService userService;
 
-        @Autowired // 只有这个构造函数时，注解可省略
-        public UserController(UserService userService) {
-            this.userService = userService;
-        }
-    }
-    ```
+       @Autowired // 只有这个构造函数时，注解可省略
+       public UserController(UserService userService) {
+           this.userService = userService;
+       }
+   }
+   ```
 
-    - 较繁琐
+   - 较繁琐
 
 3. setter 注入：
 
-    ```java
-    class UserController {
-        private final UserService userService;
+   ```java
+   class UserController {
+       private final UserService userService;
 
-        @Autowired
-        public void setUserService(UserService userService) {
-            this.userService = userService;
-        }
-    }
-    ```
+       @Autowired
+       public void setUserService(UserService userService) {
+           this.userService = userService;
+       }
+   }
+   ```
 
 #### bean 对象类型重复问题
 
@@ -424,34 +424,34 @@ bean 对象的命名，默认为类名的小驼峰写法。如果要自定义可
 
 1. 设置控制反转类的优先级 `@Primary`
 
-    ```java
-    @Primary // 该类会优先生成 bean 对象
-    @Service
-    public class UserServiceImpl implements UserService {
-        // ...
-    }
-    ```
+   ```java
+   @Primary // 该类会优先生成 bean 对象
+   @Service
+   public class UserServiceImpl implements UserService {
+       // ...
+   }
+   ```
 
 2. 使用 `@Autowired` + `@Qualifier` 注明要注入的 bean 对象名
 
-    ```java
-    @RestController
-    public class UserController {
-        @Autowired
-        @Qualifier("userControllerImpl");
-        private final UserService userService;
-    }
-    ```
+   ```java
+   @RestController
+   public class UserController {
+       @Autowired
+       @Qualifier("userControllerImpl");
+       private final UserService userService;
+   }
+   ```
 
 3. 使用 `@Resource` 注明要注入的 bean 对象名
 
-    ```java
-    @RestController
-    public class UserController {
-        @Resource(name = "userControllerImpl");
-        private final UserService userService;
-    }
-    ```
+   ```java
+   @RestController
+   public class UserController {
+       @Resource(name = "userControllerImpl");
+       private final UserService userService;
+   }
+   ```
 
 > @Resource 和 @Autowired 都可以依赖注入，但有区别：
 >
@@ -465,27 +465,27 @@ bean 对象的命名，默认为类名的小驼峰写法。如果要自定义可
 
 - properties
 
-    `src/main/resources/application.properties`
+  `src/main/resources/application.properties`
 
-    ```bash
-    spring.datasource.driver-class-name=com.mysql.jdbc.Driver
-    spring.datasource.url=jdbc:mysql://localhost:3306/web01
-    spring.datasource.username=root
-    spring.datasource.password=123456
-    ```
+  ```bash
+  spring.datasource.driver-class-name=com.mysql.jdbc.Driver
+  spring.datasource.url=jdbc:mysql://localhost:3306/web01
+  spring.datasource.username=root
+  spring.datasource.password=123456
+  ```
 
 - yaml / yml（更简洁，推荐）
 
-    `src/main/resources/application.yml`
+  `src/main/resources/application.yml`
 
-    ```yml
-    spring:
-        datasource:
-            driver-class-name: com.mysql.jdbc.Driver
-            url: jdbc:mysql://localhost:3306/web01
-            username: root
-            password: 123456
-    ```
+  ```yml
+  spring:
+    datasource:
+      driver-class-name: com.mysql.jdbc.Driver
+      url: jdbc:mysql://localhost:3306/web01
+      username: root
+      password: 123456
+  ```
 
   - 数值前必须有空格
   - 不能用 tab，缩进必须空格（数量不规定）
@@ -519,43 +519,136 @@ number: 0123
 
 1. 引入依赖
 
-    ```xml
-    <!-- https://mvnrepository.com/artifact/com.github.pagehelper/pagehelper-spring-boot-starter -->
-    <dependency>
-        <groupId>com.github.pagehelper</groupId>
-        <artifactId>pagehelper-spring-boot-starter</artifactId>
-        <version>2.1.0</version>
-    </dependency>
-    ```
+   ```xml
+   <!-- https://mvnrepository.com/artifact/com.github.pagehelper/pagehelper-spring-boot-starter -->
+   <dependency>
+       <groupId>com.github.pagehelper</groupId>
+       <artifactId>pagehelper-spring-boot-starter</artifactId>
+       <version>2.1.0</version>
+   </dependency>
+   ```
 
 2. 定义 Mapper 接口的查询方法（无需考虑分页）
 
 3. 在 Service 方法中实现分页查询
 
-    ```java
-    @Override
-    public PageResult<Emp> page(Integer page, Integer pageSize) {
-        // 设置分页参数
-        PageHelper.startPage(page, pageSize);
-        // 查询（必须紧接着设置分页参数）
-        List<Emp> rows = this.empMapper.list();
-        // 解析查询结果
-        Page<Emp> p = (Page<Emp>) rows;
-        return new PageResult<Emp>(p.getTotal(), p.getResult());
-    }
-    ```
+   ```java
+   @Override
+   public PageResult<Emp> page(Integer page, Integer pageSize) {
+       // 设置分页参数
+       PageHelper.startPage(page, pageSize);
+       // 查询（必须紧接着设置分页参数）
+       List<Emp> rows = this.empMapper.list();
+       // 解析查询结果
+       Page<Emp> p = (Page<Emp>) rows;
+       return new PageResult<Emp>(p.getTotal(), p.getResult());
+   }
+   ```
 
 很神奇，问了下 gpt 它的相关原理：
 
 1. PageHelper 的分页原理
-会通过 MyBatis 的拦截器机制修改 SQL 查询，在 SQL 中动态添加 LIMIT 或类似的分页条件。
+   会通过 MyBatis 的拦截器机制修改 SQL 查询，在 SQL 中动态添加 LIMIT 或类似的分页条件。
 
 2. 为什么能转换为 `Page<Emp>`
-实际上，在 Mapper 返回的已经是一个 Page 对象了，只是你往往定义为 List。所以需要在逻辑层再强转一下。
+   实际上，在 Mapper 返回的已经是一个 Page 对象了，只是你往往定义为 List。所以需要在逻辑层再强转一下。
 
 Page 对象实现了 List 接口，但扩展了更多分页相关的方法，因此可以直接转换为 `Page<Emp>` 对象。
 
 > 使用 PageHelper，SQL 语句结尾不能加分号
+
+## 事务处理
+
+sql 语句写法：
+
+```sql
+-- 开启事务
+START TRANSACTION;
+
+-- 操作
+-- ...
+
+-- 提交事务
+COMMIT;
+
+-- 回滚
+ROLLBACK;
+```
+
+Spring 事务管理：
+
+`@Transactional` 注解，可以将当前方法交给 spring 进行事务管理。
+
+应当放置在业务层（service）的方法/类/接口上：
+
+方法（推荐）：
+
+```java
+@Transactional
+@Override
+public void save(Emp emp) {
+    // 1. 保存员工
+    empMapper.insert(emp);
+    int i = 1 / 0;
+
+    // 2. 保存工作经历
+    Integer empId = emp.getId();
+    List<EmpExpr> exprList = emp
+}
+```
+
+类：
+
+```java
+// 整个类都实行事务控制
+@Transactional
+@Service
+public class EmpServiceImpl implements EmpService {}
+```
+
+接口：
+
+```java
+// 所有实现类都实行事务控制
+@Transactional
+public interface EmpService {}
+```
+
+### `rollbackFor` - 扩展回滚条件
+
+`@Transactional` 默认出现 `RuntimeException`（运行时异常） 才会进行回滚。
+
+如果要指定其它异常情况也回滚，可以使用 `rollbackFor` 属性：
+
+```java
+@Transactional(rollbackFor = {Exception.class}) // 所有异常都会回滚
+@Override
+public void save(Emp emp) {
+    // ...
+}
+```
+
+### `propagation` - 控制事务传播行为
+
+事务传播行为：当**一个事务方法被另一个事务方法调用**时，**被调用方法**应该如何进行事务控制。
+
+|属性值|含义|
+|---|---|
+|**REQUIRED**|【默认值】需要事务，有则加入，无则创建新事物|
+|**REQUIRES_NEW**|需要新事物，无论有无，总是创建新事物（适用于记录日志，即无论主 SQL 是否成功，日志新增 SQL 都正常执行）|
+|SUPPORTS|支持事务，有则加入，无则在无事务状态中运行|
+|NOT_SUPPORTED|不支持事务，在无事务状态下运行，如果当前存在已有事务，则挂起当前事务|
+|MANDATORY|必须有事务，否则报异常|
+|NEVER|必须没事务，否则抛异常|
+|...|...|
+
+```java
+@Transactional(propagetion = Propagation.REQUIRES_NEW)
+@Override
+public void insertLog(EmpLog empLog) {
+    empLogMapper.insert(empLog);
+}
+```
 
 ## refer
 
