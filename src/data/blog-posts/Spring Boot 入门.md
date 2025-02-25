@@ -650,6 +650,53 @@ public void insertLog(EmpLog empLog) {
 }
 ```
 
+## 使用 properties 配置项
+
+有时需要在代码中使用配置文件的配置项，例如：
+
+```yml
+# 阿里云
+aliyun:
+  oss:
+    endpoint: https://oss-cn-shenzhen.aliyuncs.com
+    bucketName: harmless-java-web
+    region: cn-shenzhen
+```
+
+在类中有两种使用方式：
+
+- 单条使用：`@Value`
+
+    ```java
+    @Value("${aliyun.oss.endpoint}")
+    private final String endpoint;
+    ```
+
+- 批量使用：定义 java bean 类，并添加 `@ConfigurationProperties` 注解
+
+    ```java
+    @Data
+    @Component
+    @ConfigurationProperties(prefix = "aliyun.oss")
+    public class AliyunOSSProperties {
+        private String endpoint;
+        private String bucketName;
+        private String region;
+    }
+    ```
+
+    然后在需要使用的地方直接依赖注入
+
+    ```java
+    private final AliyunOSSProperties aliyunOSSProperties;
+
+    @Autowired
+    public AliyunOSS(AliyunOSSProperties aliyunOSSProperties) {
+        this.aliyunOSSProperties = aliyunOSSProperties;
+        log.info("endpoint: {}", aliyunOSSProperties.getEndpoint());
+    }
+    ```
+
 ## refer
 
 [Spring 官网](https://spring.io/)
