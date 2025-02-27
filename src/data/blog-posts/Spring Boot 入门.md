@@ -697,6 +697,32 @@ aliyun:
     }
     ```
 
+## 全局异常处理器
+
+想要捕获并规范化全局报错，又要避免每个 CSD 层级都加入大量的 try catch 语句。
+
+可以在 Controller 层构造一个全局异常处理器：
+
+```java
+package net.harmless.controller;
+
+import lombok.extern.slf4j.Slf4j;
+import net.harmless.pojo.Result;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+@Slf4j
+@RestControllerAdvice // important
+public class GlobalExceptionHandler {
+    @ExceptionHandler // important
+    public Result handleException(Exception e) {
+        log.error("发生错误：{}", e.getMessage());
+        return Result.error(e.getMessage());
+    }
+}
+
+```
+
 ## refer
 
 [Spring 官网](https://spring.io/)
