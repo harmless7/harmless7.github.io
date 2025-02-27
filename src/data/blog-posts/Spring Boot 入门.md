@@ -708,19 +708,30 @@ package net.harmless.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import net.harmless.pojo.Result;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @Slf4j
-@RestControllerAdvice // important
+@RestControllerAdvice
 public class GlobalExceptionHandler {
-    @ExceptionHandler // important
+    @ExceptionHandler
     public Result handleException(Exception e) {
         log.error("发生错误：{}", e.getMessage());
         return Result.error(e.getMessage());
     }
-}
 
+    // 优先捕获更精确的异常
+    // 如果是 DuplicateKeyException 就会执行这里，而非上面那个方法
+    @ExceptionHandler
+    public Result handleDuplicateKeyException(DuplicateKeyException e) {
+        log.error("发生错误：{}", e.getMessage());
+        String msg = e.getMessage();
+        int i = msg.indexOf("Duplicate entry");
+        String s = msg.substring(i).split(" ")[2];
+        return Result.error(s + "已存在");
+    }
+}
 ```
 
 ## refer
