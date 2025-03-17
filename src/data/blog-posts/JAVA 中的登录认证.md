@@ -153,7 +153,7 @@ public class JwtUtils {
      * 解析 JWT 令牌
      *
      * @param jwt JWT 令牌
-     * @return DecodedJWT 对象，可使用 getClaim 方法获取数据
+     * @return DecodedJWT 对象，可使用 getClaim 方法获取数据，如果校验不通过会抛出错误
      */
     public static DecodedJWT parseJWT(String jwt) {
         Algorithm algorithm = Algorithm.HMAC256(secret);
@@ -172,6 +172,12 @@ public class JwtUtils {
 ### Filter 过滤器
 
 JAVA WEB 自带的组件，不依赖 SpringBoot。
+
+![filter_chain](https://s2.loli.net/2025/03/17/VObdqKzJ4Ug1H68.png)
+
+多个过滤器会形成过滤链。按过滤器名排序先后执行。（如 `AbcFilter` 早于 `DemoFilter` 执行）
+
+#### 基础使用
 
 1. 定义过滤器
 
@@ -197,10 +203,14 @@ JAVA WEB 自带的组件，不依赖 SpringBoot。
         // 拦截请求
         @Override
         public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
+            // 放行前逻辑
             log.info("请求对象:{}", servletRequest);
             log.info("相应对象:{}", servletResponse);
+
             // 放行请求
             filterChain.doFilter(servletRequest, servletResponse);
+
+            // 放行后逻辑
         }
 
         @Override
@@ -240,6 +250,70 @@ JAVA WEB 自带的组件，不依赖 SpringBoot。
 
     }
     ```
+
+#### token 校验 demo
+
+```java
+// 忽略校验路由
+private static final String[] IGNORE_URLS = {
+    "/login"
+};
+
+/**
+ * 设置错误响应
+ * @param response
+ * @param status
+ * @param msg
+ * @throws IOException
+ */
+private void setErrorResponse(HttpServletResponse response, int status, String msg) throws IOException {
+    response.setStatus(status);
+    response.setContentType("application/json; charset=UTF-8");
+    HashMap<Object, Object> errorMap = new HashMap<>();
+    errorMap.put("code", status);
+    errorMap.put("msg", msg);
+
+    ObjectMapper objectMapper = new ObjectMapper(); // 用于将 JAVA 对象转为 JSON
+    response.getWriter().write(objectMapper.writeValueAsString(errorMap));
+}
+
+@Override
+public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
+    // 1. 获取请求 url
+    HttpServletRequest request = (HttpServletRequest) servletRequest;
+    HttpServletResponse response = (HttpServletResponse) servletResponse;
+
+    // 2. 判断请求 url 是否是非校验路由，如果是，则直接放行
+    for (String url : IGNORE_URLS) {
+        if (url.contains(request.getRequestURI())) {
+            filterChain.doFilter(servletRequest, servletResponse);
+            return;
+        }
+    }
+
+    // 3. 获取令牌
+    String token = request.getHeader("Authorization");
+
+    // 4. 校验令牌
+    // 无令牌
+    if (token == null || token.isEmpty()) {
+        setErrorResponse(response, HttpStatus.SC_UNAUTHORIZED, "未获取到令牌");
+        return;
+    }
+    // 令牌不合法
+    try {
+        DecodedJWT decodedJWT = JwtUtils.parseJWT(token);
+        Map<String, Claim> claims = decodedJWT.getClaims();
+        log.info("claims: {}", claims);
+    } catch (Exception e){
+        setErrorResponse(response, HttpStatus.SC_UNAUTHORIZED, "令牌不合法");
+        return;
+    }
+
+    // 放行
+    filterChain.doFilter(servletRequest, servletResponse);
+}
+```
 
 ### Interceptor 拦截器
 
