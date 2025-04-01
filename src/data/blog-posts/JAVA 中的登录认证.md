@@ -173,11 +173,7 @@ public class JwtUtils {
 
 JAVA WEB 自带的组件，不依赖 SpringBoot。
 
-![filter_chain](https://s2.loli.net/2025/03/17/VObdqKzJ4Ug1H68.png)
-
-多个过滤器会形成过滤链。按过滤器名排序先后执行。（如 `AbcFilter` 早于 `DemoFilter` 执行）
-
-#### 基础使用
+#### 过滤器基础使用
 
 1. 定义过滤器
 
@@ -251,6 +247,12 @@ JAVA WEB 自带的组件，不依赖 SpringBoot。
     }
     ```
 
+#### 过滤链
+
+![filter_chain](https://s2.loli.net/2025/03/17/VObdqKzJ4Ug1H68.png)
+
+多个过滤器会形成过滤链。按过滤器名排序先后执行。（如 `AbcFilter` 早于 `DemoFilter` 执行）
+
 #### token 校验 demo
 
 ```java
@@ -316,6 +318,63 @@ public void doFilter(ServletRequest servletRequest, ServletResponse servletRespo
 ```
 
 ### Interceptor 拦截器
+
+Spring 框架提供，用于动态拦截控制器方法的执行。
+
+#### 拦截器基础使用
+
+1. 定义拦截器
+
+    实现 `HandlerInterceptor` 接口，并实现其所有方法：
+
+    ```java
+    // interceptor/DemoInterceptor.java
+
+    @Component
+    public class DemoInterceptor implements HandlerInterceptor {
+        /**
+         * preHandle 访问资源前执行
+         * 返回 boolean: true: 放行, false: 不放行
+         */
+        @Override
+        public boolean preHandle(HttpServletRequest req, HttpServletResponse resp, Object handler) throws Exception {
+            return true;
+        }
+
+        /**
+         * postHandle 放行后并访问资源后执行
+         */
+        @Override
+        public void postHandle(HttpServletRequest req, HttpServletResponse resp, Object handler, ModelAndView mv) throws Exception {
+            System.out.println("preHandle");
+        }
+
+        /**
+         * 视图渲染完毕后执行
+         * (前后端不分离的情况下有用)
+         */
+        @Override
+        public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
+            System.out.println("afterCompletion");
+        }
+    }
+    ```
+
+2. 定义配置类，注册拦截器
+
+    ```java
+    // config/WebConfig.java
+
+    @Configuration
+    public class WebConfig implements WebMvcConfigurer {
+        @Autowired
+        private DemoInterceptor demoInterceptor;
+        @Override
+        public void addInterceptors(InterceptorRegistry registry) {
+            registry.addInterceptor(demoInterceptor).addPathPatterns("/**"); // 拦截所有请求
+        }
+    }
+    ```
 
 ## refer
 
