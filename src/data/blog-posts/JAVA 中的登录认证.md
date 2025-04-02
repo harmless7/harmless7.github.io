@@ -165,72 +165,41 @@ public class JwtUtils {
 
 ## 令牌检验
 
-需要在所有需健全接口前，检查请求是否携带 token。
+需在所有鉴权接口前校验 token。
 
 有两种实现方法：`Filter` 过滤器 和 `Interceptor` 拦截器
 
 ### Filter 过滤器
 
-JAVA WEB 自带的组件，不依赖 SpringBoot。
+依赖于 `jakarata.servlet`，属于 Jakarta EE（原 Java EE） 规范的一部分。
 
-#### 过滤器基础使用
+#### 过滤器使用步骤
 
-1. 定义过滤器
-
-    定义一个类，实现 Filter 接口，并重写其所有方法
-
-    ```java
-    package net.harmless.filter;
-
-    import jakarta.servlet.*;
-    import jakarta.servlet.annotation.WebFilter;
-    import lombok.extern.slf4j.Slf4j;
-
-    import java.io.IOException;
-
-    @Slf4j
-    @WebFilter(urlPatterns = "/*")
-    public class DemoFilter implements Filter {
-        @Override
-        public void init(FilterConfig filterConfig) throws ServletException {
-            Filter.super.init(filterConfig);
-        }
-
-        // 拦截请求
-        @Override
-        public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-            // 放行前逻辑
-            log.info("请求对象:{}", servletRequest);
-            log.info("相应对象:{}", servletResponse);
-
-            // 放行请求
-            filterChain.doFilter(servletRequest, servletResponse);
-
-            // 放行后逻辑
-        }
-
-        @Override
-        public void destroy() {
-            Filter.super.destroy();
-        }
-    }
-
-    ```
-
-2. 配置过滤器
-
-    Filter 实现类加上 `@WebFilter` 注解，配置拦截资源的路径。
-
-    ```java
-    @WebFilter(urlPatterns = "/*") //配置过滤器要拦截的请求路径（ /* 表示拦截浏览器的所有请求 ）
-    public class DemoFilter implements Filter {
-        // ...
-    }
-    ```
+1. 配置 `Servlet` 支持
 
     然后还需要去启动类添加 `@ServletComponentScan` 注解，为了让 SpringBoot 支持 Servlet 组件
 
-    ```java
+2. 实现过滤器
+
+    过滤器类需添加 `@WebFilter(urlPatterns = "/*")` 注释
+
+    实现 `jakarta.servlet.Filter` 接口，并重写其所有方法：
+
+    - `init`：创建过滤器实例时执行，只执行一次
+    - `doFilter`：请求资源前执行。**可在此选择放行或拦截请求。**
+    - `destory`：web 服务器关闭前执行
+
+#### 过滤链
+
+![filter_chain](https://s2.loli.net/2025/03/17/VObdqKzJ4Ug1H68.png)
+
+多个过滤器会形成过滤链。按过滤器名排序先后执行。（如 `AbcFilter` 早于 `DemoFilter` 执行）
+
+#### TokenFilter demo
+
+`Servlet` 支持（在启动类配置）：
+
+```java
     package net.harmless;
 
     import org.springframework.boot.SpringApplication;
@@ -245,75 +214,89 @@ JAVA WEB 自带的组件，不依赖 SpringBoot。
         }
 
     }
-    ```
+```
 
-#### 过滤链
-
-![filter_chain](https://s2.loli.net/2025/03/17/VObdqKzJ4Ug1H68.png)
-
-多个过滤器会形成过滤链。按过滤器名排序先后执行。（如 `AbcFilter` 早于 `DemoFilter` 执行）
-
-#### token 校验 demo
+TokenFilter 过滤器：
 
 ```java
-// 忽略校验路由
-private static final String[] IGNORE_URLS = {
-    "/login"
-};
+package net.harmless.filter;
 
-/**
- * 设置错误响应
- * @param response
- * @param status
- * @param msg
- * @throws IOException
- */
-private void setErrorResponse(HttpServletResponse response, int status, String msg) throws IOException {
-    response.setStatus(status);
-    response.setContentType("application/json; charset=UTF-8");
-    HashMap<Object, Object> errorMap = new HashMap<>();
-    errorMap.put("code", status);
-    errorMap.put("msg", msg);
+import com.auth0.jwt.interfaces.Claim;
+import com.auth0.jwt.interfaces.DecodedJWT;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.servlet.*;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
+import net.harmless.utils.JwtUtils;
+import org.apache.http.HttpStatus;
 
-    ObjectMapper objectMapper = new ObjectMapper(); // 用于将 JAVA 对象转为 JSON
-    response.getWriter().write(objectMapper.writeValueAsString(errorMap));
-}
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
-@Override
-public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-    // 1. 获取请求 url
-    HttpServletRequest request = (HttpServletRequest) servletRequest;
-    HttpServletResponse response = (HttpServletResponse) servletResponse;
+@WebFilter(urlPatterns = "/*")
+public class TokenFilter implements Filter {
 
-    // 2. 判断请求 url 是否是非校验路由，如果是，则直接放行
-    for (String url : IGNORE_URLS) {
-        if (url.contains(request.getRequestURI())) {
-            filterChain.doFilter(servletRequest, servletResponse);
+    // 忽略校验路由
+    private static final String[] IGNORE_URLS = {
+        "/login"
+    };
+
+    /**
+     * 设置错误响应
+     * @param response
+     * @param status
+     * @param msg
+     * @throws IOException
+     */
+    private void setErrorResponse(HttpServletResponse response, int status, String msg) throws IOException {
+        response.setStatus(status);
+        response.setContentType("application/json; charset=UTF-8");
+        HashMap<Object, Object> errorMap = new HashMap<>();
+        errorMap.put("code", status);
+        errorMap.put("msg", msg);
+
+        ObjectMapper objectMapper = new ObjectMapper(); // 用于将 JAVA 对象转为 JSON
+        response.getWriter().write(objectMapper.writeValueAsString(errorMap));
+    }
+
+    @Override
+    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
+        // 1. 获取请求 url
+        HttpServletRequest request = (HttpServletRequest) servletRequest;
+        HttpServletResponse response = (HttpServletResponse) servletResponse;
+
+        // 2. 判断请求 url 是否是非校验路由，如果是，则直接放行
+        for (String url : IGNORE_URLS) {
+            if (url.contains(request.getRequestURI())) {
+                filterChain.doFilter(servletRequest, servletResponse);
+                return;
+            }
+        }
+
+        // 3. 获取令牌
+        String token = request.getHeader("Authorization");
+
+        // 4. 校验令牌
+        // 无令牌
+        if (token == null || token.isEmpty()) {
+            setErrorResponse(response, HttpStatus.SC_UNAUTHORIZED, "未获取到令牌");
             return;
         }
-    }
+        // 令牌不合法
+        try {
+            DecodedJWT decodedJWT = JwtUtils.parseJWT(token);
+            Map<String, Claim> claims = decodedJWT.getClaims();
+            log.info("claims: {}", claims);
+        } catch (Exception e){
+            setErrorResponse(response, HttpStatus.SC_UNAUTHORIZED, "令牌不合法");
+            return;
+        }
 
-    // 3. 获取令牌
-    String token = request.getHeader("Authorization");
-
-    // 4. 校验令牌
-    // 无令牌
-    if (token == null || token.isEmpty()) {
-        setErrorResponse(response, HttpStatus.SC_UNAUTHORIZED, "未获取到令牌");
-        return;
+        // 放行
+        filterChain.doFilter(servletRequest, servletResponse);
     }
-    // 令牌不合法
-    try {
-        DecodedJWT decodedJWT = JwtUtils.parseJWT(token);
-        Map<String, Claim> claims = decodedJWT.getClaims();
-        log.info("claims: {}", claims);
-    } catch (Exception e){
-        setErrorResponse(response, HttpStatus.SC_UNAUTHORIZED, "令牌不合法");
-        return;
-    }
-
-    // 放行
-    filterChain.doFilter(servletRequest, servletResponse);
 }
 ```
 
@@ -321,60 +304,135 @@ public void doFilter(ServletRequest servletRequest, ServletResponse servletRespo
 
 Spring 框架提供，用于动态拦截控制器方法的执行。
 
-#### 拦截器基础使用
+#### 拦截器使用步骤
 
 1. 定义拦截器
 
-    实现 `HandlerInterceptor` 接口，并实现其所有方法：
+    实现 `HandlerInterceptor` 接口，可选择性实现方法：
 
-    ```java
-    // interceptor/DemoInterceptor.java
+    - `preHandle`：访问资源前执行，通过返回 `boolean` 值来决定放行|不放行
+    - `postHandle`：放行请求后执行
+    - `afterCompletion`：视图渲染完毕后执行（前后端不分离情况下有用）
 
-    @Component
-    public class DemoInterceptor implements HandlerInterceptor {
-        /**
-         * preHandle 访问资源前执行
-         * 返回 boolean: true: 放行, false: 不放行
-         */
-        @Override
-        public boolean preHandle(HttpServletRequest req, HttpServletResponse resp, Object handler) throws Exception {
-            return true;
-        }
+    > 可为拦截器添加 `@Component`，方便在配置时依赖注入
 
-        /**
-         * postHandle 放行后并访问资源后执行
-         */
-        @Override
-        public void postHandle(HttpServletRequest req, HttpServletResponse resp, Object handler, ModelAndView mv) throws Exception {
-            System.out.println("preHandle");
-        }
+2. 注册拦截器
 
-        /**
-         * 视图渲染完毕后执行
-         * (前后端不分离的情况下有用)
-         */
-        @Override
-        public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
-            System.out.println("afterCompletion");
-        }
+    先实现配置类，继承 `WebMvcConfigurer` 接口，并添加 `@Configuration` 注释。
+
+    实现其中 `addInterceptors` 方法来注册拦截器。详见下例。
+
+#### 拦截器路径通配符
+
+需注意路径通配符 `/*` 与 `/**` 的区别：
+
+|拦截路径|含义|例子|
+|---|---|---|
+|`/*`|一级路径|能匹配 `/depts`, `/emps`|
+|`/**`|任意级路径|能匹配 `/depts`, `/depts/1`, `/depts/1/2`|
+
+#### TokenInterceptor demo
+
+定义配置类，并注册拦截器：
+
+```java
+// config/WebConfig.java
+package net.harmless.config;
+
+import net.harmless.interceptor.TokenInterceptor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+@Configuration
+public class WebConfig implements WebMvcConfigurer {
+    private final TokenInterceptor tokenInterceptor;
+
+    @Autowired
+    public WebConfig(TokenInterceptor tokenInterceptor) {
+        this.tokenInterceptor = tokenInterceptor;
     }
-    ```
 
-2. 定义配置类，注册拦截器
-
-    ```java
-    // config/WebConfig.java
-
-    @Configuration
-    public class WebConfig implements WebMvcConfigurer {
-        @Autowired
-        private DemoInterceptor demoInterceptor;
-        @Override
-        public void addInterceptors(InterceptorRegistry registry) {
-            registry.addInterceptor(demoInterceptor).addPathPatterns("/**"); // 拦截所有请求
-        }
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        WebMvcConfigurer.super.addInterceptors(registry);
+        registry.addInterceptor(tokenInterceptor)
+                .addPathPatterns("/**") // 拦截所有路径
+                .excludePathPatterns("/login"); // 除外 /login
     }
-    ```
+}
+```
+
+TokenInterceptor：
+
+```java
+// intercepter/TokenInterceptor.java
+package net.harmless.interceptor;
+
+import com.auth0.jwt.interfaces.Claim;
+import com.auth0.jwt.interfaces.DecodedJWT;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
+import net.harmless.utils.JwtUtils;
+import org.apache.http.HttpStatus;
+import org.springframework.stereotype.Component;
+import org.springframework.web.servlet.HandlerInterceptor;
+
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
+@Slf4j
+@Component
+public class TokenInterceptor implements HandlerInterceptor {
+    /**
+     * 设置错误响应
+     */
+    private void setErrorResponse(HttpServletResponse response, int status, String msg) throws IOException {
+        response.setStatus(status);
+        response.setContentType("application/json; charset=UTF-8");
+        HashMap<Object, Object> errorMap = new HashMap<>();
+        errorMap.put("code", status);
+        errorMap.put("msg", msg);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        response.getWriter().write(objectMapper.writeValueAsString(errorMap));
+    }
+
+    @Override
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        String token = request.getHeader("Authorization");
+
+        if (token == null || token.isEmpty()) {
+            setErrorResponse(response, HttpStatus.SC_UNAUTHORIZED, "未获取到令牌");
+            return false;
+        }
+
+        try {
+            DecodedJWT decodedJWT = JwtUtils.parseJWT(token);
+            Map<String, Claim> claims = decodedJWT.getClaims();
+            log.info("claims: {}", claims);
+        } catch(Exception e) {
+            setErrorResponse(response, HttpStatus.SC_UNAUTHORIZED, "令牌不合法");
+            return false;
+        }
+
+        return true;
+    }
+}
+```
+
+### 过滤器 和 拦截器
+
+- Filter：继承 `Filter` 接口，拦截所有资源，Java Web 原生
+- Interceptor：继承 `HandleInterceptor` 接口，拦截 Spring 中的资源，Spring 功能
+
+如果两者同时使用：先 Filter，后 Interceptor。
+
+![filter and interceptor](https://s2.loli.net/2025/04/02/io5T8DufHNUbJCE.png)
 
 ## refer
 
@@ -385,3 +443,5 @@ Spring 框架提供，用于动态拦截控制器方法的执行。
 [jwt - debugger](https://jwt.io/#debugger-io)
 
 [github - java-jwt](https://github.com/auth0/java-jwt)
+
+[黑马程序员 - JAVA Web：登录功能](https://www.bilibili.com/video/BV1yGydYEE3H?spm_id_from=333.788.videopod.episodes&vd_source=cbb9bae25f5ac9e51f8ff965eb794230&p=120)
